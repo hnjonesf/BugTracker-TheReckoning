@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker_The_Reckoning.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -152,6 +153,11 @@ namespace BugTracker_The_Reckoning.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var db = new ApplicationDbContext();
+                var store = new UserStore<ApplicationUser>(db);
+                var userManager = new UserManager<ApplicationUser>(store);
+
+                userManager.AddToRole(user.Id, "Submitter");
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
