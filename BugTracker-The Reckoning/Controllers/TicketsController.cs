@@ -10,8 +10,10 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
+    [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
     public class TicketsController : Controller
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tickets
