@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker_The_Reckoning.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -56,10 +57,13 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,OwnerUserId,TicketPriorityId,TicketStatusId,TicketTypeId")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Title,Description,ProjectId,TicketPriorityId,TicketTypeId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.Created = DateTimeOffset.Now;
+                ticket.OwnerUserId = User.Identity.GetUserId();
+                ticket.TicketStatusId = db.TicketStatuses.First(t => t.Name == "Not Started").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -98,10 +102,11 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,OwnerUserId,TicketPriorityId,TicketStatusId,TicketTypeId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,ProjectId,OwnerUserId,TicketPriorityId,TicketStatusId,TicketTypeId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.Updated = DateTimeOffset.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
