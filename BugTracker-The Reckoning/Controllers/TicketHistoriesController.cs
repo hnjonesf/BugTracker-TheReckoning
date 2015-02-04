@@ -10,12 +10,13 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
-    [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+    [Authorize]
     public class TicketHistoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TicketHistories
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Index()
         {
             var ticketHistories = db.TicketHistories.Include(t => t.Ticket);
@@ -23,6 +24,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketHistories/Details/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -38,6 +40,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketHistories/Create
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Create()
         {
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
@@ -45,8 +48,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: TicketHistories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Property,OldValue,NewValue,Changed")] TicketHistory ticketHistory)
@@ -63,6 +65,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketHistories/Edit/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,8 +82,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: TicketHistories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")] 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,TicketId,UserId,Property,OldValue,NewValue,Changed")] TicketHistory ticketHistory)
@@ -96,6 +98,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketHistories/Delete/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -111,6 +114,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: TicketHistories/Delete/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

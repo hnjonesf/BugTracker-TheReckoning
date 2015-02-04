@@ -10,18 +10,20 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
-    [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+    [Authorize]
     public class TicketStatusController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TicketStatus
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Index()
         {
             return View(db.TicketStatuses.ToList());
         }
 
         // GET: TicketStatus/Details/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,14 +39,14 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketStatus/Create
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: TicketStatus/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] TicketStatus ticketStatus)
@@ -60,6 +62,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketStatus/Edit/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -75,8 +78,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: TicketStatus/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] TicketStatus ticketStatus)
@@ -91,6 +93,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketStatus/Delete/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -106,6 +109,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: TicketStatus/Delete/5
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
