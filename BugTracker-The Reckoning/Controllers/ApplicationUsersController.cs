@@ -64,7 +64,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: Users/Edit/5
-        .[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
             if (id == null)
