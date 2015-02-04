@@ -46,15 +46,14 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DisplayName,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult Create([Bind(Include = "FirstName,LastName,DisplayName,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed,UserName")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
+                applicationUser.DisplayName = applicationUser.FirstName + " " + applicationUser.LastName;
                 db.Users.Add(applicationUser);
                 db.SaveChanges();
                 return RedirectToAction("Index");
