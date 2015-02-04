@@ -10,18 +10,20 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
-    [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+    [Authorize]
     public class ApplicationUsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Users
+        [Authorize(Roles = "Administrator, Project Manager")]
         public ActionResult Index()
         {
             return View(db.Users.ToList());
         }
 
         // GET: Users/Details/5
+        [Authorize(Roles = "Administrator, Project Manager")]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: Users/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             return View();
@@ -47,6 +50,7 @@ namespace BugTracker_The_Reckoning.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DisplayName,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
@@ -60,6 +64,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: Users/Edit/5
+        .[Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -75,10 +80,9 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DisplayName,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
@@ -91,6 +95,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -108,6 +113,7 @@ namespace BugTracker_The_Reckoning.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(string id)
         {
             ApplicationUser applicationUser = db.Users.Find(id);
