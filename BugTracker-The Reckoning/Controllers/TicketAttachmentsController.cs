@@ -10,6 +10,7 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
+    [Authorize(Roles="Administrator, Project Manager, Developer, Submitter")]
     public class TicketAttachmentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -59,6 +60,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketAttachments/Edit/5
+        
         public ActionResult Edit(int? id)
         {
             if (id == null)

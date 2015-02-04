@@ -12,7 +12,7 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
