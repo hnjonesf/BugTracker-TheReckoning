@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @using Microsoft.AspNet.Identity
 
     <meta name="description" content="BugTracker" />
 </head>
@@ -21,34 +22,47 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
-                    <li>@Html.ActionLink("Users", "Index", "ApplicationUsers")</li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets<strong class="caret"></strong></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Tickets", "Index", "Tickets")</li>
-                            <li>@Html.ActionLink("Ticket Attachments", "Index", "TicketAttachments")</li>
-                            <li>@Html.ActionLink("Ticket Histories", "Index", "TicketHistories")</li>
-                            <li>@Html.ActionLink("Ticket Comments", "Index", "TicketComments")</li>
-                            <li>@Html.ActionLink("Ticket Statuses", "Index", "TicketStatus")</li>
-                            <li>@Html.ActionLink("Ticket Priorities", "Index", "TicketPriorities")</li>
-                            <li>@Html.ActionLink("Ticket Types", "Index", "TicketTypes")</li>
-                        </ul>
-                </ul>
-                        @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
-</html>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Tickets", "Index", "Tickets")</li>
+                                <li>@Html.ActionLink("Ticket Attachments", "Index", "TicketAttachments")</li>
+                                <li>@Html.ActionLink("Ticket Histories", "Index", "TicketHistories")</li>
+                                <li>@Html.ActionLink("Ticket Comments", "Index", "TicketComments")</li>
+                                <li>@Html.ActionLink("Ticket Statuses", "Index", "TicketStatus")</li>
+                                <li>@Html.ActionLink("Ticket Priorities", "Index", "TicketPriorities")</li>
+                                <li>@Html.ActionLink("Ticket Types", "Index", "TicketTypes")</li>
+                            </ul>
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                            {
+                                <li>@Html.ActionLink("Users", "Index", "ApplicationUsers")</li>
+                            }
+                            </li>
+                    }
+                    </ul>
+
+
+
+
+
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>
+                        <div class="container body-content">
+                            @RenderBody()
+                            <hr />
+                            <footer>
+                                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                            </footer>
+                        </div>
+
+                        @Scripts.Render("~/bundles/jquery")
+                        @Scripts.Render("~/bundles/bootstrap")
+                        @RenderSection("scripts", required: false)
+                    </body>
+                    </html>
