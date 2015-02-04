@@ -15,14 +15,14 @@ namespace BugTracker_The_Reckoning.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "About the BugTracker Team.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact BugTracker.";
 
             return View();
         }
