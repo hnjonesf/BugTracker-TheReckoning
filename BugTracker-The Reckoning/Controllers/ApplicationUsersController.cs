@@ -21,12 +21,11 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager")]
         public ActionResult Index(int? page, string sortOrder)
         {
-
             ViewBag.NameSortParm = sortOrder == "FirstName_D" ? "FirstName" : "FirstName_D";
             ViewBag.LastNameSortParm = sortOrder == "LastName" ? "LastName_D" : "LastName";
             ViewBag.EmailSortParm = sortOrder == "Email" ? "Email_D" : "Email";
             ViewBag.PhoneSortParm = sortOrder == "Phone" ? "Phone_D" : "Phone";
-            
+
             var usersList = db.Users.ToList();
             ViewBag.sortparam = sortOrder;
             switch (sortOrder)
@@ -34,46 +33,35 @@ namespace BugTracker_The_Reckoning.Controllers
                 case ("FirstName"):
                     usersList = usersList.OrderBy(u => u.FirstName).ToList();
                     break;
-
                 case ("FirstName_D"):
                     usersList = usersList.OrderByDescending(u => u.FirstName).ToList();
                     break;
-
                 case ("LastName"):
                     usersList = usersList.OrderBy(u => u.LastName).ToList();
                     break;
-
                 case ("LastName_D"):
                     usersList = usersList.OrderByDescending(u => u.LastName).ToList();
                     break;
-
                 case ("Email"):
                     usersList = usersList.OrderBy(u => u.Email).ToList();
                     break;
-
                 case ("Email_D"):
                     usersList = usersList.OrderByDescending(u => u.Email).ToList();
                     break;
-
                 case ("Phone"):
                     usersList = usersList.OrderBy(u => u.PhoneNumber).ToList();
                     break;
-
                 case ("Phone_D"):
                     usersList = usersList.OrderByDescending(u => u.PhoneNumber).ToList();
                     break;
-
                 default:
                     usersList = usersList.OrderBy(u => u.FirstName).ToList();
                     break;
             }
 
-
             var pageNumber = page ?? 1;
             ViewBag.pageNumber = pageNumber;
             return View(usersList.ToPagedList(pageNumber, 10));
-
-
         }
 
         // GET: Users/Details/5
@@ -92,29 +80,36 @@ namespace BugTracker_The_Reckoning.Controllers
             return View(applicationUser);
         }
 
-        // GET: Users/Create
-        [Authorize(Roles = "Administrator")]
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //// GET: Users/Assign
+        //[Authorize(Roles = "Administrator, Project Manager")]
+        //public ActionResult Edit(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ApplicationUser applicationUser = db.Users.Find(id);
+        //    if (applicationUser == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(applicationUser);
+        //}
 
-        // POST: Users/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
-        public ActionResult Create([Bind(Include = "FirstName,LastName,DisplayName,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed,UserName")] ApplicationUser applicationUser)
-        {
-            if (ModelState.IsValid)
-            {
-                applicationUser.DisplayName = applicationUser.FirstName + " " + applicationUser.LastName;
-                db.Users.Add(applicationUser);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(applicationUser);
-        }
+        //// POST: Users/Assign
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Administrator, Project Manager")]
+        //public ActionResult Edit([Bind(Include = "")] ApplicationUser applicationUser)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(applicationUser).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(applicationUser);
+        //}
 
         // GET: Users/Edit/5
         [Authorize(Roles = "Administrator")]
