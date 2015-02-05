@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace BugTracker_The_Reckoning.Models
 {
@@ -14,7 +15,13 @@ namespace BugTracker_The_Reckoning.Models
     {
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<Project> Projects { get; set; }
+        [Required]
+        [Display(Name ="First Name")]
+        [StringLength(50, ErrorMessage = "First Name cannot be longer than 30 characters.")]
         public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        [StringLength(50, ErrorMessage = "Last Name cannot be longer than 30 characters.")]
         public string LastName { get; set; }
         public string DisplayName { get; set; }
         public ApplicationUser()
