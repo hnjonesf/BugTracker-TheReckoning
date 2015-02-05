@@ -17,10 +17,6 @@ namespace BugTracker_The_Reckoning.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
         // GET: Users via PagedList
         [Authorize(Roles = "Administrator, Project Manager")]
         public ActionResult Index(int? page, string sortOrder)
@@ -71,14 +67,13 @@ namespace BugTracker_The_Reckoning.Controllers
                     usersList = usersList.OrderBy(u => u.FirstName).ToList();
                     break;
             }
+
+
             var pageNumber = page ?? 1;
-<<<<<<< HEAD
-            return View(usersList.ToPagedList(pageNumber, 10));
-=======
             ViewBag.pageNumber = pageNumber;
-            var onePageOfUsers = usersList.ToPagedList(pageNumber, 2);
-            return View(onePageOfUsers);
->>>>>>> origin/master
+            return View(usersList.ToPagedList(pageNumber, 10));
+
+
         }
 
         // GET: Users/Details/5
