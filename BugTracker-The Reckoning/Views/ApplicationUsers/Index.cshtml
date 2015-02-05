@@ -1,4 +1,8 @@
-﻿@model IEnumerable<BugTracker_The_Reckoning.Models.ApplicationUser>
+﻿@model PagedList.IPagedList<BugTracker_The_Reckoning.Models.ApplicationUser>
+@using PagedList; 
+@using PagedList.Mvc;
+
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index of Users";
@@ -12,17 +16,17 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            First Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            Last Name
         </th>
         
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            Email
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            Phone Number
         </th>
         <th></th>
     </tr>
@@ -51,5 +55,7 @@
         </td>
     </tr>
 }
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
 </table>

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
+using PagedList.Mvc;
 using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
@@ -15,11 +17,22 @@ namespace BugTracker_The_Reckoning.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Users
+        //// GET: Users
+        //[Authorize(Roles = "Administrator, Project Manager")]
+        //public ActionResult Index()
+        //{
+
+        //    return View(db.Users.ToList());
+        //}
+
+        // GET: Users via PagedList
         [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Users.ToList());
+            var usersList = db.Users.ToList();
+            var pageNumber = page ?? 1;
+            var onePageOfUsers = usersList.ToPagedList(pageNumber, 2);
+            return View(onePageOfUsers);
         }
 
         // GET: Users/Details/5
