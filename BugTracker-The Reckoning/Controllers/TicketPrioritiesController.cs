@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker_The_Reckoning.Models;
+using PagedList.Mvc;
+using PagedList;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -18,9 +20,27 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: TicketPriorities
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, int? page)
         {
-            return View(db.TicketPriorities.ToList());
+            ViewBag.NameSortParm = sortOrder == "Priority_D" ? "Priority" : "Priority_D";
+            var priorities = db.TicketPriorities.ToList();
+            switch (sortOrder)
+            {
+                case ("Priority"):
+                    priorities = priorities.OrderBy(t => t.Name).ToList();
+                    break;
+                case ("Priority_D"):
+                    priorities = priorities.OrderByDescending(t => t.Name).ToList();
+                    break;
+                default:
+                    priorities = priorities.OrderBy(t => t.Name).ToList();
+                    break;
+            }
+
+            ViewBag.sortOrder = sortOrder;
+            var pageList = priorities.ToList();
+            var pageNumber = page ?? 1;
+            return View(pageList.ToPagedList(pageNumber, 5));
         }
 
         // GET: TicketPriorities/Details/5
