@@ -10,19 +10,18 @@ using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
-    [Authorize]
     public class TicketCommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
         // GET: TicketComments
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Index()
         {
-            return View(db.TicketComments.ToList());
+            var ticketComments = db.TicketComments.Include(t => t.Ticket);
+            return View(ticketComments.ToList());
         }
 
         // GET: TicketComments/Details/5
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -38,9 +37,9 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketComments/Create
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Create()
         {
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
             return View();
         }
 
@@ -49,7 +48,6 @@ namespace BugTracker_The_Reckoning.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
@@ -59,11 +57,11 @@ namespace BugTracker_The_Reckoning.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
             return View(ticketComment);
         }
 
         // GET: TicketComments/Edit/5
-        [Authorize(Roles = "Administrator, Project Manager, Developer")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -75,6 +73,7 @@ namespace BugTracker_The_Reckoning.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
             return View(ticketComment);
         }
 
@@ -83,7 +82,6 @@ namespace BugTracker_The_Reckoning.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Project Manager, Developer")]
         public ActionResult Edit([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
@@ -92,11 +90,11 @@ namespace BugTracker_The_Reckoning.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
             return View(ticketComment);
         }
 
         // GET: TicketComments/Delete/5
-        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -114,7 +112,6 @@ namespace BugTracker_The_Reckoning.Controllers
         // POST: TicketComments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
             TicketComment ticketComment = db.TicketComments.Find(id);

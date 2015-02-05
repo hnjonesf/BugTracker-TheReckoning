@@ -1,42 +1,41 @@
-﻿@model PagedList.IPagedList<BugTracker_The_Reckoning.Models.TicketAttachment>
-@using PagedList;
-@using PagedList.Mvc;
+﻿@model IEnumerable<BugTracker_The_Reckoning.Models.TicketAttachment>
 
 @{
-    ViewBag.Title = "Index of Ticket Attachments";
+    ViewBag.Title = "Index";
 }
 
-<h2>Index of Ticket Attachments</h2>
+<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-striped">
+<table class="table">
     <tr>
         <th>
-        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.TicketIdParm })
+            @Html.DisplayNameFor(model => model.Ticket.Title)
         </th>
         <th>
-        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.FilePathParm })
+            @Html.DisplayNameFor(model => model.UserId)
         </th>
         <th>
-        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.DescriptionParm })
+            @Html.DisplayNameFor(model => model.FilePath)
         </th>
         <th>
-        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.CreatedParm })
+            @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.UserIdParm })
+            @Html.DisplayNameFor(model => model.Created)
         </th>
         <th>
-        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.FileUrlParm })
+            @Html.DisplayNameFor(model => model.FileUrl)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TicketId)
+            @Html.DisplayFor(modelItem => item.Ticket.Title)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserId)
@@ -62,5 +61,3 @@
 }
 
 </table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder }))
