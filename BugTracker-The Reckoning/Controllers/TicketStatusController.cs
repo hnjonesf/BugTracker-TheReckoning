@@ -21,7 +21,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Index(string sortOrder, int? page)
         {
-            ViewBag.NameSortParm = sortOrder == "Name" ? "Name_D" : "Name";
+            ViewBag.NameSortParm = sortOrder == "Name_D" ? "Name" : "Name_D";
 
             var ticketstatuses = db.TicketStatuses.ToList();
 

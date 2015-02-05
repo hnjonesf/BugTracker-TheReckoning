@@ -1,5 +1,6 @@
-﻿@model IEnumerable<BugTracker_The_Reckoning.Models.TicketType>
-
+﻿@model PagedList.IPagedList<BugTracker_The_Reckoning.Models.TicketType>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -12,7 +13,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Ticket Type", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th></th>
     </tr>
@@ -31,3 +32,5 @@
 }
 
 </table>
+ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder }))
