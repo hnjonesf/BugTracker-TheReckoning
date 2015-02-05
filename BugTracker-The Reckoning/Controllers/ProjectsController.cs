@@ -16,11 +16,21 @@ namespace BugTracker_The_Reckoning.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            return View(db.Projects.ToList());
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
+            var projects = db.Projects.ToList();
+            switch (sortOrder)
+            {
+                case "":
+                    projects = projects.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "Name":
+                    projects = projects.OrderBy(p => p.Name).ToList();
+                    break;
+            }
+            return View(projects);
         }
-
         // GET: Projects/Details/5
         public ActionResult Details(int? id)
         {
