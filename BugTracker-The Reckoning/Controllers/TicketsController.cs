@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList.Mvc;
+using PagedList;
 using BugTracker_The_Reckoning.Models;
 using Microsoft.AspNet.Identity;
 
@@ -19,8 +21,9 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: Tickets
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, int? page)
         {
+
             ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
             ViewBag.ProjectNameParm = sortOrder == "ProjectName" ? "ProjectName_D" : "ProjectName";
             ViewBag.TicketPriorityNameParm = sortOrder == "TicketPriorityName" ? "TicketPriorityName_D" : "TicketPriorityName";
@@ -30,6 +33,7 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.DescriptionParm = sortOrder == "Description" ? "Description_D" : "Description";
             ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
             ViewBag.UpdatedParm = sortOrder == "Updated" ? "Updated_D" : "Updated";
+
 
             var tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes);
             switch(sortOrder){
@@ -105,7 +109,12 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets = tickets.OrderByDescending(t=>t.Created);
                     break;
             }
-            return View(tickets.ToList());
+
+            ViewBag.sortOrder = sortOrder;
+            var pageList = tickets.ToList();
+            var pageNumber = page ?? 1;
+            return View(pageList.ToPagedList(pageNumber, 5));
+
         }
 
         // GET: Tickets/Details/5
