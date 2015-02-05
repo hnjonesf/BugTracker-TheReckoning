@@ -19,9 +19,92 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: Tickets
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
+            ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
+            ViewBag.ProjectNameParm = sortOrder == "ProjectName" ? "ProjectName_D" : "ProjectName";
+            ViewBag.TicketPriorityNameParm = sortOrder == "TicketPriorityName" ? "TicketPriorityName_D" : "TicketPriorityName";
+            ViewBag.TicketStatusesNameParm = sortOrder == "TicketStatusesName" ? "TicketStatusesName_D" : "TicketStatusesName";
+            ViewBag.TicketTypesNameParm = sortOrder == "TicketTypesName" ? "TicketTypesName_D" : "TicketTypesName";
+            ViewBag.TitleParm = sortOrder == "Title" ? "Title_D" : "Title";
+            ViewBag.DescriptionParm = sortOrder == "Description" ? "Description_D" : "Description";
+            ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
+            ViewBag.UpdatedParm = sortOrder == "Updated" ? "Updated_D" : "Updated";
+
             var tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes);
+            switch(sortOrder){
+                case ("FirstName"):
+                    tickets = tickets.OrderBy(t=>t.OwnerUser.FirstName);
+                    break;
+
+                case ("FirstName_D"):
+                    tickets = tickets.OrderByDescending(t=>t.OwnerUser.FirstName);
+                    break;
+
+                case ("ProjectName"):
+                    tickets = tickets.OrderBy(t=>t.Project.Name);
+                    break;
+
+                case ("ProjectName_D"):
+                tickets = tickets.OrderByDescending(t=>t.Project.Name);
+                    break;
+                case ("TicketPriorityName"):
+                    tickets = tickets.OrderBy(t=>t.TicketPriority.Name);
+                    break;
+
+                case ("TicketPriorityName_D"):
+                    tickets = tickets.OrderByDescending(t=>t.TicketPriority.Name);
+                    break;
+
+                case ("TicketStatusesName"):
+                    tickets = tickets.OrderBy(t=>t.TicketStatuses.Name);
+                    break;
+
+                case ("TicketStatusesName_D"):
+                tickets = tickets.OrderByDescending(t=>t.TicketStatuses.Name);
+                    break;
+                case ("TicketTypesName"):
+                    tickets = tickets.OrderBy(t=>t.TicketTypes.Name);
+                    break;
+
+                case ("TicketTypesName_D"):
+                    tickets = tickets.OrderByDescending(t=>t.TicketTypes.Name);
+                    break;
+
+                case ("Title"):
+                    tickets = tickets.OrderBy(t=>t.Title);
+                    break;
+
+                case ("Title_D"):
+                tickets = tickets.OrderByDescending(t=>t.Title);
+                    break;
+                case ("Description"):
+                    tickets = tickets.OrderBy(t=>t.Description);
+                    break;
+
+                case ("Description_D"):
+                    tickets = tickets.OrderByDescending(t=>t.Description);
+                    break;
+
+                case ("Created"):
+                    tickets = tickets.OrderBy(t=>t.Created);
+                    break;
+
+                case ("Created_D"):
+                tickets = tickets.OrderByDescending(t=>t.Created);
+                    break;
+                case ("Updated"):
+                    tickets = tickets.OrderBy(t=>t.Updated);
+                    break;
+
+                case ("Updated_D"):
+                    tickets = tickets.OrderByDescending(t=>t.Updated);
+                    break;
+
+                default:
+                    tickets = tickets.OrderByDescending(t=>t.Created);
+                    break;
+            }
             return View(tickets.ToList());
         }
 

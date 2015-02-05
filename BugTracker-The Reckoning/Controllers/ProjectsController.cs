@@ -18,11 +18,11 @@ namespace BugTracker_The_Reckoning.Controllers
         // GET: Projects
         public ActionResult Index(string sortOrder)
         {
-            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) || sortOrder == "Name_desc" ? "Name" : "Name_desc";
             var projects = db.Projects.ToList();
             switch (sortOrder)
             {
-                case "":
+                case "Name_desc":
                     projects = projects.OrderByDescending(p => p.Name).ToList();
                     break;
                 case "Name":

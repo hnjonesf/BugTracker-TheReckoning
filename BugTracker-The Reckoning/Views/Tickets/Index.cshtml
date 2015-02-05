@@ -12,31 +12,31 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
+            @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Project.Name)
+            @Html.ActionLink("Project Name", "Index", new { sortOrder = ViewBag.ProjectNameParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
+            @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.TicketPriorityNameParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketStatuses.Name)
+            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.TicketStatusesNameParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketTypes.Name)
+            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TicketTypesNameParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.CreatedParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Updated)
+            @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedParm })
         </th>
         <th></th>
     </tr>
