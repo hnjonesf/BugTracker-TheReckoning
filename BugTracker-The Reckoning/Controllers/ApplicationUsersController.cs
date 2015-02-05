@@ -80,36 +80,48 @@ namespace BugTracker_The_Reckoning.Controllers
             return View(applicationUser);
         }
 
-        //// GET: Users/Assign
-        //[Authorize(Roles = "Administrator, Project Manager")]
-        //public ActionResult Edit(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ApplicationUser applicationUser = db.Users.Find(id);
-        //    if (applicationUser == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(applicationUser);
-        //}
+        // GET: Users/Manage
+        [Authorize(Roles = "Administrator, Project Manager")]
+        public ActionResult Manage(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var theUser = db.Users.Find(id);
+            // send a select list of projects the user is NOT on
+            // send a select list of tickets the user is NOT on
+            // send a select list of roles the user is NOT on
 
-        //// POST: Users/Assign
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Administrator, Project Manager")]
-        //public ActionResult Edit([Bind(Include = "")] ApplicationUser applicationUser)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(applicationUser).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(applicationUser);
-        //}
+            // send a list of projects, tickets, roles the user is on
+
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
+
+            ViewBag.UserNotProjects = new SelectList(db.Projects.Except(theUser.Projects), "Id", "Name");
+            ViewBag.UserNotTickets = new SelectList(db.Tickets.Except(theUser.Tickets), "Id", "Title");
+            //ViewBag.UserNotRoles = new SelectList(db.Roles.Except(theUser.Roles), "Id", "Name");
+
+            if (theUser == null)
+            {
+                return HttpNotFound();
+            }
+            return View(theUser);
+        }
+
+        // POST: Users/Manage
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Project Manager")]
+        public ActionResult Manage([Bind(Include = "")] ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(applicationUser).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(applicationUser);
+        }
 
         // GET: Users/Edit/5
         [Authorize(Roles = "Administrator")]

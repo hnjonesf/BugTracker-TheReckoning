@@ -395,3 +395,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
  No newline at end of file
+*.csproj
