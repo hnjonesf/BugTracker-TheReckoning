@@ -17,14 +17,68 @@ namespace BugTracker_The_Reckoning.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
         // GET: Users via PagedList
         [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder)
         {
+
+            ViewBag.NameSortParm = sortOrder == "FirstName_D" ? "FirstName" : "FirstName_D";
+            ViewBag.LastNameSortParm = sortOrder == "LastName" ? "LastName_D" : "LastName";
+            ViewBag.EmailSortParm = sortOrder == "Email" ? "Email_D" : "Email";
+            ViewBag.PhoneSortParm = sortOrder == "Phone" ? "Phone_D" : "Phone";
+            
             var usersList = db.Users.ToList();
+            ViewBag.sortparam = sortOrder;
+            switch (sortOrder)
+            {
+                case ("FirstName"):
+                    usersList = usersList.OrderBy(u => u.FirstName).ToList();
+                    break;
+
+                case ("FirstName_D"):
+                    usersList = usersList.OrderByDescending(u => u.FirstName).ToList();
+                    break;
+
+                case ("LastName"):
+                    usersList = usersList.OrderBy(u => u.LastName).ToList();
+                    break;
+
+                case ("LastName_D"):
+                    usersList = usersList.OrderByDescending(u => u.LastName).ToList();
+                    break;
+
+                case ("Email"):
+                    usersList = usersList.OrderBy(u => u.Email).ToList();
+                    break;
+
+                case ("Email_D"):
+                    usersList = usersList.OrderByDescending(u => u.Email).ToList();
+                    break;
+
+                case ("Phone"):
+                    usersList = usersList.OrderBy(u => u.PhoneNumber).ToList();
+                    break;
+
+                case ("Phone_D"):
+                    usersList = usersList.OrderByDescending(u => u.PhoneNumber).ToList();
+                    break;
+
+                default:
+                    usersList = usersList.OrderBy(u => u.FirstName).ToList();
+                    break;
+            }
             var pageNumber = page ?? 1;
+<<<<<<< HEAD
             return View(usersList.ToPagedList(pageNumber, 10));
+=======
+            ViewBag.pageNumber = pageNumber;
+            var onePageOfUsers = usersList.ToPagedList(pageNumber, 2);
+            return View(onePageOfUsers);
+>>>>>>> origin/master
         }
 
         // GET: Users/Details/5

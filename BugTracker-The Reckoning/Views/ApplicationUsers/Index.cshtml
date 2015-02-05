@@ -16,17 +16,16 @@
 <table class="table">
     <tr>
         <th>
-            First Name
+            @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
-            Last Name
-        </th>
-        
-        <th>
-            Email
+            @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
         </th>
         <th>
-            Phone Number
+            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Phone Number", "Index", new { sortOrder = ViewBag.PhoneSortParm })
         </th>
         <th></th>
     </tr>
@@ -55,7 +54,8 @@
         </td>
     </tr>
 }
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortparam }))
