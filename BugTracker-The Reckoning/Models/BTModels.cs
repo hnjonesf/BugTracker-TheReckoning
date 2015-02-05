@@ -22,6 +22,7 @@ namespace BugTracker_The_Reckoning.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:mm/dd/yyyy}")]
         public DateTimeOffset Created { get; set; }
         public string FileUrl { get; set; }
+        public virtual Ticket Ticket { get; set; }
     }
     public class TicketComment 
     {
@@ -30,6 +31,7 @@ namespace BugTracker_The_Reckoning.Models
         public string UserId { get; set; }
         public string Comment { get; set; }
         public DateTimeOffset Created { get; set; }
+        public virtual Ticket Ticket { get; set; }
     }
     public class TicketHistory 
     {
@@ -48,6 +50,8 @@ namespace BugTracker_The_Reckoning.Models
         public int Id { get; set; }
         public int TicketId { get; set; }
         public string UserId { get; set; }
+        public virtual Ticket Ticket { get; set; }      
+        public virtual ApplicationUser User { get; set; }
     }
     public class Ticket 
     {

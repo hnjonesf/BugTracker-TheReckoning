@@ -6,6 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList.Mvc;
+using PagedList;
+using Microsoft.AspNet.Identity;
 using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
@@ -16,9 +19,66 @@ namespace BugTracker_The_Reckoning.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TicketAttachments
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, int? page)
         {
-            return View(db.TicketAttachments.ToList());
+            ViewBag.IdParm = sortOrder == "TicketId" ? "TicketId_D" : "TicketId";
+            ViewBag.FilePathParm = sortOrder == "FilePath" ? "FilePath_D" : "FilePath";
+            ViewBag.DescriptionParm = sortOrder == "Description" ? "Description_D" : "Description";
+            ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
+            ViewBag.UserIdParm = sortOrder == "UserId" ? "UserId_D" : "UserId";
+            ViewBag.FileURLParm = sortOrder == "FileURL" ? "FileURL_D" : "FileURL";
+
+            var ticketattachments = db.TicketAttachments.Include(t => t.Id).Include(t => t.FilePath)
+                .Include(t => t.Description).Include(t => t.Created).Include(t => t.UserId).Include(t => t.FileUrl);
+
+            switch (sortOrder)
+            {
+                case ("TicketId"):
+                    ticketattachments = ticketattachments.OrderBy(t => t.TicketId);
+                    break;
+                case ("TicketId_D"):
+                    ticketattachments = ticketattachments.OrderByDescending(t => t.TicketId);
+                    break;
+                case ("FilePath"):
+                    ticketattachments = ticketattachments.OrderBy(t => t.FilePath);
+                    break;
+                case ("FilePath_D"):
+                    ticketattachments = ticketattachments.OrderByDescending(t => t.FilePath);
+                    break;
+                case ("Priority"):
+                    ticketattachments = ticketattachments.OrderBy(t => t.Description);
+                    break;
+                case ("Priority_D"):
+                    ticketattachments = ticketattachments.OrderByDescending(t => t.Description);
+                    break;
+                case ("Created"):
+                    ticketattachments = ticketattachments.OrderBy(t => t.Created);
+                    break;
+                case ("Created_D"):
+                    ticketattachments = ticketattachments.OrderByDescending(t => t.Created);
+                    break;
+                case ("UserId"):
+                    ticketattachments = ticketattachments.OrderBy(t => t.UserId);
+                    break;
+                case ("UserId_D"):
+                    ticketattachments = ticketattachments.OrderByDescending(t => t.UserId);
+                    break;
+                case ("FileUrl"):
+                    ticketattachments = ticketattachments.OrderBy(t => t.FileUrl);
+                    break;
+                case ("FileUrl_D"):
+                    ticketattachments = ticketattachments.OrderByDescending(t => t.FileUrl);
+                    break;
+                default:
+                    ticketattachments = ticketattachments.OrderBy(t => t.TicketId);
+                    break;
+            }
+
+            ViewBag.sortOrder = sortOrder;
+            var pageList = ticketattachments;
+            var pageNumber = page ?? 1;
+            return View(pageList.ToPagedList(pageNumber, 5));
+
         }
 
         // GET: TicketAttachments/Details/5
@@ -37,21 +97,29 @@ namespace BugTracker_The_Reckoning.Controllers
             return View(ticketAttachment);
         }
 
+        
         // GET: TicketAttachments/Create
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Create()
+        public ActionResult Create(int ticketParentId)
         {
-            return View();
+            TicketAttachment ticketAttachment = new TicketAttachment();
+            ticketAttachment.TicketId = ticketParentId;
+            db.TicketAttachments.Add(ticketAttachment);
+            db.SaveChanges();
+
+            return View(ticketAttachment);
         }
 
         // POST: TicketAttachments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,FilePath,Description,Created,FileUrl")] TicketAttachment ticketAttachment)
+        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,FilePath,Description,Created,FileUrl")]TicketAttachment ticketAttachment)
         {
             if (ModelState.IsValid)
             {
+                ticketAttachment.Created = DateTimeOffset.Now;
+                ticketAttachment.UserId = User.Identity.GetUserId();
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -1,35 +1,36 @@
-﻿@model IEnumerable<BugTracker_The_Reckoning.Models.TicketAttachment>
+﻿@model PagedList.IPagedList<BugTracker_The_Reckoning.Models.TicketAttachment>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Index of Ticket Attachments";
 }
 
-<h2>Index</h2>
+<h2>Index of Ticket Attachments</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TicketId)
+        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.TicketIdParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserId)
+        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.FilePathParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FilePath)
+        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.DescriptionParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.CreatedParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Created)
+        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.UserIdParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FileUrl)
+        @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.FileUrlParm })
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -61,3 +62,5 @@
 }
 
 </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder }))
