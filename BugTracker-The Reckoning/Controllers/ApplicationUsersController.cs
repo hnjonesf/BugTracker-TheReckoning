@@ -17,20 +17,66 @@ namespace BugTracker_The_Reckoning.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        //// GET: Users
-        //[Authorize(Roles = "Administrator, Project Manager")]
-        //public ActionResult Index()
-        //{
-
-        //    return View(db.Users.ToList());
-        //}
-
         // GET: Users via PagedList
         [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder)
         {
+
+            ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
+            ViewBag.LastNameSortParm = sortOrder == "LastName" ? "LastName_D" : "LastName";
+            ViewBag.EmailSortParm = sortOrder == "Email" ? "Email_D" : "Email";
+            ViewBag.PhoneSortParm = sortOrder == "Phone" ? "Phone_D" : "Phone";
+            
             var usersList = db.Users.ToList();
+            switch (sortOrder)
+            {
+                case ("FirstName"):
+                    usersList = usersList.OrderBy(u => u.FirstName).ToList();
+                    ViewBag.sortparam = "FirstName";
+                    break;
+
+                case ("FirstName_D"):
+                    usersList = usersList.OrderByDescending(u => u.FirstName).ToList();
+                    ViewBag.sortparam = "FirstName_D";
+                    break;
+
+                case ("LastName"):
+                    usersList = usersList.OrderBy(u => u.LastName).ToList();
+                    ViewBag.sortparam = "LastName";
+                    break;
+
+                case ("LastName_D"):
+                    usersList = usersList.OrderByDescending(u => u.LastName).ToList();
+                    ViewBag.sortparam = "LastName_D";
+                    break;
+
+                case ("Email"):
+                    usersList = usersList.OrderBy(u => u.Email).ToList();
+                    ViewBag.sortparam = "Email";
+                    break;
+
+                case ("Email_D"):
+                    usersList = usersList.OrderByDescending(u => u.Email).ToList();
+                    ViewBag.sortparam = "Email_D";
+                    break;
+
+                case ("Phone"):
+                    usersList = usersList.OrderBy(u => u.PhoneNumber).ToList();
+                    ViewBag.sortparam = "PhoneNumber";
+                    break;
+
+                case ("Phone_D"):
+                    usersList = usersList.OrderByDescending(u => u.PhoneNumber).ToList();
+                    ViewBag.sortparam = "PhoneNumber_D";
+                    break;
+
+                default:
+                    usersList = usersList.OrderBy(u => u.FirstName).ToList();
+                    ViewBag.sortparam = "FirstName";
+                    break;
+            }
             var pageNumber = page ?? 1;
+            ViewBag.pageNumber = pageNumber;
             var onePageOfUsers = usersList.ToPagedList(pageNumber, 2);
             return View(onePageOfUsers);
         }
