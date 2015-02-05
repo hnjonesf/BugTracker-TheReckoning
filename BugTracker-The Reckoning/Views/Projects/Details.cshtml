@@ -17,7 +17,80 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
+        @foreach (var item in Model.Tickets)
+        {
+            <dt>
+            @item.OwnerUser.FirstName
+        </dt>
 
+        <dd>
+            @item.OwnerUser.FirstName
+        </dd>
+
+        <dt>
+            Project
+        </dt>
+
+        <dd>
+            @item.Project.Name
+        </dd>
+
+        <dt>
+            Priority
+        </dt>
+
+        <dd>
+            @item.TicketPriority.Name
+        </dd>
+
+        <dt>
+            Status
+        </dt>
+
+        <dd>
+            @item.TicketStatuses.Name
+        </dd>
+
+        <dt>
+            Ticket Type
+        </dt>
+
+        <dd>
+            @item.TicketTypes.Name
+        </dd>
+
+        <dt>
+            @item.Title
+        </dt>
+
+        <dd>
+            @item.Title
+        </dd>
+
+        <dt>
+            @item.Description
+        </dt>
+
+        <dd>
+            @item.Description
+        </dd>
+
+        <dt>
+            @item.Created
+        </dt>
+
+        <dd>
+            @item.Created
+        </dd>
+
+        <dt>
+            @item.Updated
+        </dt>
+
+        <dd>
+            @item.Updated
+        </dd>
+        }
     </dl>
 </div>
 <p>
