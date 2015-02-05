@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList.Mvc;
+using PagedList;
 using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
@@ -17,9 +19,29 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: TicketStatus
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, int? page)
         {
-            return View(db.TicketStatuses.ToList());
+            ViewBag.NameSortParm = sortOrder == "Name" ? "Name_D" : "Name";
+
+            var ticketstatuses = db.TicketStatuses.ToList();
+
+            switch (sortOrder)
+            {
+                case ("Name"):
+                    ticketstatuses = ticketstatuses.OrderBy(t => t.Name).ToList();
+                    break;
+                case ("Name_D"):
+                    ticketstatuses = ticketstatuses.OrderByDescending(t => t.Name).ToList();
+                    break;
+                default:
+                    ticketstatuses = ticketstatuses.OrderBy(t => t.Name).ToList();
+                    break;
+            }
+
+            ViewBag.sortOrder = sortOrder;
+            var pageList = ticketstatuses.ToList();
+            var pageNumber = page ?? 1;
+            return View(pageList.ToPagedList(pageNumber, 5));
         }
 
         // GET: TicketStatus/Details/5
