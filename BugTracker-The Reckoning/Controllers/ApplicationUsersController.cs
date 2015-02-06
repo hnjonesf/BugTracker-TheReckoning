@@ -99,7 +99,15 @@ namespace BugTracker_The_Reckoning.Controllers
 
             ViewBag.UserNotProjects = new SelectList(db.Projects.Except(theUser.Projects), "Id", "Name");
             ViewBag.UserNotTickets = new SelectList(db.Tickets.Except(theUser.Tickets), "Id", "Title");
-            //ViewBag.UserNotRoles = new SelectList(db.Roles.Except(theUser.Roles), "Id", "Name");
+            var roles = new List<string>();
+            foreach (var rol in db.Roles)
+            {
+                if (!theUser.Roles.Any(r => r.RoleId == rol.Id))
+                {
+                    roles.Add(rol.Name);
+                }
+            }
+            ViewBag.UserNotRoles = new SelectList(roles);
 
             if (theUser == null)
             {
