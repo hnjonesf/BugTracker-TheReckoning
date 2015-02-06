@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
@@ -40,20 +39,19 @@ namespace BugTracker_The_Reckoning.Controllers
         // GET: TicketComments/Create
         public ActionResult Create()
         {
-            ViewBag.TicketId = new SelectList(db.Tickets, "ticketParentId", "Title");
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
             return View();
         }
 
         // POST: TicketComments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
             {
-                ticketComment.TicketId = ViewBag.parentTicket;
-                ticketComment.UserId = User.Identity.GetUserId();
-                ticketComment.Created = DateTimeOffset.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
