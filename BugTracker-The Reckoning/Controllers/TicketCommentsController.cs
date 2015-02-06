@@ -45,16 +45,15 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: TicketComments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
             {
-                ticketComment.Created = DateTimeOffset.Now;
+                ticketComment.TicketId = ViewBag.parentTicket;
                 ticketComment.UserId = User.Identity.GetUserId();
+                ticketComment.Created = DateTimeOffset.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
