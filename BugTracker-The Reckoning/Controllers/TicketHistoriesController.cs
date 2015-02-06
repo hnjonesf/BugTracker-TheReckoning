@@ -68,7 +68,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (id == null) 
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
