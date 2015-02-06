@@ -13,8 +13,8 @@ namespace BugTracker_The_Reckoning.Models
 
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<Ticket> Tickets { get; set; }
-        public ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
         [Required]
         [Display(Name ="First Name")]
         [StringLength(50, ErrorMessage = "First Name cannot be longer than 30 characters.")]

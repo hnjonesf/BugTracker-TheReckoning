@@ -58,7 +58,6 @@ namespace BugTracker_The_Reckoning.Controllers
                     usersList = usersList.OrderBy(u => u.FirstName).ToList();
                     break;
             }
-
             var pageNumber = page ?? 1;
             ViewBag.pageNumber = pageNumber;
             return View(usersList.ToPagedList(pageNumber, 10));

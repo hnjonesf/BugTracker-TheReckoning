@@ -8,7 +8,104 @@
     ViewBag.Title = "Index of Users";
 }
 
-<h2>Index of Users</h2>
+<div class="panel-group" id="peoplePanel">
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            string theHref = "#panel-element-peo" + item.Id;
+            string theId = "panel-element-peo" + item.Id;
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#peoplePanel" href=@theHref>@item.DisplayName</a>
+                </div>
+                <div id=@theId class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-10 column">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">Email:        </h4>@item.Email
+                                        </div>
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">First Name:   </h4>@item.FirstName
+                                        </div>
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">Last Name:    </h4>@item.LastName
+                                        </div>
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">Display Name: </h4>@item.DisplayName
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h3><u>Projects</u></h3>
+                                        @if (item.Projects.Count() != 0)
+                                        {
+                                            <ul>
+                                                @foreach (var proj in item.Projects)
+                                                {
+                                                    <li>
+                                                        @proj.Name
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            @item.DisplayName<p> has no assigned projects.</p>
+                                        }
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h3><u>Tickets</u></h3>
+                                        @if (item.Tickets.Count() != 0)
+                                        {
+                                            <ul>
+                                                @foreach (var tick in item.Tickets)
+                                                {
+                                                    <li>
+                                                        @tick.Title
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <p>@item.DisplayName has no assigned tickets.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 column">
+                                <div class="btn-group btn-group-vertical">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <span title="Edit Ticket"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-pencil"></em></button></span>
+                                            <span title="View Attachments"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-paperclip"></em></button></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span title="Assign Ticket"><em><span id="@item.Id" class="btn btn-default btn-assign-user glyphicon glyphicon-user"></span></em></span>
+                                            <span title="View Comments"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-th-list"></em></button></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span title="Delete Ticket"><em>@Html.ActionLink(" ", "Delete", new { ticketId = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
+                                            <span title="View History"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-backward"></em></button></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="rightPanel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+</div>
+
+@*<h2>Index of Users</h2>
 
 <table class="table">
     <tr>
@@ -53,6 +150,8 @@
 }
     
 
-</table>
+</table>*@
+
+
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortparam }))
