@@ -120,7 +120,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult Manage([Bind(Include = "")] ApplicationUser applicationUser)
+        public ActionResult Manage(ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
