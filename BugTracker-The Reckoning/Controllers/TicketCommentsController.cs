@@ -40,7 +40,7 @@ namespace BugTracker_The_Reckoning.Controllers
         // GET: TicketComments/Create
         public ActionResult Create()
         {
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
+            ViewBag.TicketId = new SelectList(db.Tickets, "ticketParentId", "Title");
             return View();
         }
 

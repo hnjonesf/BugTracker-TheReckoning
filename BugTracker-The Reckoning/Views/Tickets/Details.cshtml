@@ -86,5 +86,7 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { ticketParentId = Model.Id }, null) |
+    @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { ticketParentId = Model.Id })
 </p>
