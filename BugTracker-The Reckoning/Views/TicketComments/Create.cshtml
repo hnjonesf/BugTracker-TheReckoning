@@ -1,4 +1,5 @@
 ﻿@model BugTracker_The_Reckoning.Models.TicketComment
+@using System.Web.Mvc;
 
 @{
     ViewBag.Title = "Create a Ticket Comment";
@@ -34,7 +35,6 @@
 }
 
 <div>
-    @Html.ActionLink("Back to Parent Ticket", "/Tickets/Details", Model.TicketId )
 </div>
 
 @section Scripts {
