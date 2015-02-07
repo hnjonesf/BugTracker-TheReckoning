@@ -53,12 +53,11 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 ticketComment.UserId=User.Identity.GetUserId();
                 ticketComment.Created = DateTimeOffset.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
-                return RedirectToAction("Details","Tickets", new {id=ticketComment.TicketId});
+                return RedirectToAction("Details","Tickets", new {Id=ticketComment.TicketId);
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
