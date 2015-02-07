@@ -1,10 +1,10 @@
 ﻿@model BugTracker_The_Reckoning.Models.Ticket
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details of a Ticket";
 }
 
-<h2>Details</h2>
+<h2>Details of a Ticket</h2>
 
 <div>
     <h4>Ticket</h4>
@@ -85,9 +85,9 @@
     </dl>
 </div>
 <p>
-    ViewBag.parentTicket = Model.Id;
+    @ViewBag.ParentTicketId = Model.Id;
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index") |
     @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { ticketParentId = Model.Id }, null) |
-    @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { ticketParentId = Model.Id }, null)
+    @Html.ActionLink("Add a Comment", "Create", "TicketComments")
 </p>

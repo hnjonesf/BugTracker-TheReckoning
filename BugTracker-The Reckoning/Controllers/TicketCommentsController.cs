@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
@@ -52,6 +53,9 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
+                ticketComment.TicketId = 2;
+                ticketComment.UserId=User.Identity.GetUserId();
+                ticketComment.Created = DateTimeOffset.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
