@@ -1,5 +1,5 @@
 ﻿@model PagedList.IPagedList<BugTracker_The_Reckoning.Models.ApplicationUser>
-@using PagedList; 
+@using PagedList;
 @using PagedList.Mvc;
 
 <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
@@ -11,6 +11,22 @@
 <div class="panel-group" id="peoplePanel">
     @if (Model != null)
     {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Phone Number", "Index", new { sortOrder = ViewBag.PhoneSortParm })
+                </th>
+            </tr>
+        </table>
         foreach (var item in Model)
         {
             string theHref = "#panel-element-peo" + item.Id;
@@ -46,7 +62,7 @@
                                                 @foreach (var proj in item.Projects)
                                                 {
                                                     <li>
-                                                        @Html.ActionLink(proj.Name, "Index", "Projects/Details/"+proj.Id)
+                                                        @Html.ActionLink(proj.Name, "Index", "Projects/Details/" + proj.Id)
                                                     </li>
                                                 }
                                             </ul>
@@ -80,15 +96,15 @@
                                 <div class="btn-group btn-group-vertical">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <span title="Edit Ticket"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-pencil"></em></button></span>
+                                            <span title="Edit User"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-pencil"></em></button></span>
                                             <span title="View Attachments"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-paperclip"></em></button></span>
                                         </div>
                                         <div class="col-md-4">
-                                            <span title="Assign Ticket"><em><span id="@item.Id" class="btn btn-default btn-assign-user glyphicon glyphicon-user"></span></em></span>
+                                            <span title="Assign Tickets, Projects and Roles"><em>@Html.ActionLink(" ", "Manage/" + @item.Id, null, new { @class = "btn btn-default btn-assign-user glyphicon glyphicon-user" })</em></span>
                                             <span title="View Comments"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-th-list"></em></button></span>
                                         </div>
                                         <div class="col-md-4">
-                                            <span title="Delete Ticket"><em>@Html.ActionLink(" ", "Delete", new { ticketId = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
+                                            <span title="Delete User"><em>@Html.ActionLink(" ", "Delete/"+@item.Id, null, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
                                             <span title="View History"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-backward"></em></button></span>
                                         </div>
                                     </div>
@@ -107,50 +123,50 @@
 
 @*<h2>Index of Users</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Phone Number", "Index", new { sortOrder = ViewBag.PhoneSortParm })
-        </th>
-        <th></th>
-    </tr>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Phone Number", "Index", new { sortOrder = ViewBag.PhoneSortParm })
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-       
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
 
-</table>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
+
+
+    </table>*@
 
 
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
