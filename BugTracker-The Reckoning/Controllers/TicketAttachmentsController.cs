@@ -34,6 +34,7 @@ namespace BugTracker_The_Reckoning.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.SubmitterName = db.Users.First(u => u.Id == ticketAttachment.UserId).DisplayName;
             return View(ticketAttachment);
         }
 
