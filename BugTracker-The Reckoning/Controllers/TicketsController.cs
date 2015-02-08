@@ -228,7 +228,7 @@ namespace BugTracker_The_Reckoning.Controllers
                 {
                     object firstValue = propertyInfo.GetValue(first, null);
                     object secondValue = propertyInfo.GetValue(second, null);
-                    if (!(firstValue == null && secondValue == null))
+                    if (firstValue != null || secondValue != null)
                     {
                         if (firstValue == null || secondValue == null || !firstValue.Equals(secondValue))
                         {
@@ -244,7 +244,7 @@ namespace BugTracker_The_Reckoning.Controllers
                                 secondV = null;
                             else
                                 secondV = secondValue.ToString();
-                            if (firstV == null || secondV == null && !firstV.Equals(secondV))
+                            if (firstV == null || secondV == null || !firstV.Equals(secondV))
                             {
                                 if (propertyInfo.Name != "TicketHistories" && propertyInfo.Name != "Updated" && propertyInfo.Name != "Created")
                                 {
