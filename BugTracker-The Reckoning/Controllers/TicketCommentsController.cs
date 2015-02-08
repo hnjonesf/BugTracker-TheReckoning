@@ -38,12 +38,13 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketComments/Create
-        public ActionResult Create()
+        public ActionResult Create(int TicketId)
         {
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
-            return View();
-        }
 
+            TicketComment ticketComment = new TicketComment();
+            ticketComment.TicketId = TicketId;
+            return View(ticketComment);
+        }
         // POST: TicketComments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
