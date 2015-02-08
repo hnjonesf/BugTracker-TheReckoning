@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using BugTracker_The_Reckoning.Models;
 
 namespace BugTracker_The_Reckoning.Controllers
@@ -37,10 +38,11 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: TicketAttachments/Create
-        public ActionResult Create()
+        public ActionResult Create(int TicketId)
         {
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
-            return View();
+            TicketAttachment ticketAttachment = new TicketAttachment();
+            ticketAttachment.TicketId = TicketId;
+            return View(ticketAttachment);
         }
 
         // POST: TicketAttachments/Create
@@ -52,10 +54,11 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticketAttachment.TicketId = ViewBag.ticketParentId;
+                ticketAttachment.UserId=User.Identity.GetUserId();
+                ticketAttachment.Created = DateTimeOffset.Now;
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { Id= ticketAttachment.TicketId });
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketAttachment.TicketId);

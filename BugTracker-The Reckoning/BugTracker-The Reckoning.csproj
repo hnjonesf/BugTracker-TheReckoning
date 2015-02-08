@@ -170,7 +170,6 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TicketAttachmentsController.cs" />
-    <Compile Include="Controllers\TicketAttachmentsControllerBAD.cs" />
     <Compile Include="Controllers\TicketCommentsController.cs" />
     <Compile Include="Controllers\TicketHistoriesController.cs" />
     <Compile Include="Controllers\TicketNotificationsController.cs" />
@@ -488,7 +487,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54278</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

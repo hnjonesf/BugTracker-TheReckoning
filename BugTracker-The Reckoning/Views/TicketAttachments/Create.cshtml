@@ -10,7 +10,8 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(model => model.TicketId)
+
     <div class="form-horizontal">
         <h4>TicketAttachment</h4>
         <hr />

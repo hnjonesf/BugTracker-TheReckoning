@@ -40,7 +40,6 @@ namespace BugTracker_The_Reckoning.Controllers
         // GET: TicketComments/Create
         public ActionResult Create(int TicketId)
         {
-
             TicketComment ticketComment = new TicketComment();
             ticketComment.TicketId = TicketId;
             return View(ticketComment);
