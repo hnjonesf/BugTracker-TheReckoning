@@ -7,11 +7,11 @@
 @{
     ViewBag.Title = "Index of Users";
 }
-
+<h2>@ViewBag.Title</h2>
 <div class="panel-group" id="peoplePanel">
     @if (Model != null)
     {
-        <table class="table">
+        <table class="table table-striped">
             <tr>
                 <th>
                     @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
