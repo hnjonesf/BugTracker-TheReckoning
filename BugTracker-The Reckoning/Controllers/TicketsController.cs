@@ -10,6 +10,9 @@ using PagedList.Mvc;
 using PagedList;
 using BugTracker_The_Reckoning.Models;
 using Microsoft.AspNet.Identity;
+using System.Reflection;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -36,77 +39,78 @@ namespace BugTracker_The_Reckoning.Controllers
 
 
             var tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes);
-            switch(sortOrder){
+            switch (sortOrder)
+            {
                 case ("FirstName"):
-                    tickets = tickets.OrderBy(t=>t.OwnerUser.FirstName);
+                    tickets = tickets.OrderBy(t => t.OwnerUser.FirstName);
                     break;
 
                 case ("FirstName_D"):
-                    tickets = tickets.OrderByDescending(t=>t.OwnerUser.FirstName);
+                    tickets = tickets.OrderByDescending(t => t.OwnerUser.FirstName);
                     break;
 
                 case ("ProjectName"):
-                    tickets = tickets.OrderBy(t=>t.Project.Name);
+                    tickets = tickets.OrderBy(t => t.Project.Name);
                     break;
 
                 case ("ProjectName_D"):
-                tickets = tickets.OrderByDescending(t=>t.Project.Name);
+                    tickets = tickets.OrderByDescending(t => t.Project.Name);
                     break;
                 case ("TicketPriorityName"):
-                    tickets = tickets.OrderBy(t=>t.TicketPriority.Name);
+                    tickets = tickets.OrderBy(t => t.TicketPriority.Name);
                     break;
 
                 case ("TicketPriorityName_D"):
-                    tickets = tickets.OrderByDescending(t=>t.TicketPriority.Name);
+                    tickets = tickets.OrderByDescending(t => t.TicketPriority.Name);
                     break;
 
                 case ("TicketStatusesName"):
-                    tickets = tickets.OrderBy(t=>t.TicketStatuses.Name);
+                    tickets = tickets.OrderBy(t => t.TicketStatuses.Name);
                     break;
 
                 case ("TicketStatusesName_D"):
-                tickets = tickets.OrderByDescending(t=>t.TicketStatuses.Name);
+                    tickets = tickets.OrderByDescending(t => t.TicketStatuses.Name);
                     break;
                 case ("TicketTypesName"):
-                    tickets = tickets.OrderBy(t=>t.TicketTypes.Name);
+                    tickets = tickets.OrderBy(t => t.TicketTypes.Name);
                     break;
 
                 case ("TicketTypesName_D"):
-                    tickets = tickets.OrderByDescending(t=>t.TicketTypes.Name);
+                    tickets = tickets.OrderByDescending(t => t.TicketTypes.Name);
                     break;
 
                 case ("Title"):
-                    tickets = tickets.OrderBy(t=>t.Title);
+                    tickets = tickets.OrderBy(t => t.Title);
                     break;
 
                 case ("Title_D"):
-                tickets = tickets.OrderByDescending(t=>t.Title);
+                    tickets = tickets.OrderByDescending(t => t.Title);
                     break;
                 case ("Description"):
-                    tickets = tickets.OrderBy(t=>t.Description);
+                    tickets = tickets.OrderBy(t => t.Description);
                     break;
 
                 case ("Description_D"):
-                    tickets = tickets.OrderByDescending(t=>t.Description);
+                    tickets = tickets.OrderByDescending(t => t.Description);
                     break;
 
                 case ("Created"):
-                    tickets = tickets.OrderBy(t=>t.Created);
+                    tickets = tickets.OrderBy(t => t.Created);
                     break;
 
                 case ("Created_D"):
-                tickets = tickets.OrderByDescending(t=>t.Created);
+                    tickets = tickets.OrderByDescending(t => t.Created);
                     break;
                 case ("Updated"):
-                    tickets = tickets.OrderBy(t=>t.Updated);
+                    tickets = tickets.OrderBy(t => t.Updated);
                     break;
 
                 case ("Updated_D"):
-                    tickets = tickets.OrderByDescending(t=>t.Updated);
+                    tickets = tickets.OrderByDescending(t => t.Updated);
                     break;
 
                 default:
-                    tickets = tickets.OrderByDescending(t=>t.Created);
+                    tickets = tickets.OrderByDescending(t => t.Created);
                     break;
             }
 
@@ -189,7 +193,74 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
+        private void updateHistory(string property, Ticket old, Ticket current, string oldProp, string newProp)
+        {
+            db.TicketHistories.Add(new TicketHistory()
+            {
+                TicketId = current.Id,
+                UserId = User.Identity.GetUserId(),
+                Property = property,
+                OldValue = oldProp,
+                NewValue = newProp,
+                Changed = current.Updated,
+            });
+            db.SaveChanges();
+        }
+        public void CheckChanged(object first, object second)
+        {
+            //if (first == null && second == null)
+            //{
+            //    return true;
+            //}
+            //if (first == null || second == null)
+            //{
+            //    return false;
+            //}
 
+            Type firstType = first.GetType();
+            //if (second.GetType() != firstType)
+            //{
+            //    return false; // Or throw an exception
+            //}
+            foreach (PropertyInfo propertyInfo in firstType.GetProperties())
+            {
+                if (propertyInfo.CanRead)
+                {
+                    object firstValue = propertyInfo.GetValue(first, null);
+                    object secondValue = propertyInfo.GetValue(second, null);
+                    if (!(firstValue == null && secondValue == null))
+                    {
+                        if (firstValue == null || secondValue == null || !firstValue.Equals(secondValue))
+                        {
+                            string firstV = null;
+                            string secondV = null;
+
+                            if (firstValue == null)
+                                firstV = null;
+                            else
+                                firstV = firstValue.ToString();
+
+                            if (secondValue == null)
+                                secondV = null;
+                            else
+                                secondV = secondValue.ToString();
+                            if (firstV == null || secondV == null && !firstV.Equals(secondV))
+                            {
+                                if (propertyInfo.Name != "TicketHistories" && propertyInfo.Name != "Updated" && propertyInfo.Name != "Created")
+                                {
+                                    updateHistory(propertyInfo.Name,
+                                        first as Ticket,
+                                        second as Ticket,
+                                        firstV,
+                                        secondV
+                                        );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         // POST: Tickets/Edit/5
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
@@ -199,6 +270,17 @@ namespace BugTracker_The_Reckoning.Controllers
             if (ModelState.IsValid)
             {
                 ticket.Updated = DateTimeOffset.Now;
+
+                //Make new TicketHistory
+                //get a non-proxy oldTicket
+                var dbNoTrack = new ApplicationDbContext();
+                ((IObjectContextAdapter)dbNoTrack).ObjectContext.ContextOptions.ProxyCreationEnabled = false;
+                var oldTicket = dbNoTrack.Tickets.Find(ticket.Id);
+                //Check and record changes
+                CheckChanged(oldTicket, ticket);
+                // get rid of non-proxy old ticket
+                dbNoTrack.Dispose();
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
