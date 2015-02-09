@@ -1,4 +1,4 @@
-﻿@model BugTracker_The_Reckoning.Models.ApplicationUser
+﻿@model BugTracker_The_Reckoning.Models.AssignPageModel
 @{
     ViewBag.Title = "Manage";
 }
@@ -12,36 +12,36 @@
     @Html.HiddenFor(model => model.Id)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+            @Html.DisplayFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
         </div>
     </div>
     @if(ViewBag.UserNotProjects != null){
     <div class="form-group">
-        @Html.LabelFor(model => model.Projects, "UserNotProjects", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.UserNotProjects, "UserNotProjects", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("UserNotProjects", null, "Add to Project", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Projects, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.UserNotProjects, "", new { @class = "text-danger" })
         </div>
     </div>
     }
     @if(ViewBag.UserNotTickets != null){
     <div class="form-group">
-        @Html.LabelFor(model => model.Tickets, "UserNotTickets", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.UserNotTickets, "UserNotTickets", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("UserNotTickets", null, "Add to Ticket", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Tickets, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.UserNotTickets, "", new { @class = "text-danger" })
         </div>
     </div>
     }
     @if(ViewBag.UserNotRoles != null){
     <div class="form-group">
-        @Html.LabelFor(model => model.Tickets, "UserNotRoles", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.UserNotRoles, "UserNotRoles", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("UserNotRoles", null, "Add to Role", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.UserNotRoles, "", new { @class = "text-danger" })
         </div>
     </div>
     }

@@ -87,6 +87,7 @@ namespace BugTracker_The_Reckoning.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var model = new AssignPageModel();
             var theUser = db.Users.Find(id);
             // send a select list of projects the user is NOT on
             // send a select list of tickets the user is NOT on
@@ -96,9 +97,9 @@ namespace BugTracker_The_Reckoning.Controllers
             //var UNT = db.Tickets.Where(t => t.AssignedUsers.Any(u=> u.Id != theUser.Id) == true);
             var tick = db.Tickets;
             var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUsers.Any(an => an.Id == theUser.Id)));
-            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
-            ViewBag.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
-            ViewBag.UserNotTickets = new SelectList(UNT, "Id", "Title");
+            //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
+            model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
+            model.UserNotTickets = new SelectList(UNT, "Id", "Title");
             var roles = new List<string>();
             foreach (var rol in db.Roles)
             {
@@ -107,24 +108,33 @@ namespace BugTracker_The_Reckoning.Controllers
                     roles.Add(rol.Name);
                 }
             }
-            ViewBag.UserNotRoles = new SelectList(roles);
-
-            if (theUser == null)
+            model.UserNotRoles = new SelectList(roles);
+            model.Id = theUser.Id;
+            model.UserName = theUser.UserName;
+            if (model == null)
             {
                 return HttpNotFound();
             }
-            return View(theUser);
+
+            return View(model);
         }
 
         // POST: Users/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult Manage(ApplicationUser applicationUser)
+        public ActionResult Manage(AssignPageModel model)
         {
-            db.Entry(applicationUser).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                db.Entry(model).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
         // GET: Users/Edit/5
