@@ -93,10 +93,12 @@ namespace BugTracker_The_Reckoning.Controllers
             // send a select list of roles the user is NOT on
 
             // send a list of projects, tickets, roles the user is on
-
+            //var UNT = db.Tickets.Where(t => t.AssignedUsers.Any(u=> u.Id != theUser.Id) == true);
+            var tick = db.Tickets;
+            var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUsers.Any(an => an.Id == theUser.Id)));
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             ViewBag.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
-            ViewBag.UserNotTickets = new SelectList(db.Tickets.Where(t => t.AssignedUsers.Any(u => u.Id != theUser.Id)), "Id", "Title");
+            ViewBag.UserNotTickets = new SelectList(UNT, "Id", "Title");
             var roles = new List<string>();
             foreach (var rol in db.Roles)
             {
@@ -120,13 +122,9 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager")]
         public ActionResult Manage(ApplicationUser applicationUser)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(applicationUser).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(applicationUser);
+            db.Entry(applicationUser).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Users/Edit/5
