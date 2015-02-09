@@ -11,13 +11,13 @@
     </div>
     <div class="col-xs-7"></div>
     <div class="col-xs-2" style="margin-top:15px">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
         {
-            <form action="Search" method="post">
-                @Html.TextBox("searchStr") <br />
-                <input type="submit" value="Search Posts" class="btn btn-primary" />
-            </form>
-        } 
+            @Html.TextBox("searchStr")
+            <div>
+                <input type="submit" value="Search Tickets" />
+            </div>
+        }
     </div>
 </div>
 
@@ -28,31 +28,31 @@
 <table class="table table-striped">
     <tr>
         <th>
-            @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.NameSortParm })
+            @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.NameSortParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Project Name", "Index", new { sortOrder = ViewBag.ProjectNameParm })
+            @Html.ActionLink("Project Name", "Index", new { sortOrder = ViewBag.ProjectNameParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.TicketPriorityNameParm })
+            @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.TicketPriorityNameParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.TicketStatusesNameParm })
+            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.TicketStatusesNameParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TicketTypesNameParm })
+            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TicketTypesNameParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleParm })
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionParm })
+            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.CreatedParm })
+            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.CreatedParm, searchStr = ViewBag.searchStr })
         </th>
         <th>
-            @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedParm })
+            @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedParm, searchStr = ViewBag.searchStr })
         </th>
         <th></th>
     </tr>
@@ -96,4 +96,4 @@
 
 </table>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder }))
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr }))

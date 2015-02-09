@@ -24,7 +24,7 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: Tickets
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index(string sortOrder, int? page)
+        public ActionResult Index(string sortOrder, int? page, string searchStr)
         {
 
             ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
@@ -36,20 +36,33 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.DescriptionParm = sortOrder == "Description" ? "Description_D" : "Description";
             ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
             ViewBag.UpdatedParm = sortOrder == "Updated" ? "Updated_D" : "Updated";
+            //if user posted a search
+            if (ViewBag.searchStr != null)
+            {
+                searchStr = ViewBag.searchStr;
+            }
+            if (searchStr != null)
+            {
+                var ticketsAvailable = FilterByRole();
+                var model = ticketsAvailable.Where(t => t.Description.Contains(searchStr)).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.DisplayName.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr)))).Union(
+                ticketsAvailable.Where(t => t.Title.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr))).Union(
+                ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)));
+                ViewBag.sortOrder = sortOrder;
+                ViewBag.searchStr = searchStr;
+                var pageList = model.ToList();
+                var pageNumber = page ?? 1;
+                return View(pageList.ToPagedList(pageNumber, 10));
+            }
             var tickets = new List<BugTracker_The_Reckoning.Models.Ticket>();
-            if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
-            {
-                tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes).ToList();
-            }
-            else if (User.IsInRole("Developer"))
-            {
-                tickets = db.Users.Find(User.Identity.GetUserId()).Tickets.ToList();
-            }
-            else if (User.IsInRole("Submitter"))
-            {
-                var userId = User.Identity.GetUserId();
-                tickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
-            }
+            tickets = FilterByRole().ToList();
                 switch (sortOrder)
             {
                 case ("FirstName"):
@@ -126,9 +139,9 @@ namespace BugTracker_The_Reckoning.Controllers
             }
 
             ViewBag.sortOrder = sortOrder;
-            var pageList = tickets.ToList();
-            var pageNumber = page ?? 1;
-            return View(pageList.ToPagedList(pageNumber, 5));
+            var pagedList = tickets.ToList();
+            var pageNumber2 = page ?? 1;
+            return View(pagedList.ToPagedList(pageNumber2, 5));
         }
 
         // GET: Tickets/Details/5
@@ -329,26 +342,6 @@ namespace BugTracker_The_Reckoning.Controllers
             db.Tickets.Remove(ticket);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        // POST: Tickets/Search
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Search(string query)
-        {
-            var ticketsAvailable = FilterByRole();
-            var model = ticketsAvailable.Where(t => t.Description.Contains(query)).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.DisplayName.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.Project.Name.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(query)))).Union(
-                ticketsAvailable.Where(t => t.Title.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(query))).Union(
-                ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(query)));
-       
-            return View();
         }
 
         private IList<Ticket> FilterByRole()
