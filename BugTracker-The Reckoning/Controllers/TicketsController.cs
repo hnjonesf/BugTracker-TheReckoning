@@ -26,7 +26,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Index(string sortOrder, int? page, string searchStr)
         {
-
+            var tickets = new List<Ticket>();
             ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
             ViewBag.ProjectNameParm = sortOrder == "ProjectName" ? "ProjectName_D" : "ProjectName";
             ViewBag.TicketPriorityNameParm = sortOrder == "TicketPriorityName" ? "TicketPriorityName_D" : "TicketPriorityName";
@@ -44,7 +44,7 @@ namespace BugTracker_The_Reckoning.Controllers
             if (searchStr != null)
             {
                 var ticketsAvailable = FilterByRole();
-                var model = ticketsAvailable.Where(t => t.Description.Contains(searchStr)).Union(
+                tickets = ticketsAvailable.Where(t => t.Description.Contains(searchStr)).Union(
                 ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr))).Union(
                 ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr))).Union(
                 ticketsAvailable.Where(t => t.OwnerUser.DisplayName.Contains(searchStr))).Union(
@@ -54,16 +54,13 @@ namespace BugTracker_The_Reckoning.Controllers
                 ticketsAvailable.Where(t => t.Title.Contains(searchStr))).Union(
                 ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr))).Union(
                 ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)));
-                ViewBag.sortOrder = sortOrder;
+                ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr))).ToList();
                 ViewBag.searchStr = searchStr;
-                var pageList = model.ToList();
-                var pageNumber = page ?? 1;
-                return View(pageList.ToPagedList(pageNumber, 10));
+            }else{
+                tickets = FilterByRole().ToList();
             }
-            var tickets = new List<BugTracker_The_Reckoning.Models.Ticket>();
-            tickets = FilterByRole().ToList();
-                switch (sortOrder)
+
+            switch (sortOrder)
             {
                 case ("FirstName"):
                     tickets = tickets.OrderBy(t => t.OwnerUser.FirstName).ToList();
