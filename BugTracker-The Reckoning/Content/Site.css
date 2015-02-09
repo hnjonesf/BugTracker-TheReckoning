@@ -25,3 +25,17 @@ textarea {
 .pagination-container {
   margin-bottom:25px;
 }
+
+/* Content General */
+.doc-no-top { padding-top: 50px; }
+.content-panel-title {
+	padding: 20px;
+	margin: 20px;
+	border-right: 1px solid rgba(147,147,147,0.5); }
+.content-panel {
+	padding: 20px;
+	margin: 20px;
+	min-height: 70px; }
+.content-image {
+	margin-bottom: 20px;
+	width: 100%; }
