@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 using System.Reflection;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using System.Collections.ObjectModel;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -24,8 +25,25 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: Tickets
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index(string sortOrder, int? page, string searchStr)
+        public ActionResult Index(string sortOrder, int? page, string searchStr, bool? titleSearch, bool? nameSearch, bool? emailSearch, bool? projectSearch, bool? attachmentsSearch, bool? prioritySearch, bool? statusSearch, bool? typeSearch)
         {
+            if (titleSearch == null)
+                titleSearch = true;
+            if (nameSearch == null)
+                nameSearch = true;
+            if (emailSearch == null)
+                emailSearch = true;
+            if (projectSearch == null)
+                projectSearch = true;
+            if (attachmentsSearch == null)
+                attachmentsSearch = true;
+            if (prioritySearch == null)
+                prioritySearch = true;
+            if (statusSearch == null)
+                statusSearch = true;
+            if (typeSearch == null)
+                typeSearch = true;
+
             var tickets = new List<Ticket>();
             ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
             ViewBag.ProjectNameParm = sortOrder == "ProjectName" ? "ProjectName_D" : "ProjectName";
@@ -41,22 +59,43 @@ namespace BugTracker_The_Reckoning.Controllers
             {
                 searchStr = ViewBag.searchStr;
             }
-            if (searchStr != null)
+            ViewBag.titleSearch = titleSearch;
+            ViewBag.nameSearch = nameSearch;
+            ViewBag.emailSearch = emailSearch;
+            ViewBag.projectSearch = projectSearch;
+            ViewBag.attachmentsSearch = attachmentsSearch;
+            ViewBag.prioritySearch = prioritySearch;
+            ViewBag.statusSearch = statusSearch;
+            ViewBag.typeSearch = typeSearch;
+            if (searchStr != "" && searchStr != null)
             {
                 var ticketsAvailable = FilterByRole();
-                tickets = ticketsAvailable.Where(t => t.Description.Contains(searchStr)).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.DisplayName.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr)))).Union(
-                ticketsAvailable.Where(t => t.Title.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr))).Union(
-                ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr))).ToList();
+                tickets = ticketsAvailable.Where(t => t.Description.Contains(searchStr)).ToList();
+
+                if (titleSearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.Title.Contains(searchStr)).ToList());
+                if (nameSearch == true)
+                {
+                    tickets.Concat(ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr)).ToList());
+                    tickets.Concat(ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr)).ToList());
+                }
+                if (emailSearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr)).ToList());
+                if (projectSearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr)).ToList());
+                if (attachmentsSearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr))).ToList());
+                if (prioritySearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr)).ToList());
+                if (statusSearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)).ToList());
+                if(typeSearch == true)
+                    tickets.Concat(ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr)).ToList());
+
                 ViewBag.searchStr = searchStr;
-            }else{
+            }
+            else
+            {
                 tickets = FilterByRole().ToList();
             }
 
@@ -134,7 +173,6 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
             }
-
             ViewBag.sortOrder = sortOrder;
             var pagedList = tickets.ToList();
             var pageNumber2 = page ?? 1;

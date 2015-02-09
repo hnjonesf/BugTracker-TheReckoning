@@ -1,0 +1,11 @@
+﻿@model List<string>
+@if (Model == null) { 
+    <ul>
+        @foreach (var item in Model)
+        {
+            @Html.CheckBox(item)
+        }
+    </ul>
+} else {
+    
+}

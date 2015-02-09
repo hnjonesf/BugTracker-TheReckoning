@@ -9,91 +9,127 @@
     <div class="col-xs-3">
         <h2>Index of Tickets</h2>
     </div>
-    <div class="col-xs-7"></div>
-    <div class="col-xs-2" style="margin-top:15px">
-        @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
-        {
-            @Html.TextBox("searchStr")
-            <div>
-                <input type="submit" value="Search Tickets" />
-            </div>
-        }
-    </div>
 </div>
 
+<div class="row">
+    <div class="col-xs-10">
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.NameSortParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Project Name", "Index", new { sortOrder = ViewBag.ProjectNameParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.TicketPriorityNameParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.TicketStatusesNameParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TicketTypesNameParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.CreatedParm, searchStr = ViewBag.searchStr })
+                </th>
+                <th>
+                    @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedParm, searchStr = ViewBag.searchStr })
+                </th>
+            </tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-striped">
-    <tr>
-        <th>
-            @Html.ActionLink("Submitted By", "Index", new { sortOrder = ViewBag.NameSortParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Project Name", "Index", new { sortOrder = ViewBag.ProjectNameParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.TicketPriorityNameParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.TicketStatusesNameParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TicketTypesNameParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.CreatedParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th>
-            @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedParm, searchStr = ViewBag.searchStr })
-        </th>
-        <th></th>
-    </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketTypes.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr }))
+    </div>
+    <div class="col-xs-2">
+        @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
+        {
+            <div class="row">
+                @Html.TextBox("searchStr")
+                <div>
+                    <input type="submit" value="Search Tickets" />
+                </div>
+            </div>
+            <div class="row">
+                @Html.Label("Title")
+                @Html.CheckBox("titleSearch", (bool)ViewBag.titleSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Owner's Name")
+                @Html.CheckBox("nameSearch", (bool)ViewBag.nameSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Owner's Email")
+                @Html.CheckBox("emailSearch", (bool)ViewBag.emailSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Projects")
+                @Html.CheckBox("projectSearch", (bool)ViewBag.projectSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Attachments")
+                @Html.CheckBox("attachmentsSearch", (bool)ViewBag.attachmentsSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Priority")
+                @Html.CheckBox("prioritySearch", (bool)ViewBag.prioritySearch)
+            </div>
+            <div class="row">
+                @Html.Label("Type")
+                @Html.CheckBox("typeSearch", (bool)ViewBag.typeSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Status")
+                @Html.CheckBox("statusSearch", (bool)ViewBag.statusSearch)
+            </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketTypes.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Updated)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id })
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-        </td>
-    </tr>
-} 
 
-</table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr }))
+        }
+    </div>
+    </div>
