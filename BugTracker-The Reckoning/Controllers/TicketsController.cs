@@ -36,81 +36,92 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.DescriptionParm = sortOrder == "Description" ? "Description_D" : "Description";
             ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
             ViewBag.UpdatedParm = sortOrder == "Updated" ? "Updated_D" : "Updated";
-
-
-            var tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes);
-            switch (sortOrder)
+            var tickets = new List<BugTracker_The_Reckoning.Models.Ticket>();
+            if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+            {
+                tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes).ToList();
+            }
+            else if (User.IsInRole("Developer"))
+            {
+                tickets = db.Users.Find(User.Identity.GetUserId()).Tickets.ToList();
+            }
+            else if (User.IsInRole("Submitter"))
+            {
+                var userId = User.Identity.GetUserId();
+                tickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+            }
+                switch (sortOrder)
             {
                 case ("FirstName"):
-                    tickets = tickets.OrderBy(t => t.OwnerUser.FirstName);
+                    tickets = tickets.OrderBy(t => t.OwnerUser.FirstName).ToList();
                     break;
 
                 case ("FirstName_D"):
-                    tickets = tickets.OrderByDescending(t => t.OwnerUser.FirstName);
+                    tickets = tickets.OrderByDescending(t => t.OwnerUser.FirstName).ToList();
                     break;
 
                 case ("ProjectName"):
-                    tickets = tickets.OrderBy(t => t.Project.Name);
+                    tickets = tickets.OrderBy(t => t.Project.Name).ToList();
                     break;
 
                 case ("ProjectName_D"):
-                    tickets = tickets.OrderByDescending(t => t.Project.Name);
+                    tickets = tickets.OrderByDescending(t => t.Project.Name).ToList();
                     break;
                 case ("TicketPriorityName"):
-                    tickets = tickets.OrderBy(t => t.TicketPriority.Name);
+                    tickets = tickets.OrderBy(t => t.TicketPriority.Name).ToList();
                     break;
 
                 case ("TicketPriorityName_D"):
-                    tickets = tickets.OrderByDescending(t => t.TicketPriority.Name);
+                    tickets = tickets.OrderByDescending(t => t.TicketPriority.Name).ToList();
                     break;
 
                 case ("TicketStatusesName"):
-                    tickets = tickets.OrderBy(t => t.TicketStatuses.Name);
+                    tickets = tickets.OrderBy(t => t.TicketStatuses.Name).ToList();
                     break;
 
                 case ("TicketStatusesName_D"):
-                    tickets = tickets.OrderByDescending(t => t.TicketStatuses.Name);
+                    tickets = tickets.OrderByDescending(t => t.TicketStatuses.Name).ToList();
                     break;
                 case ("TicketTypesName"):
-                    tickets = tickets.OrderBy(t => t.TicketTypes.Name);
+                    tickets = tickets.OrderBy(t => t.TicketTypes.Name).ToList();
                     break;
 
                 case ("TicketTypesName_D"):
-                    tickets = tickets.OrderByDescending(t => t.TicketTypes.Name);
+                    tickets = tickets.OrderByDescending(t => t.TicketTypes.Name).ToList();
                     break;
 
                 case ("Title"):
-                    tickets = tickets.OrderBy(t => t.Title);
+                    tickets = tickets.OrderBy(t => t.Title).ToList();
                     break;
 
                 case ("Title_D"):
-                    tickets = tickets.OrderByDescending(t => t.Title);
+                    tickets = tickets.OrderByDescending(t => t.Title).ToList();
                     break;
                 case ("Description"):
-                    tickets = tickets.OrderBy(t => t.Description);
+                    tickets = tickets.OrderBy(t => t.Description).ToList();
                     break;
 
                 case ("Description_D"):
-                    tickets = tickets.OrderByDescending(t => t.Description);
+                    tickets = tickets.OrderByDescending(t => t.Description).ToList();
                     break;
 
                 case ("Created"):
-                    tickets = tickets.OrderBy(t => t.Created);
+                    tickets = tickets.OrderBy(t => t.Created).ToList();
                     break;
 
                 case ("Created_D"):
-                    tickets = tickets.OrderByDescending(t => t.Created);
+                    tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
                 case ("Updated"):
-                    tickets = tickets.OrderBy(t => t.Updated);
+                    tickets = tickets.OrderBy(t => t.Updated).ToList();
                     break;
 
                 case ("Updated_D"):
-                    tickets = tickets.OrderByDescending(t => t.Updated);
+                    tickets = tickets.OrderByDescending(t => t.Updated).ToList();
                     break;
 
                 default:
-                    tickets = tickets.OrderByDescending(t => t.Created);
+                    tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
             }
 
