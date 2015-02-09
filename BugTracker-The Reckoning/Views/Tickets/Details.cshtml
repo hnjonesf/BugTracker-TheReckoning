@@ -6,89 +6,162 @@
 
 <h2>Details of a Ticket</h2>
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
-        </dt>
+<div class="row">
+    <div class="col-md-12 class=" table-bordered"">
+        <h4>Ticket Details</h4>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Created
+                </th>
+                <th>
+                    Updated
+                </th>
+                <th>
+                    Project
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Owner
+                </th>
+                <th>
+                    Assigned To
+                </th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Project.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.TicketTypes.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.TicketPriority.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.TicketStatuses.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.OwnerUser.DisplayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.AssignedUsers)
+                </td>
+            </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.OwnerUser.FirstName)
-        </dd>
+        </table>
 
-        <dt>
-            Project
-        </dt>
-
-        <dd>
-            @Model.Project.Name
-        </dd>
-
-        <dt>
-            Priority
-        </dt>
-
-        <dd>
-            @Model.TicketPriority.Name
-        </dd>
-
-        <dt>
-            Status
-        </dt>
-
-        <dd>
-            @Model.TicketStatuses.Name
-        </dd>
-
-        <dt>
-            Ticket Type
-        </dt>
-
-        <dd>
-            @Model.TicketTypes.Name
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Model.Title
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Model.Description
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Model.Created
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Model.Updated
-        </dd>
-
-    </dl>
+    </div>
 </div>
+<div class="row">
+    <div class="col-md-8 class=" table-bordered"">
+        <h4>Ticket Attachments</h4>
+        @foreach (var item in Model.TicketAttachments)
+        {
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        FilePath
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Created
+                    </th>
+                    <th>
+                        Attached By
+                    </th>
+                    <th>
+                        FileUrl
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FilePath)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileUrl)
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+
+    <div class="col-md-4 class=" table-bordered"">
+        <h4>Ticket Comments</h4>
+        @foreach (var item in Model.TicketComments)
+        {
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Comment
+                    </th>
+                    <th>
+                        Created
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
 
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index") |
-    @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
-    @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id}, null)
-</p>
+</div>
+<div class="row">
+    <p>
+        @Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List of Tickets", "Index") |
+        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
+        @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
+    </p>
+</div>
