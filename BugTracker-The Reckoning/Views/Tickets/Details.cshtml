@@ -83,26 +83,26 @@
 <div class="row">
     <div class="col-md-8 class=" table-bordered"">
         <h4>Ticket Attachments</h4>
-        @foreach (var item in Model.TicketAttachments)
-        {
-            <table class="table table-striped">
-                <tr>
-                    <th>
-                        FilePath
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
-                        Created
-                    </th>
-                    <th>
-                        Attached By
-                    </th>
-                    <th>
-                        FileUrl
-                    </th>
-                </tr>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    FilePath
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Created
+                </th>
+                <th>
+                    Attached By
+                </th>
+                <th>
+                    FileUrl
+                </th>
+            </tr>
+            @foreach (var item in Model.TicketAttachments)
+            {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.FilePath)
@@ -120,14 +120,14 @@
                         @Html.DisplayFor(modelItem => item.FileUrl)
                     </td>
                 </tr>
+            }
             </table>
-        }
-    </div>
 
-    <div class="col-md-4 class=" table-bordered"">
-        <h4>Ticket Comments</h4>
-        @foreach (var item in Model.TicketComments)
-        {
+        </div>
+
+
+        <div class="col-md-4 class=" table-bordered"">
+            <h4>Ticket Comments</h4>
             <table class="table table-striped">
                 <tr>
                     <th>
@@ -140,28 +140,28 @@
                         Created
                     </th>
                 </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.DisplayName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Comment)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Created)
-                    </td>
-                </tr>
+                @foreach (var item in Model.TicketComments)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.DisplayName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                        </td>
+                    </tr>
+                }
             </table>
-        }
+        </div>
     </div>
-
-
-</div>
-<div class="row">
-    <p>
-        @Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List of Tickets", "Index") |
-        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
-        @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
-    </p>
-</div>
+    <div class="row">
+        <p>
+            @Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List of Tickets", "Index") |
+            @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
+            @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
+        </p>
+    </div>
