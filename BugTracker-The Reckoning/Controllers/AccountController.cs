@@ -62,6 +62,17 @@ namespace BugTracker_The_Reckoning.Controllers
             return View();
         }
 
+        //Autologin for DEMO purposes, only
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AdminLogin()
+        {
+            await SignInManager.PasswordSignInAsync("hughjones@libreworx.com", "LearnToCode1", true, shouldLockout: false);
+                return RedirectToAction("About", "Home", null);
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]

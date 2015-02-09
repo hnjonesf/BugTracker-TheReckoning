@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BugTracker_The_Reckoning.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,7 @@ namespace BugTracker_The_Reckoning.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
 
