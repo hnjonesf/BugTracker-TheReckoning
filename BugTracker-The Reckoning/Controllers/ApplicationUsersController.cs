@@ -95,8 +95,8 @@ namespace BugTracker_The_Reckoning.Controllers
             // send a list of projects, tickets, roles the user is on
 
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
-            ViewBag.UserNotProjects = new SelectList(db.Projects.Except(theUser.Projects), "Id", "Name");
-            ViewBag.UserNotTickets = new SelectList(db.Tickets.Except(theUser.Tickets), "Id", "Title");
+            ViewBag.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
+            ViewBag.UserNotTickets = new SelectList(db.Tickets.Where(t => t.AssignedUsers.Any(u => u.Id != theUser.Id)), "Id", "Title");
             var roles = new List<string>();
             foreach (var rol in db.Roles)
             {
