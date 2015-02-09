@@ -129,7 +129,6 @@ namespace BugTracker_The_Reckoning.Controllers
             var pageList = tickets.ToList();
             var pageNumber = page ?? 1;
             return View(pageList.ToPagedList(pageNumber, 5));
-
         }
 
         // GET: Tickets/Details/5
@@ -332,6 +331,44 @@ namespace BugTracker_The_Reckoning.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST: Tickets/Search
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+        public ActionResult Search(string query)
+        {
+            var ticketsAvailable = FilterByRole();
+            var model = ticketsAvailable.Where(t => t.Description.Contains(query)).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.DisplayName.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.Project.Name.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(query)))).Union(
+                ticketsAvailable.Where(t => t.Title.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(query))).Union(
+                ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(query)));
+       
+            return View();
+        }
+
+        private IList<Ticket> FilterByRole()
+        {
+            var tickets = new List<BugTracker_The_Reckoning.Models.Ticket>();
+            if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+            {
+                tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes).ToList();
+            }
+            else if (User.IsInRole("Developer"))
+            {
+                tickets = db.Users.Find(User.Identity.GetUserId()).Tickets.ToList();
+            }
+            else if (User.IsInRole("Submitter"))
+            {
+                var userId = User.Identity.GetUserId();
+                tickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+            }
+            return tickets;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

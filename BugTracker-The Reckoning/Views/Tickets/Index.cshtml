@@ -5,8 +5,22 @@
 @{
     ViewBag.Title = "Index of Tickets";
 }
+<div class="row">
+    <div class="col-xs-3">
+        <h2>Index of Tickets</h2>
+    </div>
+    <div class="col-xs-7"></div>
+    <div class="col-xs-2" style="margin-top:15px">
+        @using (Html.BeginForm())
+        {
+            <form action="Search" method="post">
+                @Html.TextBox("searchStr") <br />
+                <input type="submit" value="Search Posts" class="btn btn-primary" />
+            </form>
+        } 
+    </div>
+</div>
 
-<h2>Index of Tickets</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
