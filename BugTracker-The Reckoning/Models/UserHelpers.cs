@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
+using System;
+using System.Web.Mvc;
 
 namespace BugTracker_The_Reckoning.Models
 {
@@ -30,7 +32,7 @@ namespace BugTracker_The_Reckoning.Models
             var result = manager.AddToRole(userId, roleName);
             return result.Succeeded;
         }
-
+       
         public bool RemoveUserFromRole(string userId, string roleName)
         {
             return manager.RemoveFromRole(userId, roleName).Succeeded;
