@@ -90,19 +90,23 @@ namespace BugTracker_The_Reckoning.Controllers
 
             // send a list of projects, tickets, roles the user is on
             var tick = db.Tickets;
+            var helper = new UserRolesHelper();
             var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUser.Id == theUser.Id));
-            //model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
+            model.UserNotProjects = new MultiSelectList(db.Projects, "Id", "Name");
             model.UserNotTickets = new MultiSelectList(UNT.OrderBy(m=> m.Title), "Id", "Title");
             model.TicketOwner = id;
-            //var roles = new List<IdentityRole>();
-            //foreach (var rol in db.Roles)
-            //{
-            //    if (!theUser.Roles.Any(r => r.RoleId == rol.Id))
-            //    {
-            //        roles.Add(rol);
-            //    }
-            //}
-            //model.UserNotRoles = new SelectList(roles, "Id", "Name");
+            model.UserProjects = new MultiSelectList(theUser.Projects, "Id", "Name");
+            model.UserTickets = new MultiSelectList(theUser.Tickets, "Id", "Title");
+            model.UserRoles = new MultiSelectList(helper.ListUserRoles(theUser.Id));
+            var roles = new List<IdentityRole>();
+            foreach (var rol in db.Roles)
+            {
+                if (!theUser.Roles.Any(r => r.RoleId == rol.Id))
+                {
+                    roles.Add(rol);
+                }
+            }
+            model.UserNotRoles = new MultiSelectList(roles, "Id", "Name");
             if (model == null)
             {
                 return HttpNotFound();
@@ -139,20 +143,80 @@ namespace BugTracker_The_Reckoning.Controllers
                         }
                     }
                 }
-                //if (model.newProject.First() != null)
-                //{
-                //    user.Projects.Add(model.newProject as Project);
-                //}
-                //if (model.newTicket.First() != null)
-                //{
-                
-                //}
-                //if (model.newRole.First() != null)
-                //{
-                //var helper = new UserRolesHelper();
-                //helper.AddUserToRole(user.Id, db.Tickets.Find(model.newTicket).AssignedUserId);
-                //}
-                //db.Entry(user).State = EntityState.Modified;
+                if (model.newProjects != null)
+                {
+                    foreach (var newProject in model.newProjects)
+                    {
+                        if (newProject != "" && newProject != null)
+                        {
+                            int projId = Convert.ToInt32(newProject);
+                            var proj = db.Projects.Find(projId);
+                            user.Projects.Add(proj);
+                            proj.Members.Add(user);
+                            db.Entry(proj).State = EntityState.Modified;
+                        }
+                    }
+                }
+                if (model.newRoles != null)
+                {
+                    foreach (var newRole in model.newRoles)
+                    {
+                        if (newRole != "" && newRole != null)
+                        {
+                            string roleId = newRole;
+                            var role = db.Roles.Find(roleId);
+                            var helper = new UserRolesHelper();
+                            helper.AddUserToRole(user.Id, db.Roles.Find(roleId).Name);
+                        }
+                    }
+                }
+                if (model.remTickets != null)
+                {
+                    foreach (var remTicket in model.remTickets)
+                    {
+                        if (remTicket != "" && remTicket != null)
+                        {
+                            int tickId = Convert.ToInt32(remTicket);
+                            var tick = db.Tickets.Find(tickId);
+                            user.Tickets.Remove(tick);
+                            tick.AssignedUser = null;
+                            tick.AssignedUserId = null;
+                            db.Entry(tick).State = EntityState.Modified;
+                        }
+                    }
+                }
+                if (model.remProjects != null)
+                {
+                    foreach (var remProject in model.remProjects)
+                    {
+                        if (remProject != "" && remProject != null)
+                        {
+                            int projId = Convert.ToInt32(remProject);
+                            var proj = db.Projects.Find(projId);
+                            var theTicketsToRemove = new List<Ticket>();
+                            foreach (var tick in user.Tickets)
+                                if (tick.ProjectId == projId)
+                                    theTicketsToRemove.Add(tick);
+                            user.Tickets = user.Tickets.Except(theTicketsToRemove).ToList();
+                            user.Projects.Remove(proj);
+                            proj.Members.Remove(user);
+                            db.Entry(proj).State = EntityState.Modified;
+                        }
+                    }
+                }
+                if (model.remRoles != null)
+                {
+                    foreach (var remRole in model.remRoles)
+                    {
+                        if (remRole != "" && remRole != null)
+                        {
+                            string roleName = remRole;
+                            var helper = new UserRolesHelper();
+                            helper.RemoveUserFromRole(user.Id, roleName);
+                        }
+                    }
+                }
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

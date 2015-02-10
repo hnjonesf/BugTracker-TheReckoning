@@ -21,6 +21,44 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.UserNotProjects, "UserNotProjects", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.newProjects, Model.UserNotProjects, "Assign a Project", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.newProjects, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserNotRoles, "UserNotRoles", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.newRoles, Model.UserNotRoles, "Assign a Role", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.newRoles, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserTickets, "UserTickets", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.remTickets, Model.UserTickets, "Unassign a Ticket", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.remTickets, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserProjects, "UserProjects", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.remProjects, Model.UserProjects, "Unassign a Project", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.remProjects, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserRoles, "UserRoles", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.remRoles, Model.UserRoles, "Unassign a Role", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.remRoles, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
