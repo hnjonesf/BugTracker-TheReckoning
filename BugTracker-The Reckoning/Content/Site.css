@@ -45,3 +45,8 @@ textarea {
 	border: 3px solid #cccccc;
 	padding: 5px;
     }
+.btn-primary{
+    background-color: #555555;
+    border-color: #555555;
+    background-image:  linear-gradient(#04519b, #044687 60%, #033769);
+}
