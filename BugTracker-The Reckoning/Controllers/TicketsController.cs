@@ -25,8 +25,9 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: Tickets
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index(string sortOrder, int? page, string searchStr, bool? titleSearch, bool? nameSearch, bool? emailSearch, bool? projectSearch, bool? attachmentsSearch, bool? prioritySearch, bool? statusSearch, bool? typeSearch)
+        public ActionResult Index(string sortOrder, int? page, string searchStr, bool? titleSearch, bool? nameSearch, bool? emailSearch, bool? projectSearch, bool? attachmentsSearch, bool? prioritySearch, bool? statusSearch, bool? typeSearch, bool? assignSearch)
         {
+            // Search parameter filters
             if (titleSearch == null)
                 titleSearch = true;
             if (nameSearch == null)
@@ -43,8 +44,12 @@ namespace BugTracker_The_Reckoning.Controllers
                 statusSearch = true;
             if (typeSearch == null)
                 typeSearch = true;
+            if (assignSearch == null)
+                assignSearch = true;
 
-            var tickets = new List<Ticket>();
+            
+
+            //Sort orders
             ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
             ViewBag.ProjectNameParm = sortOrder == "ProjectName" ? "ProjectName_D" : "ProjectName";
             ViewBag.TicketPriorityNameParm = sortOrder == "TicketPriorityName" ? "TicketPriorityName_D" : "TicketPriorityName";
@@ -55,8 +60,9 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
             ViewBag.UpdatedParm = sortOrder == "Updated" ? "Updated_D" : "Updated";
             ViewBag.AssignedParm = sortOrder == "Assigned" ? "Assigned_D" : "Assigned";
+            
             //if user posted a search
-            if (ViewBag.searchStr != null)
+            if (ViewBag.searchStr != null && ViewBag.searchStr != "")
             {
                 searchStr = ViewBag.searchStr;
             }
@@ -68,38 +74,69 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.prioritySearch = prioritySearch;
             ViewBag.statusSearch = statusSearch;
             ViewBag.typeSearch = typeSearch;
+            ViewBag.assignSearch = assignSearch;
+
+            var tickets = new List<Ticket>();
+            // if searchStr isn't null/empty
             if (searchStr != "" && searchStr != null)
             {
+                // find tickets searchable by logged in user
                 var ticketsAvailable = FilterByRole();
-                tickets = ticketsAvailable.Where(t => t.Description.Contains(searchStr)).ToList();
+
+                tickets.AddRange(ticketsAvailable.Where(t => t.Description.Contains(searchStr)).ToList());
 
                 if (titleSearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.Title.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.Title.Contains(searchStr)).ToList());
                 if (nameSearch == true)
                 {
-                    tickets.Concat(ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr)).ToList());
-                    tickets.Concat(ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr)).ToList());
                 }
                 if (emailSearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr)).ToList());
                 if (projectSearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr)).ToList());
                 if (attachmentsSearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr))).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr))).ToList());
                 if (prioritySearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr)).ToList());
                 if (statusSearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)).ToList());
                 if(typeSearch == true)
-                    tickets.Concat(ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr)).ToList());
+                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr)).ToList());
+                if (assignSearch == true)
+                {
+                    try
+                    {
+                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.DisplayName.Contains(searchStr)));
+                    }
+                    catch { }
+                    try
+                    {
+                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.FirstName.Contains(searchStr)));
+                    }
+                    catch { }
+                    try
+                    {
+                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.LastName.Contains(searchStr)));
+                    }
+                    catch { }
+                    try
+                    {
+                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.UserName.Contains(searchStr)));
+                    }
+                    catch { }
+
+                }
 
                 ViewBag.searchStr = searchStr;
             }
             else
             {
-                tickets = FilterByRole().ToList();
+                tickets.AddRange(FilterByRole().ToList());
             }
 
+            // figure out how to sort view model before sending
             switch (sortOrder)
             {
                 case ("FirstName"):
@@ -174,6 +211,7 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
             }
+
             ViewBag.sortOrder = sortOrder;
             var pagedList = tickets.ToList();
             var pageNumber2 = page ?? 1;
@@ -267,20 +305,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
         public void CheckChanged(object first, object second)
         {
-            //if (first == null && second == null)
-            //{
-            //    return true;
-            //}
-            //if (first == null || second == null)
-            //{
-            //    return false;
-            //}
-
             Type firstType = first.GetType();
-            //if (second.GetType() != firstType)
-            //{
-            //    return false; // Or throw an exception
-            //}
             foreach (PropertyInfo propertyInfo in firstType.GetProperties())
             {
                 if (propertyInfo.CanRead)
@@ -324,7 +349,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,ProjectId,OwnerUserId,TicketPriorityId,TicketStatusId,TicketTypeId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Created,Description,ProjectId,OwnerUserId,TicketPriorityId,TicketStatusId,TicketTypeId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -385,16 +410,16 @@ namespace BugTracker_The_Reckoning.Controllers
             var tickets = new List<BugTracker_The_Reckoning.Models.Ticket>();
             if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
             {
-                tickets = db.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatuses).Include(t => t.TicketTypes).ToList();
+                tickets.AddRange(db.Tickets.ToList());
             }
             else if (User.IsInRole("Developer"))
             {
-                tickets = db.Users.Find(User.Identity.GetUserId()).Tickets.ToList();
+                tickets.AddRange(db.Users.Find(User.Identity.GetUserId()).Tickets.ToList());
             }
             else if (User.IsInRole("Submitter"))
             {
                 var userId = User.Identity.GetUserId();
-                tickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+                tickets.AddRange(db.Tickets.Where(t => t.OwnerUserId == userId).ToList());
             }
             return tickets;
         }

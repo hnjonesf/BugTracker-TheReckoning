@@ -245,7 +245,7 @@ namespace BugTracker_The_Reckoning.Controllers
             {
                 /// removed from ticket
             }
-            else  if(action.Equals("Add"))
+            else if(action.Equals("Add"))
             {
                 /// added to ticket
             }
