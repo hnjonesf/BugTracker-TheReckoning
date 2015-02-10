@@ -120,18 +120,24 @@ namespace BugTracker_The_Reckoning.Controllers
             if (ModelState.IsValid)
             {
                 var user = db.Users.Find(model.TicketOwner);
-                if (model.newTicket != null)
+                if (model.newTickets != null)
                 {
-                    int tickId = model.newTicket;
-                    var tick = db.Tickets.Find();
-                    user.Tickets.Add(tick);
-                    if (!user.Projects.Contains(tick.Project))
+                    foreach (var newTicket in model.newTickets)
                     {
-                        user.Projects.Add(tick.Project);
+                        if (newTicket != "" && newTicket != null)
+                        {
+                            int tickId = Convert.ToInt32(newTicket);
+                            var tick = db.Tickets.Find(tickId);
+                            user.Tickets.Add(tick);
+                            if (!user.Projects.Contains(tick.Project))
+                            {
+                                user.Projects.Add(tick.Project);
+                            }
+                            tick.AssignedUser = user;
+                            tick.AssignedUserId = model.TicketOwner;
+                            db.Entry(tick).State = EntityState.Modified;
+                        }
                     }
-                    tick.AssignedUser = user;
-                    tick.AssignedUserId = model.TicketOwner;
-                    db.Entry(tick).State = EntityState.Modified;
                 }
                 //if (model.newProject.First() != null)
                 //{
