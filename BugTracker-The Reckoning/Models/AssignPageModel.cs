@@ -9,19 +9,12 @@ namespace BugTracker_The_Reckoning.Models
 {
     public class AssignPageModel
     {
-        public AssignPageModel()
-        {
-            UserNotProjects = null;
-            UserNotTickets = null;
-            UserNotRoles = null;
-        }
-        public string Id { get; set; }
-        public string UserName { get; set; }
-        public SelectList UserNotProjects { get; set; }
+        //public SelectList UserNotProjects { get; set; }
         public SelectList UserNotTickets { get; set; }
-        public SelectList UserNotRoles { get; set; }
-        public IEnumerable <SelectListItem> newRole { get; set; }
-        public IEnumerable <SelectListItem> newProject { get; set; }
-        public IEnumerable <SelectListItem> newTicket { get; set; }
+        //public SelectList UserNotRoles { get; set; }
+        //public IEnumerable <SelectListItem> newRole { get; set; }
+        //public IEnumerable <SelectListItem> newProject { get; set; }
+        public string TicketOwner { get; set; }
+        public int newTicket { get; set; }
     }
 }

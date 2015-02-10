@@ -89,23 +89,20 @@ namespace BugTracker_The_Reckoning.Controllers
             // send a select list of roles the user is NOT on
 
             // send a list of projects, tickets, roles the user is on
-            //var UNT = db.Tickets.Where(t => t.AssignedUsers.Any(u=> u.Id != theUser.Id) == true);
             var tick = db.Tickets;
             var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUser.Id == theUser.Id));
-            //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
-            model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
+            //model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
             model.UserNotTickets = new SelectList(UNT, "Id", "Title");
-            var roles = new List<IdentityRole>();
-            foreach (var rol in db.Roles)
-            {
-                if (!theUser.Roles.Any(r => r.RoleId == rol.Id))
-                {
-                    roles.Add(rol);
-                }
-            }
-            model.UserNotRoles = new SelectList(roles, "Id", "Name");
-            model.Id = theUser.Id;
-            model.UserName = theUser.UserName;
+            model.TicketOwner = id;
+            //var roles = new List<IdentityRole>();
+            //foreach (var rol in db.Roles)
+            //{
+            //    if (!theUser.Roles.Any(r => r.RoleId == rol.Id))
+            //    {
+            //        roles.Add(rol);
+            //    }
+            //}
+            //model.UserNotRoles = new SelectList(roles, "Id", "Name");
             if (model == null)
             {
                 return HttpNotFound();
@@ -122,25 +119,29 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = db.Users.Find(model.Id);
-                if (model.newProject.First() != null)
+                var user = db.Users.Find(model.TicketOwner);
+                //if (model.newProject.First() != null)
+                //{
+                //    user.Projects.Add(model.newProject as Project);
+                //}
+                //if (model.newTicket.First() != null)
+                //{
+                var tick = db.Tickets.Find(model.newTicket);
+                user.Tickets.Add(tick);
+                if (!user.Projects.Contains(tick.Project))
                 {
-                    user.Projects.Add(model.newProject as Project);
+                    user.Projects.Add(tick.Project);
                 }
-                if (model.newTicket.First() != null)
-                {
-                    user.Tickets.Add(model.newTicket as Ticket);
-                    var tick = db.Tickets.Find(model.newTicket as Ticket);
-                    tick.AssignedUser = user;
-                    tick.AssignedUserId = model.Id;
-                    db.Entry(tick).State = EntityState.Modified;
-                }
-                if (model.newRole.First() != null)
-                {
-                    var helper = new UserRolesHelper();
-                    helper.AddUserToRole(user.Id, (model.newRole as IdentityRole).Name);
-                }
-                db.Entry(user).State = EntityState.Modified;
+                tick.AssignedUser = user;
+                tick.AssignedUserId = model.TicketOwner;
+                db.Entry(tick).State = EntityState.Modified;
+                //}
+                //if (model.newRole.First() != null)
+                //{
+                //var helper = new UserRolesHelper();
+                //helper.AddUserToRole(user.Id, db.Tickets.Find(model.newTicket).AssignedUserId);
+                //}
+                //db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

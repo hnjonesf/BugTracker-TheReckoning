@@ -54,6 +54,7 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.DescriptionParm = sortOrder == "Description" ? "Description_D" : "Description";
             ViewBag.CreatedParm = sortOrder == "Created" ? "Created_D" : "Created";
             ViewBag.UpdatedParm = sortOrder == "Updated" ? "Updated_D" : "Updated";
+            ViewBag.AssignedParm = sortOrder == "Assigned" ? "Assigned_D" : "Assigned";
             //if user posted a search
             if (ViewBag.searchStr != null)
             {
