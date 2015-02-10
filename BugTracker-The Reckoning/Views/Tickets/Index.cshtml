@@ -42,6 +42,9 @@
                 <th>
                     @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedParm, searchStr = ViewBag.searchStr })
                 </th>
+                <th>
+                    @Html.ActionLink("Assigned Developer", "Index", new { sortOrder = ViewBag.AssignedParm, searchStr = ViewBag.searchStr })
+                </th>
             </tr>
 
             @foreach (var item in Model)
@@ -70,6 +73,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
@@ -121,6 +127,10 @@
             <div class="row">
                 @Html.Label("Status")
                 @Html.CheckBox("statusSearch", (bool)ViewBag.statusSearch)
+            </div>
+            <div class="row">
+                @Html.Label("Assigned Developer")
+                @Html.CheckBox("assignSearch", (bool)ViewBag.assignSearch)
             </div>
 
 

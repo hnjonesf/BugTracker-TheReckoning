@@ -207,6 +207,12 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets = tickets.OrderByDescending(t => t.Updated).ToList();
                     break;
 
+                case ("Assigned"):
+                    tickets = tickets.OrderBy(t => t.AssignedUser.DisplayName).ToList();
+                    break;
+                case ("Assigned_D"):
+                    tickets = tickets.OrderByDescending(t => t.AssignedUser.DisplayName).ToList();
+                    break;
                 default:
                     tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
@@ -257,6 +263,7 @@ namespace BugTracker_The_Reckoning.Controllers
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatuses.First(t => t.Name == "Not Started").Id;
+                ticket.AssignedUser = db.Users.First(u => u.Roles.Any(r => db.Roles.Find(r.RoleId).Name == "Project Manager"));
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
