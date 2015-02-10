@@ -139,6 +139,12 @@ namespace BugTracker_The_Reckoning.Controllers
                             }
                             tick.AssignedUser = user;
                             tick.AssignedUserId = model.TicketOwner;
+                            var tn = new TicketNotification()
+                            {
+                                TicketId = tick.Id,
+                                UserId = user.Id,
+                            };
+                            Notify(tn, "Add");
                             db.Entry(tick).State = EntityState.Modified;
                         }
                     }
@@ -182,6 +188,12 @@ namespace BugTracker_The_Reckoning.Controllers
                             tick.AssignedUser = null;
                             tick.AssignedUserId = null;
                             db.Entry(tick).State = EntityState.Modified;
+                            var tn = new TicketNotification()
+                            {
+                                TicketId = tick.Id,
+                                UserId = user.Id,
+                            };
+                            Notify(tn, "Remove");
                         }
                     }
                 }
@@ -223,6 +235,19 @@ namespace BugTracker_The_Reckoning.Controllers
             else
             {
                 return View(model);
+            }
+        }
+
+        private void Notify(TicketNotification tn, string action)
+        {
+            ///// INSERT SENDGRID FOR NOTIFICATIONS
+            if (action.Equals("Remove"))
+            {
+                /// removed from ticket
+            }
+            else 
+            {
+                /// added to ticket
             }
         }
 
