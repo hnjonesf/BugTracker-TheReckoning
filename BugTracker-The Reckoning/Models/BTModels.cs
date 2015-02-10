@@ -20,7 +20,7 @@ namespace BugTracker_The_Reckoning.Models
         public string FilePath { get; set; }
         [Display(Name = "Description")]
         public string Description { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:mm/dd/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTimeOffset Created { get; set; }
         [Display(Name = "File Url")]
         public string FileUrl { get; set; }
@@ -34,7 +34,7 @@ namespace BugTracker_The_Reckoning.Models
         public string UserId { get; set; }
         [Display(Name = "Comment")]
         public string Comment { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:mm/dd/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTimeOffset Created { get; set; }
         public virtual Ticket Ticket { get; set; }
     }

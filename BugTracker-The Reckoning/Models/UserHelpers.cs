@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
 using System;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace BugTracker_The_Reckoning.Models
 {
@@ -49,6 +50,8 @@ namespace BugTracker_The_Reckoning.Models
             }
             return resultList;
         }
+
+        [Display(Name = "Users Not In Role")]
         public IList<ApplicationUser> UsersNOTInRole(string roleName)
         {
             var resultList = new List<ApplicationUser>();
