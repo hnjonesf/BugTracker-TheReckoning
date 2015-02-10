@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using PagedList;
 using PagedList.Mvc;
 using BugTracker_The_Reckoning.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -47,12 +48,6 @@ namespace BugTracker_The_Reckoning.Controllers
                     break;
                 case ("Email_D"):
                     usersList = usersList.OrderByDescending(u => u.Email).ToList();
-                    break;
-                case ("Phone"):
-                    usersList = usersList.OrderBy(u => u.PhoneNumber).ToList();
-                    break;
-                case ("Phone_D"):
-                    usersList = usersList.OrderByDescending(u => u.PhoneNumber).ToList();
                     break;
                 default:
                     usersList = usersList.OrderBy(u => u.FirstName).ToList();
@@ -100,15 +95,15 @@ namespace BugTracker_The_Reckoning.Controllers
             //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
             model.UserNotTickets = new SelectList(UNT, "Id", "Title");
-            var roles = new List<string>();
+            var roles = new List<IdentityRole>();
             foreach (var rol in db.Roles)
             {
                 if (!theUser.Roles.Any(r => r.RoleId == rol.Id))
                 {
-                    roles.Add(rol.Name);
+                    roles.Add(rol);
                 }
             }
-            model.UserNotRoles = new SelectList(roles);
+            model.UserNotRoles = new SelectList(roles, "Id", "Name");
             model.Id = theUser.Id;
             model.UserName = theUser.UserName;
             if (model == null)
@@ -127,7 +122,25 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(model).State = EntityState.Modified;
+                var user = db.Users.Find(model.Id);
+                if (model.newProject.First() != null)
+                {
+                    user.Projects.Add(model.newProject as Project);
+                }
+                if (model.newTicket.First() != null)
+                {
+                    user.Tickets.Add(model.newTicket as Ticket);
+                    var tick = db.Tickets.Find(model.newTicket as Ticket);
+                    tick.AssignedUser = user;
+                    tick.AssignedUserId = model.Id;
+                    db.Entry(tick).State = EntityState.Modified;
+                }
+                if (model.newRole.First() != null)
+                {
+                    var helper = new UserRolesHelper();
+                    helper.AddUserToRole(user.Id, (model.newRole as IdentityRole).Name);
+                }
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
