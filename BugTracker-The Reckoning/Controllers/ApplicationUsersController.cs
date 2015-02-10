@@ -96,7 +96,7 @@ namespace BugTracker_The_Reckoning.Controllers
             // send a list of projects, tickets, roles the user is on
             //var UNT = db.Tickets.Where(t => t.AssignedUsers.Any(u=> u.Id != theUser.Id) == true);
             var tick = db.Tickets;
-            var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUsers.Any(an => an.Id == theUser.Id)));
+            var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUser.Id == theUser.Id));
             //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
             model.UserNotTickets = new SelectList(UNT, "Id", "Title");

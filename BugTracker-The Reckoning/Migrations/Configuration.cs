@@ -282,7 +282,7 @@ namespace BugTracker_The_Reckoning.Models.Migrations
 
             },
             };
-                tickets.ForEach(t => t.AssignedUsers.Add(context.Users.First(u => u.Id == userId)));
+                tickets.ForEach(t => t.AssignedUser = context.Users.First(u => u.Id == userId));
                 tickets.ForEach(t => context.Tickets.Add(t));
                 var notifications = new List<TicketNotification>
                 {

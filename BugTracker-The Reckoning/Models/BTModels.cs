@@ -93,7 +93,6 @@ namespace BugTracker_The_Reckoning.Models
         public virtual TicketStatus TicketStatuses { get; set; }
         public virtual TicketType TicketTypes { get; set; }
 
-        public virtual ICollection<ApplicationUser> AssignedUsers { get; set; }
         public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<TicketHistory> TicketHistories { get; set; }
