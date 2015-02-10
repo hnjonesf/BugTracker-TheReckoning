@@ -92,7 +92,7 @@ namespace BugTracker_The_Reckoning.Controllers
             var tick = db.Tickets;
             var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUser.Id == theUser.Id));
             //model.UserNotProjects = new SelectList(db.Projects.Where(p => p.Members.Any(m => m.Id != theUser.Id)) , "Id", "Name");
-            model.UserNotTickets = new SelectList(UNT, "Id", "Title");
+            model.UserNotTickets = new MultiSelectList(UNT.OrderBy(m=> m.Title), "Id", "Title");
             model.TicketOwner = id;
             //var roles = new List<IdentityRole>();
             //foreach (var rol in db.Roles)
@@ -120,21 +120,26 @@ namespace BugTracker_The_Reckoning.Controllers
             if (ModelState.IsValid)
             {
                 var user = db.Users.Find(model.TicketOwner);
+                if (model.newTicket != null)
+                {
+                    int tickId = model.newTicket;
+                    var tick = db.Tickets.Find();
+                    user.Tickets.Add(tick);
+                    if (!user.Projects.Contains(tick.Project))
+                    {
+                        user.Projects.Add(tick.Project);
+                    }
+                    tick.AssignedUser = user;
+                    tick.AssignedUserId = model.TicketOwner;
+                    db.Entry(tick).State = EntityState.Modified;
+                }
                 //if (model.newProject.First() != null)
                 //{
                 //    user.Projects.Add(model.newProject as Project);
                 //}
                 //if (model.newTicket.First() != null)
                 //{
-                var tick = db.Tickets.Find(model.newTicket);
-                user.Tickets.Add(tick);
-                if (!user.Projects.Contains(tick.Project))
-                {
-                    user.Projects.Add(tick.Project);
-                }
-                tick.AssignedUser = user;
-                tick.AssignedUserId = model.TicketOwner;
-                db.Entry(tick).State = EntityState.Modified;
+                
                 //}
                 //if (model.newRole.First() != null)
                 //{
