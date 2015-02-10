@@ -181,17 +181,17 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var db = new ApplicationDbContext();
-                var store = new UserStore<ApplicationUser>(db);
-                var userManager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email 
+                };
 
-                userManager.AddToRole(user.Id, "Submitter");
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+                    UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, "Submitter");
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
