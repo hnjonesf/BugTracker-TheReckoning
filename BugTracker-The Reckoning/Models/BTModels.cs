@@ -16,11 +16,13 @@ namespace BugTracker_The_Reckoning.Models
         public int Id { get; set; }
         public int TicketId { get; set; }
         public string UserId { get; set; }
+        [Display(Name = "File Path")]
         public string FilePath { get; set; }
         [Display(Name = "Description")]
         public string Description { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:mm/dd/yyyy}")]
         public DateTimeOffset Created { get; set; }
+        [Display(Name = "File Url")]
         public string FileUrl { get; set; }
         public virtual Ticket Ticket { get; set; }
         public virtual ApplicationUser Owner { get; set; }
@@ -30,6 +32,7 @@ namespace BugTracker_The_Reckoning.Models
         public int Id { get; set; }
         public int TicketId { get; set; }
         public string UserId { get; set; }
+        [Display(Name = "Comment")]
         public string Comment { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:mm/dd/yyyy}")]
         public DateTimeOffset Created { get; set; }
@@ -43,8 +46,11 @@ namespace BugTracker_The_Reckoning.Models
         public virtual Ticket Ticket { get; set; }
         public string UserId { get; set; }
         public string Property { get; set; }
+        [Display(Name = "Old Value")]
         public string OldValue { get; set; }
+        [Display(Name = "New Value")]
         public string NewValue { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:mm/dd/yyyy}")]
         public Nullable<DateTimeOffset> Changed { get; set; }
     }
     public class TicketNotification 
@@ -63,9 +69,9 @@ namespace BugTracker_The_Reckoning.Models
         [StringLength(50, ErrorMessage = "Title cannot be longer than 50 characters.")]
         public string Title { get; set; }
         public string Description { get; set; }
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:m/d/yyyy}")]
         public DateTimeOffset Created { get; set; }
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:m/d/yyyy}")]
         public Nullable<DateTimeOffset> Updated { get; set; }
 
         //Foreign keys

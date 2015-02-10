@@ -353,7 +353,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // GET: Tickets/Delete/5
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -369,7 +369,7 @@ namespace BugTracker_The_Reckoning.Controllers
         }
 
         // POST: Tickets/Delete/5
-        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
