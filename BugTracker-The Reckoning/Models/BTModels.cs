@@ -71,6 +71,7 @@ namespace BugTracker_The_Reckoning.Models
         //Foreign keys
         public int ProjectId { get; set; }
         public string OwnerUserId { get; set; }
+        public string AssignedUserId { get; set; }
         public int? TicketPriorityId { get; set; }
         public int TicketStatusId { get; set; }
         public int TicketTypeId { get; set; }
@@ -82,12 +83,12 @@ namespace BugTracker_The_Reckoning.Models
             this.TicketComments = new HashSet<TicketComment>();
             this.TicketHistories = new HashSet<TicketHistory>();
             this.TicketNotifications = new HashSet<TicketNotification>();
-            this.AssignedUsers = new HashSet<ApplicationUser>();
         }
 
         //Navigation properties
         public virtual Project Project { get; set; }
         public virtual ApplicationUser OwnerUser { get; set; }
+        public virtual ApplicationUser AssignedUser { get; set; }
         public virtual TicketPriority TicketPriority { get; set; }
         public virtual TicketStatus TicketStatuses { get; set; }
         public virtual TicketType TicketTypes { get; set; }

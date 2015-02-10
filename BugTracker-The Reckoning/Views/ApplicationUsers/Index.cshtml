@@ -94,15 +94,12 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <span title="Edit User"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-pencil"></em></button></span>
-                                            <span title="View Attachments"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-paperclip"></em></button></span>
                                         </div>
                                         <div class="col-md-4">
                                             <span title="Assign Tickets, Projects and Roles"><em>@Html.ActionLink(" ", "Manage/" + @item.Id, null, new { @class = "btn btn-default btn-assign-user glyphicon glyphicon-user" })</em></span>
-                                            <span title="View Comments"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-th-list"></em></button></span>
                                         </div>
                                         <div class="col-md-4">
                                             <span title="Delete User"><em>@Html.ActionLink(" ", "Delete/"+@item.Id, null, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
-                                            <span title="View History"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-backward"></em></button></span>
                                         </div>
                                     </div>
                                     <div class="row" id="rightPanel">
