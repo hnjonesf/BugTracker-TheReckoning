@@ -1,10 +1,10 @@
 ﻿@model BugTracker_The_Reckoning.Models.Ticket
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create a New Ticket";
 }
 
-<h2>Create</h2>
+<h2>Create a New Ticket</h2>
 
 
 @using (Html.BeginForm()) 
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Description, 3, 100, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>

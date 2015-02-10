@@ -69,9 +69,9 @@ namespace BugTracker_The_Reckoning.Models
         [StringLength(50, ErrorMessage = "Title cannot be longer than 50 characters.")]
         public string Title { get; set; }
         public string Description { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:m/d/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTimeOffset Created { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:m/d/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public Nullable<DateTimeOffset> Updated { get; set; }
 
         //Foreign keys
