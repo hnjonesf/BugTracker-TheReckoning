@@ -67,10 +67,28 @@ namespace BugTracker_The_Reckoning.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AdminLogin()
+        public async Task<ActionResult> AdminLogin(string autoLogin)
         {
-            await SignInManager.PasswordSignInAsync("hughjones@libreworx.com", "LearnToCode1", true, shouldLockout: false);
-                return RedirectToAction("About", "Home", null);
+            switch (autoLogin)
+            {
+                case ("Administrator"):
+                    await SignInManager.PasswordSignInAsync("hughjones@libreworx.com", "LearnToCode1", false, shouldLockout: false);
+                    break;
+                case ("ProjectManager"):
+                    await SignInManager.PasswordSignInAsync("projectmanager@google.com", "LearnToCode1", false, shouldLockout: false);
+                    break;
+                case ("Developer"):
+                    await SignInManager.PasswordSignInAsync("developer@google.com", "LearnToCode1", false, shouldLockout: false);
+                    break;
+                case ("Submitter"):
+                    await SignInManager.PasswordSignInAsync("submitter@google.com", "LearnToCode1", false, shouldLockout: false);
+                    break;
+                default:
+                    break;
+            }
+                
+            return RedirectToAction("About", "Home", null);
+
         }
 
         //

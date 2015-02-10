@@ -72,6 +72,14 @@
 </div>
 <br />
 <div class="row">
+    <p>
+        @Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List of Tickets", "Index") |
+        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
+        @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
+    </p>
+</div>
+<div class="row">
     <div class="col-md-8 class table-bordered">
         <h4>Ticket Attachments</h4>
         <table class="table table-striped">
@@ -149,11 +157,4 @@
             </table>
         </div>
     </div>
-    <div class="row">
-        <p>
-            @Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Back to List of Tickets", "Index") |
-            @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
-            @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
-        </p>
-    </div>
+
