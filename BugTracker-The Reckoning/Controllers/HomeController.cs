@@ -15,7 +15,6 @@ namespace BugTracker_The_Reckoning.Controllers
     {
         public ActionResult Index()
         {
-
             return View();
         }
 

@@ -450,9 +450,6 @@
     <Content Include="Views\TicketStatus\Details.cshtml" />
     <Content Include="Views\TicketStatus\Edit.cshtml" />
     <Content Include="Views\TicketStatus\Index.cshtml" />
-    <Content Include="Views\TicketNotifications\Delete.cshtml" />
-    <Content Include="Views\TicketNotifications\Details.cshtml" />
-    <Content Include="Views\TicketNotifications\Index.cshtml" />
     <Content Include="Views\ApplicationUsers\Create.cshtml" />
     <Content Include="Views\ApplicationUsers\Delete.cshtml" />
     <Content Include="Views\ApplicationUsers\Details.cshtml" />
