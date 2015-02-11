@@ -27,28 +27,15 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Index(string sortOrder, int? page, string searchStr, bool? titleSearch, bool? nameSearch, bool? emailSearch, bool? projectSearch, bool? attachmentsSearch, bool? prioritySearch, bool? statusSearch, bool? typeSearch, bool? assignSearch)
         {
-            // Search parameter filters
-            if (titleSearch == null)
-                titleSearch = true;
-            if (nameSearch == null)
-                nameSearch = true;
-            if (emailSearch == null)
-                emailSearch = true;
-            if (projectSearch == null)
-                projectSearch = true;
-            if (attachmentsSearch == null)
-                attachmentsSearch = true;
-            if (prioritySearch == null)
-                prioritySearch = true;
-            if (statusSearch == null)
-                statusSearch = true;
-            if (typeSearch == null)
-                typeSearch = true;
-            if (assignSearch == null)
-                assignSearch = true;
-
-            
-
+            if (titleSearch == null) { titleSearch = true; }
+            if (nameSearch == null) { nameSearch = true; }
+            if (emailSearch == null) { emailSearch = true; }
+            if (projectSearch == null) { projectSearch = true; }
+            if (attachmentsSearch == null) { attachmentsSearch = true; }
+            if (prioritySearch == null) { prioritySearch = true; }
+            if (statusSearch == null) { statusSearch = true; }
+            if (typeSearch == null) { typeSearch = true; }
+            if (assignSearch == null) { assignSearch = true; }
             //Sort orders
             ViewBag.NameSortParm = sortOrder == "FirstName" ? "FirstName_D" : "FirstName";
             ViewBag.ProjectNameParm = sortOrder == "ProjectName" ? "ProjectName_D" : "ProjectName";
@@ -102,7 +89,7 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets.Union(ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr)));
                 if (statusSearch == true)
                     tickets.Union(ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)));
-                if(typeSearch == true)
+                if (typeSearch == true)
                     tickets.Union(ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr)));
                 if (assignSearch == true)
                 {
@@ -206,7 +193,7 @@ namespace BugTracker_The_Reckoning.Controllers
             ViewBag.sortOrder = sortOrder;
             var pagedList = tickets.ToList();
             var pageNumber2 = page ?? 1;
-            return View(pagedList.ToPagedList(pageNumber2, 5));
+            return View(pagedList.ToPagedList(pageNumber2, 10));
         }
 
         // GET: Tickets/Details/5
@@ -249,7 +236,8 @@ namespace BugTracker_The_Reckoning.Controllers
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatuses.First(t => t.Name == "Not Started").Id;
-                ticket.AssignedUser = db.Users.First(u => u.Roles.Any(r => db.Roles.Find(r.RoleId).Name == "Project Manager"));
+                ticket.AssignedUser = ticket.Project.Manager;
+                ticket.AssignedUserId = ticket.Project.ManagerId;
                 db.Tickets.Add(ticket);
                 var tn = new TicketNotification()
                 {
