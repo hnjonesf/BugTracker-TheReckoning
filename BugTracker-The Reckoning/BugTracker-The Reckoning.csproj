@@ -475,6 +475,8 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\Account\ResendConfirmation.cshtml" />
+    <Content Include="Views\Account\EmailConfirmationSent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

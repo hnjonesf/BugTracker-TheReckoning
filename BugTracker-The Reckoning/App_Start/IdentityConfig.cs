@@ -11,6 +11,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using BugTracker_The_Reckoning.Models;
+using SendGrid;
+using System.Configuration;
+using System.Net.Mail;
+using System.Net;
 
 namespace BugTracker_The_Reckoning
 {
@@ -19,6 +23,21 @@ namespace BugTracker_The_Reckoning
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            //SendGrid Login from Web.config
+            var MyAddress = ConfigurationManager.AppSettings["ContactEmail"];
+            var MyUsername = ConfigurationManager.AppSettings["Username"];
+            var MyPassword = ConfigurationManager.AppSettings["Password"];
+
+            //"To" information 
+            //"From" information
+            SendGridMessage mail = new SendGridMessage();
+            mail.AddTo(message.Destination);
+            mail.Subject = message.Subject;
+            mail.From = new MailAddress("noreply@libreworx.com");
+            mail.Text = message.Body;
+            var credentials = new NetworkCredential(MyUsername, MyPassword);
+            var transportWeb = new Web(credentials);
+            transportWeb.Deliver(mail);
             return Task.FromResult(0);
         }
     }

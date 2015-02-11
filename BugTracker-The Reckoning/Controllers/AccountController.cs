@@ -224,6 +224,40 @@ namespace BugTracker_The_Reckoning.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        [AllowAnonymous]
+        public ActionResult ResendConfirmation()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> ResendConfirmation(ForgotPasswordViewModel formPost)
+        {
+            if(ModelState.IsValid)
+            {
+                var user = UserManager.FindByEmail(formPost.Email);
+
+                if (user != null)
+                {
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    return RedirectToAction("EmailConfirmationSent");
+                }
+            }
+            return RedirectToAction("EmailConfirmationSent");
+        }
+        [AllowAnonymous]
+        public ActionResult EmailConfirmationSent()
+        {
+            //var mailer = new EmailService();
+
+            //mailer.Send(new IdentityMessage { Destination = <email>, Subject = <Subject>, Body = <body>});
+
+            return View();
+        }
 
         //
         // GET: /Account/ConfirmEmail
@@ -253,6 +287,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
