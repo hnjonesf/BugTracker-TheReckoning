@@ -72,7 +72,7 @@ namespace BugTracker_The_Reckoning.Controllers
             switch (autoLogin)
             {
                 case ("Administrator"):
-                    await SignInManager.PasswordSignInAsync("hughjones@libreworx.com", "LearnToCode1", false, shouldLockout: false);
+                    await SignInManager.PasswordSignInAsync("administrator@bugtracker.com", "LearnToCode1", false, shouldLockout: false);
                     break;
                 case ("ProjectManager"):
                     await SignInManager.PasswordSignInAsync("projectmanager@google.com", "LearnToCode1", false, shouldLockout: false);
@@ -87,7 +87,7 @@ namespace BugTracker_The_Reckoning.Controllers
                     break;
             }
                 
-            return RedirectToAction("About", "Home", null);
+            return RedirectToAction("Index", "Home", null);
 
         }
 

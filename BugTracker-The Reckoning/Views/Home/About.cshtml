@@ -21,7 +21,36 @@
 <!-- / .row -->
 <!-- Main Features -->
 
-
+<div class="row">
+    <div class="col-md-3">
+        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Administrator" })" method="post">
+            @Html.AntiForgeryToken()
+            <button class="btn btn-default btn-primary btn-large" type="submit">Demo BugTracker Now!</button>
+            <br /><br />As the Administrator, you have full access to the site.
+        </form>
+    </div>
+    <div class="col-md-3">
+        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "ProjectManager" })" method="post">
+            @Html.AntiForgeryToken()
+            <button class="btn btn-default btn-primary btn-large" type="submit">As Project Manager</button>
+            <br /><br />Project Manager: will have the same access, except managing users.
+        </form>
+    </div>
+    <div class="col-md-3">
+        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Developer" })" method="post">
+            @Html.AntiForgeryToken()
+            <button class="btn btn-default btn-primary btn-large" type="submit">As Developer</button>
+            <br /><br />Developer: they have access to Projects assigned to them, and may modify related tickets.
+        </form>
+    </div>
+    <div class="col-md-3">
+        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Submitter" })" method="post">
+            @Html.AntiForgeryToken()
+            <button class="btn btn-default btn-primary btn-large" type="submit">As Submitter</button>
+            <br /><br />Submitter:  has access to create tickets for Projects to which they are assigned.
+        </form>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-sm-12">
