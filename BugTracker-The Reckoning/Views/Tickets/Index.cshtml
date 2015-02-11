@@ -85,7 +85,7 @@
             }
         </table>
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr, ViewBag.titleSearch, ViewBag.nameSearch, ViewBag.emailSearch, ViewBag.projectSearch, ViewBag.attachmentsSearch, ViewBag.prioritySearch, ViewBag.statusSearch, ViewBag.typeSearch, ViewBag.assignSearch }))
     </div>
     <div class="col-xs-2">
         @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))

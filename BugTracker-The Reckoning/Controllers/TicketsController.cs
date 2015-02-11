@@ -83,52 +83,51 @@ namespace BugTracker_The_Reckoning.Controllers
                 // find tickets searchable by logged in user
                 var ticketsAvailable = FilterByRole();
 
-                tickets.AddRange(ticketsAvailable.Where(t => t.Description.Contains(searchStr)).ToList());
+                tickets.AddRange(ticketsAvailable.Where(t => t.Description.Contains(searchStr)));
 
                 if (titleSearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.Title.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.Title.Contains(searchStr)));
                 if (nameSearch == true)
                 {
-                    tickets.AddRange(ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr)).ToList());
-                    tickets.AddRange(ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.OwnerUser.FirstName.Contains(searchStr)));
+                    tickets.Union(ticketsAvailable.Where(t => t.OwnerUser.LastName.Contains(searchStr)));
                 }
                 if (emailSearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.OwnerUser.Email.Contains(searchStr)));
                 if (projectSearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.Project.Name.Contains(searchStr)));
                 if (attachmentsSearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr))).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.TicketAttachments.Any(ta => ta.Description.Contains(searchStr))));
                 if (prioritySearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.TicketPriority.Name.Contains(searchStr)));
                 if (statusSearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.TicketStatuses.Name.Contains(searchStr)));
                 if(typeSearch == true)
-                    tickets.AddRange(ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr)).ToList());
+                    tickets.Union(ticketsAvailable.Where(t => t.TicketTypes.Name.Contains(searchStr)));
                 if (assignSearch == true)
                 {
                     try
                     {
-                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.DisplayName.Contains(searchStr)));
+                        tickets.Union(ticketsAvailable.Where(t => t.AssignedUser.DisplayName.Contains(searchStr)));
                     }
                     catch { }
                     try
                     {
-                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.FirstName.Contains(searchStr)));
+                        tickets.Union(ticketsAvailable.Where(t => t.AssignedUser.FirstName.Contains(searchStr)));
                     }
                     catch { }
                     try
                     {
-                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.LastName.Contains(searchStr)));
+                        tickets.Union(ticketsAvailable.Where(t => t.AssignedUser.LastName.Contains(searchStr)));
                     }
                     catch { }
                     try
                     {
-                        tickets.AddRange(ticketsAvailable.Where(t => t.AssignedUser.UserName.Contains(searchStr)));
+                        tickets.Union(ticketsAvailable.Where(t => t.AssignedUser.UserName.Contains(searchStr)));
                     }
                     catch { }
 
                 }
-
                 ViewBag.searchStr = searchStr;
             }
             else
@@ -142,71 +141,57 @@ namespace BugTracker_The_Reckoning.Controllers
                 case ("FirstName"):
                     tickets = tickets.OrderBy(t => t.OwnerUser.FirstName).ToList();
                     break;
-
                 case ("FirstName_D"):
                     tickets = tickets.OrderByDescending(t => t.OwnerUser.FirstName).ToList();
                     break;
-
                 case ("ProjectName"):
                     tickets = tickets.OrderBy(t => t.Project.Name).ToList();
                     break;
-
                 case ("ProjectName_D"):
                     tickets = tickets.OrderByDescending(t => t.Project.Name).ToList();
                     break;
                 case ("TicketPriorityName"):
                     tickets = tickets.OrderBy(t => t.TicketPriority.Name).ToList();
                     break;
-
                 case ("TicketPriorityName_D"):
                     tickets = tickets.OrderByDescending(t => t.TicketPriority.Name).ToList();
                     break;
-
                 case ("TicketStatusesName"):
                     tickets = tickets.OrderBy(t => t.TicketStatuses.Name).ToList();
                     break;
-
                 case ("TicketStatusesName_D"):
                     tickets = tickets.OrderByDescending(t => t.TicketStatuses.Name).ToList();
                     break;
                 case ("TicketTypesName"):
                     tickets = tickets.OrderBy(t => t.TicketTypes.Name).ToList();
                     break;
-
                 case ("TicketTypesName_D"):
                     tickets = tickets.OrderByDescending(t => t.TicketTypes.Name).ToList();
                     break;
-
                 case ("Title"):
                     tickets = tickets.OrderBy(t => t.Title).ToList();
                     break;
-
                 case ("Title_D"):
                     tickets = tickets.OrderByDescending(t => t.Title).ToList();
                     break;
                 case ("Description"):
                     tickets = tickets.OrderBy(t => t.Description).ToList();
                     break;
-
                 case ("Description_D"):
                     tickets = tickets.OrderByDescending(t => t.Description).ToList();
                     break;
-
                 case ("Created"):
                     tickets = tickets.OrderBy(t => t.Created).ToList();
                     break;
-
                 case ("Created_D"):
                     tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
                 case ("Updated"):
                     tickets = tickets.OrderBy(t => t.Updated).ToList();
                     break;
-
                 case ("Updated_D"):
                     tickets = tickets.OrderByDescending(t => t.Updated).ToList();
                     break;
-
                 case ("Assigned"):
                     tickets = tickets.OrderBy(t => t.AssignedUser.DisplayName).ToList();
                     break;
