@@ -229,6 +229,7 @@ namespace BugTracker_The_Reckoning.Controllers
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
         public ActionResult Create()
         {
+            var helper = new UserRolesHelper();
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
@@ -250,6 +251,15 @@ namespace BugTracker_The_Reckoning.Controllers
                 ticket.TicketStatusId = db.TicketStatuses.First(t => t.Name == "Not Started").Id;
                 ticket.AssignedUser = db.Users.First(u => u.Roles.Any(r => db.Roles.Find(r.RoleId).Name == "Project Manager"));
                 db.Tickets.Add(ticket);
+                var tn = new TicketNotification()
+                {
+                    Ticket = ticket,
+                    TicketId = ticket.Id,
+                    User = ticket.Project.Manager,
+                    UserId = ticket.Project.ManagerId
+                };
+                var helper = new UserRolesHelper();
+                helper.Notify(tn, "Manage Ticket");
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

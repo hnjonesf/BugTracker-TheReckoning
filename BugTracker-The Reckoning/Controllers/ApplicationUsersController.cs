@@ -148,7 +148,8 @@ namespace BugTracker_The_Reckoning.Controllers
                                 UserId = user.Id,
                                 Ticket = tick,
                             };
-                            Notify(tn, "Add");
+                            var helper = new UserRolesHelper();
+                            helper.Notify(tn, "Add");
                             db.Entry(tick).State = EntityState.Modified;
                         }
                     }
@@ -197,7 +198,8 @@ namespace BugTracker_The_Reckoning.Controllers
                                 TicketId = tick.Id,
                                 UserId = user.Id,
                             };
-                            Notify(tn, "Remove");
+                            var helper = new UserRolesHelper();
+                            helper.Notify(tn, "Remove");
                         }
                     }
                 }
@@ -239,51 +241,6 @@ namespace BugTracker_The_Reckoning.Controllers
             else
             {
                 return View(model);
-            }
-        }
-
-        private void Notify(TicketNotification tn, string action)
-        {
-            ///// INSERT SENDGRID FOR NOTIFICATIONS
-
-            string emailSubject = "";
-            string emailMessage = "";
-
-            if (action.Equals("Remove"))
-            {
-                /// removed from ticket
-                emailMessage = "You were removed from " + tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
-                emailSubject = "Removed from: " + tn.Ticket.Title;
-            }
-            else if(action.Equals("Add"))
-            {
-                /// added to ticket
-                emailMessage = "You were removed from " + tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
-                emailSubject = "Added to: " + tn.Ticket.Title;
-            }
-
-
-
-            if (ModelState.IsValid)
-            {
-                //SendGrid Login from Web.config
-                var MyAddress = ConfigurationManager.AppSettings["ContactEmail"];
-                var MyUsername = ConfigurationManager.AppSettings["Username"];
-                var MyPassword = ConfigurationManager.AppSettings["Password"];
-
-                //"To" information 
-                var toName = db.Users.Find(tn.UserId).DisplayName;
-                var toEmail = db.Users.Find(tn.UserId).Email;
-
-                //"From" information
-                SendGridMessage mail = new SendGridMessage();
-                mail.AddTo(toEmail);
-                mail.Subject=emailSubject;
-                mail.From = new MailAddress("hughjones@libreworx.com");
-                mail.Text = emailMessage;
-                var credentials = new NetworkCredential(MyUsername, MyPassword);
-                var transportWeb = new Web(credentials);
-                transportWeb.Deliver(mail);
             }
         }
 
