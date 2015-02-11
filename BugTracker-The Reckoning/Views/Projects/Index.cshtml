@@ -8,7 +8,7 @@
 <p>
     @Html.ActionLink("Create New Project", "Create")
 </p>
-<div class="panel-group" id="ticketProjects">
+<div class="panel-group" id="projects">
     @if (Model != null)
     {
         <table class="table table-striped">
@@ -30,22 +30,43 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-10 column">
-                                <div class="col-md-7">
-                                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h3>Members: (@item.Members.Count)</h3>
+                                        <ul>
+                                            @foreach (var usr in item.Members)
+                                            {
+                                                <li>
+                                                    @Html.ActionLink(usr.DisplayName, "Details/" + usr.Id, "ApplicationUsers")
+                                                </li>
+                                            }
+                                        </ul>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3>Tickets: (@item.Tickets.Count)</h3>
+                                        <ul>
+                                        @foreach (var tick in item.Tickets)
+                                        {
+                                            <li>
+                                                @Html.ActionLink(tick.Title, "Index", "Tickets/Details/" + tick.Id)
+                                            </li>
+                                        }
+                                            </ul>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-2 column">
                                 <div class="btn-group btn-group-vertical">
                                     <div class="row">
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager")) {
                                         <div class="col-md-4">
                                             <span title="Edit Project"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-pencil" })</em></span>
                                         </div>
                                         <div class="col-md-4">
-                                            <span title="View History FIX ME"><em>@Html.ActionLink(" ", "Details/", "TicketHistories", new {id = item.Id}, new{@class="btn btn-default glyphicon glyphicon-backward"})</em></span>
-                                        </div>
-                                        <div class="col-md-4">
                                             <span title="Delete Project"><em>@Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
                                         </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
