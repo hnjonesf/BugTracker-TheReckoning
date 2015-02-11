@@ -24,7 +24,16 @@
             string theId = "panel-element-projects" + item.Id;
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#projects" href=@theHref>@item.Name</a>
+                    <table>
+                        <tr>
+                            <th>
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#projects" href=@theHref>@item.Name</a>
+                            </th>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div id=@theId class="panel-collapse collapse">
                     <div class="panel-body">
@@ -32,19 +41,19 @@
                             <div class="col-md-10 column">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <h3>Members: (@item.Members.Count)</h3>
-                                        <ul>
+                                        <h4>Members: (@item.Members.Count)</h4>
+                                        <ol>
                                             @foreach (var usr in item.Members)
                                             {
                                                 <li>
                                                     @Html.ActionLink(usr.DisplayName, "Details/" + usr.Id, "ApplicationUsers")
                                                 </li>
                                             }
-                                        </ul>
+                                        </ol>
 
                                     </div>
                                     <div class="col-md-4">
-                                        <h3>Tickets: (@item.Tickets.Count)</h3>
+                                        <h4>Tickets: (@item.Tickets.Count)</h4>
                                         <ul>
                                         @foreach (var tick in item.Tickets)
                                         {

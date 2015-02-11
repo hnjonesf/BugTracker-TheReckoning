@@ -6,13 +6,11 @@
     ViewBag.Title = "Index of Tickets";
 }
 <div class="row">
-    <div class="col-xs-3">
-        <h2>Index of Tickets</h2>
-    </div>
+    <h2>Index of Tickets</h2>
 </div>
 
 <div class="row">
-    <div class="col-xs-10">
+    <div class="col-xs-8">
         <p>
             @Html.ActionLink("Create New", "Create")
         </p>
@@ -95,6 +93,7 @@
                 <button type="button" class="btn btn-primary" onclick="AdvancedSearch()">Advanced Search</button>
             </div>
             <div class="advancedSearch">
+                <h3>Include:</h3>
                 <div class="row">
                     @Html.CheckBox("titleSearch", (bool)ViewBag.titleSearch)
                     @Html.Label("Title")
