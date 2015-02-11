@@ -34,7 +34,7 @@ namespace BugTracker_The_Reckoning
             mail.AddTo(message.Destination);
             mail.Subject = message.Subject;
             mail.From = new MailAddress("noreply@libreworx.com");
-            mail.Text = message.Body;
+            mail.Html = message.Body;
             var credentials = new NetworkCredential(MyUsername, MyPassword);
             var transportWeb = new Web(credentials);
             transportWeb.Deliver(mail);
