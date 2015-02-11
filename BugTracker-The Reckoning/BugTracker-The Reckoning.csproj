@@ -210,10 +210,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\bugtracker-icon.png" />
     <Content Include="Content\img\HTML5__Coding_Course.png" />
-    <Content Include="Content\img\Hugh N Jones 2015.web.jpg" />
+    <Content Include="Content\img\Hugh N Jones 2015.web.small.jpg" />
     <Content Include="Content\img\JavaScript.png" />
     <Content Include="Content\img\Microsoft_Net_Coding_Course.jpg" />
-    <Content Include="Content\img\Philip-Weiser-web.jpg" />
+    <Content Include="Content\img\Philip-Weiser-web.small.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -492,7 +492,7 @@
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Account\ResendConfirmation.cshtml" />
     <Content Include="Views\Account\EmailConfirmationSent.cshtml" />
-    <Content Include="Views\Tour\Tour.cshtml" />
+    <Content Include="Views\Tour\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
