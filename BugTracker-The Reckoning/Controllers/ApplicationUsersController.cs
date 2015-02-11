@@ -92,16 +92,6 @@ namespace BugTracker_The_Reckoning.Controllers
             // send a select list of roles the user is NOT on
 
             // send a list of projects, tickets, roles the user is on
-            var tick = db.Tickets;
-            var helper = new UserRolesHelper();
-            var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUser.Id == theUser.Id));
-            model.UserNotProjects = new MultiSelectList(db.Projects, "Id", "Name");
-            model.UserNotTickets = new MultiSelectList(UNT.OrderBy(m=> m.Title), "Id", "Title");
-            model.TicketOwner = id;
-            model.UserProjects = new MultiSelectList(theUser.Projects, "Id", "Name");
-            model.UserTickets = new MultiSelectList(theUser.Tickets, "Id", "Title");
-            model.UserRoles = new MultiSelectList(helper.ListUserRoles(theUser.Id));
-            model.DisplayName = theUser.DisplayName;
             var roles = new List<IdentityRole>();
             foreach (var rol in db.Roles)
             {
@@ -110,7 +100,31 @@ namespace BugTracker_The_Reckoning.Controllers
                     roles.Add(rol);
                 }
             }
+            var tick = db.Tickets;
+            var helper = new UserRolesHelper();
+            model.TicketOwner = id;
+            model.DisplayName = theUser.DisplayName;
+
+            var UNP = db.Projects.SelectMany(p => p.Members.Where(u => u.Id != theUser.Id));
+            model.UserNotProjects = new MultiSelectList(UNP, "Id", "Name");
+
+            var UNT = db.Tickets.Where(t => t.AssignedUser.Id != theUser.Id).OrderBy(m => m.Title);
+            model.UserNotTickets = new MultiSelectList(UNT, "Id", "Title");
+
             model.UserNotRoles = new MultiSelectList(roles, "Id", "Name");
+
+            var UP = theUser.Projects.OrderBy(p => p.Name);
+            model.UserProjects = new MultiSelectList(UP, "Id", "Name");
+
+            //model.UserProjects = null;
+
+            var UT = theUser.Tickets.OrderBy(t => t.Title);
+            model.UserTickets = new MultiSelectList(UT, "Id", "Title");
+            //model.UserTickets = null;
+
+            model.UserRoles = new MultiSelectList(helper.ListUserRoles(theUser.Id));
+            //model.UserRoles = null;
+
             if (model == null)
             {
                 return HttpNotFound();
@@ -271,7 +285,7 @@ namespace BugTracker_The_Reckoning.Controllers
 
             db.Users.Attach(applicationUser);
 
-            db.Entry(applicationUser).Property(u=>u.DisplayName).IsModified = true;
+            db.Entry(applicationUser).Property(u => u.DisplayName).IsModified = true;
 
             if (ModelState.IsValid)
             {

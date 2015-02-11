@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker_The_Reckoning.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
@@ -63,6 +64,10 @@ namespace BugTracker_The_Reckoning.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Find(User.Identity.GetUserId());
+                project.Members.Add(user);
+                project.Manager = user;
+
                 db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -127,6 +132,7 @@ namespace BugTracker_The_Reckoning.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Project project = db.Projects.Find(id);
+            project.Manager.Projects.Remove(project);
             db.Projects.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -236,6 +236,7 @@ namespace BugTracker_The_Reckoning.Controllers
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatuses.First(t => t.Name == "Not Started").Id;
+                ticket.Project = db.Projects.Find(ticket.ProjectId);
                 ticket.AssignedUser = ticket.Project.Manager;
                 ticket.AssignedUserId = ticket.Project.ManagerId;
                 db.Tickets.Add(ticket);
