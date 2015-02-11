@@ -37,8 +37,18 @@ namespace BugTracker_The_Reckoning.Models
             if (action.Equals("Remove"))
             {
                 /// removed from ticket
-                emailMessage = "You were removed from " + tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
-                emailSubject = "Removed from: " + tn.Ticket.Title;
+                emailMessage = "You were removed from ";
+                try
+                {
+                    emailMessage+=  tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
+                }
+                catch { }
+                emailSubject = "Removed from: ";
+                try
+                {
+                    emailSubject += tn.Ticket.Title;
+                }
+                catch { }
             }
             else if (action.Equals("Add"))
             {

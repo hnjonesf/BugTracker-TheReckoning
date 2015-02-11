@@ -101,6 +101,7 @@ namespace BugTracker_The_Reckoning.Controllers
             model.UserProjects = new MultiSelectList(theUser.Projects, "Id", "Name");
             model.UserTickets = new MultiSelectList(theUser.Tickets, "Id", "Title");
             model.UserRoles = new MultiSelectList(helper.ListUserRoles(theUser.Id));
+            model.DisplayName = theUser.DisplayName;
             var roles = new List<IdentityRole>();
             foreach (var rol in db.Roles)
             {
@@ -189,10 +190,6 @@ namespace BugTracker_The_Reckoning.Controllers
                         {
                             int tickId = Convert.ToInt32(remTicket);
                             var tick = db.Tickets.Find(tickId);
-                            user.Tickets.Remove(tick);
-                            tick.AssignedUser = null;
-                            tick.AssignedUserId = null;
-                            db.Entry(tick).State = EntityState.Modified;
                             var tn = new TicketNotification()
                             {
                                 TicketId = tick.Id,
@@ -200,6 +197,11 @@ namespace BugTracker_The_Reckoning.Controllers
                             };
                             var helper = new UserRolesHelper();
                             helper.Notify(tn, "Remove");
+                            user.Tickets.Remove(tick);
+                            tick.AssignedUser = null;
+                            tick.AssignedUserId = null;
+                            db.Entry(tick).State = EntityState.Modified;
+
                         }
                     }
                 }
