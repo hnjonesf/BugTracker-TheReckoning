@@ -25,6 +25,7 @@ namespace BugTracker_The_Reckoning.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
         {
 
