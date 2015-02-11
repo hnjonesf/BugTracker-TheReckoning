@@ -9,7 +9,11 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.tableTitle{
+    padding-left:16px;
+    padding-right:15px;
+    margin-left:0px;
+}
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -49,4 +53,7 @@ textarea {
     background-color: #555555;
     border-color: #555555;
     background-image:  linear-gradient(#04519b, #044687 60%, #033769);
+}
+.panel-title{
+    font-size:18px;
 }
