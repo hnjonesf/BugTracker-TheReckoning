@@ -461,9 +461,7 @@
     <Content Include="Views\TicketAttachments\Edit.cshtml" />
     <Content Include="Views\TicketAttachments\Index.cshtml" />
     <Content Include="Views\TicketHistories\Create.cshtml" />
-    <Content Include="Views\TicketHistories\Delete.cshtml" />
     <Content Include="Views\TicketHistories\Details.cshtml" />
-    <Content Include="Views\TicketHistories\Edit.cshtml" />
     <Content Include="Views\TicketHistories\Index.cshtml" />
     <Content Include="Views\TicketComments\Create.cshtml" />
     <Content Include="Views\TicketComments\Delete.cshtml" />
