@@ -8,23 +8,24 @@
     ViewBag.Title = "Index of Users";
 }
 <h2>@ViewBag.Title</h2>
-<div class="panel-group" id="peoplePanel">
-    @if (Model != null)
-    {
-        <table class="table table-striped">
-            <tr>
-                <th>
-                    @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
-                </th>
-                <th>
-                    @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
-                </th>
-                <th>
-                    @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
-                </th>
-            </tr>
-        </table>
-        foreach (var item in Model)
+
+@if (Model != null)
+{
+    <table class="table table-striped">
+        <tr>
+            <th>
+                @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
+            </th>
+        </tr>
+    </table>
+    <div class="panel-group" id="peoplePanel">
+        @foreach (var item in Model)
         {
             string theHref = "#panel-element-peo" + item.Id;
             string theId = "panel-element-peo" + item.Id;
@@ -35,9 +36,9 @@
                 <div id=@theId class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-sm-12">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3" style="margin-top:20px; margin-left:8px;">
                                         <div class="row">
                                             <h4 style="display:inline" class="text-right">Email:        </h4>@item.Email
                                         </div>
@@ -69,7 +70,7 @@
                                             @item.DisplayName<p> has no assigned projects.</p>
                                         }
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <h3><u>Tickets</u></h3>
                                         @if (item.Tickets.Count() != 0)
                                         {
@@ -87,22 +88,11 @@
                                             <p>@item.DisplayName has no assigned tickets.</p>
                                         }
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="btn-group btn-group-vertical">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <span title="Edit User"><button class="btn btn-default btn-primary btn-large" type="button"><em class="glyphicon glyphicon-pencil"></em></button></span>
+
+                                    <div class="col-md-2" style="margin-top:20px; margin-right:-8px">
+                                        <div class="btn-group btn-group-vertical">
+                                            <span title="Assign Tickets, Projects and Roles"><em>@Html.ActionLink("  Assignment", "Manage/" + @item.Id, null, new { @class = "btn btn-default btn-assign-user btn-primary glyphicon glyphicon-user" })</em></span>
                                         </div>
-                                        <div class="col-md-4">
-                                            <span title="Assign Tickets, Projects and Roles"><em>@Html.ActionLink(" ", "Manage/" + @item.Id, null, new { @class = "btn btn-default btn-assign-user glyphicon glyphicon-user" })</em></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span title="Delete User"><em>@Html.ActionLink(" ", "Delete/"+@item.Id, null, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="rightPanel">
                                     </div>
                                 </div>
                             </div>
@@ -112,10 +102,11 @@
             </div>
 
         }
-    }
-</div>
+    </div>
+}
 
 
 
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortparam }))
+
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortparam }))

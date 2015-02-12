@@ -15,7 +15,7 @@
 <div class="row">
     @if (Model != null)
     {
-        <div class="col-sm-4" style="border:ridge">
+        <div class="col-sm-4">
             @Html.ActionLink("Sort By Name", "Index", new { sortOrder = ViewBag.NameSortParm })
             <table class="table-striped">
                 @foreach (var item in Model)

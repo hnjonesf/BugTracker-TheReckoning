@@ -245,6 +245,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\MyTickets.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Content\piechart.min.css" />
+    <Content Include="Scripts\PieChart.js" />
+    <Content Include="Scripts\piechart.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -404,7 +407,7 @@
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\Tour.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Shared\_PieChart.cshtml">
+    <Content Include="Views\TicketTypes\_PieChart.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Web.config" />
