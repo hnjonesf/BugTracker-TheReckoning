@@ -1,0 +1,121 @@
+﻿@model PagedList.IPagedList<BugTracker_The_Reckoning.Models.ApplicationUser>
+@using PagedList;
+@using PagedList.Mvc;
+
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index of Users";
+}
+<h2>@ViewBag.Title</h2>
+<div class="panel-group" id="peoplePanel">
+    @if (Model != null)
+    {
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParm })
+                </th>
+            </tr>
+        </table>
+        foreach (var item in Model)
+        {
+            string theHref = "#panel-element-peo" + item.Id;
+            string theId = "panel-element-peo" + item.Id;
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#peoplePanel" href=@theHref>@item.DisplayName</a>
+                </div>
+                <div id=@theId class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">Email:        </h4>@item.Email
+                                        </div>
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">First Name:   </h4>@item.FirstName
+                                        </div>
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">Last Name:    </h4>@item.LastName
+                                        </div>
+                                        <div class="row">
+                                            <h4 style="display:inline" class="text-right">Display Name: </h4>@item.DisplayName
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h3><u>Projects</u></h3>
+                                        @if (item.Projects.Count() != 0)
+                                        {
+                                            <ul>
+                                                @foreach (var proj in item.Projects)
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink(proj.Name, "Index", "Projects/Details/" + proj.Id)
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            @item.DisplayName<p> has no assigned projects.</p>
+                                        }
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h3><u>Tickets</u></h3>
+                                        @if (item.Tickets.Count() != 0)
+                                        {
+                                            <ul>
+                                                @foreach (var tick in item.Tickets)
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink(tick.Title, "Index", "Tickets/Details/" + tick.Id)
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <p>@item.DisplayName has no assigned tickets.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="btn-group btn-group-vertical">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <span title="Edit User"><button class="btn btn-default btn-primary btn-large" type="button"><em class="glyphicon glyphicon-pencil"></em></button></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span title="Assign Tickets, Projects and Roles"><em>@Html.ActionLink(" ", "Manage/" + @item.Id, null, new { @class = "btn btn-default btn-assign-user glyphicon glyphicon-user" })</em></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span title="Delete User"><em>@Html.ActionLink(" ", "Delete/"+@item.Id, null, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="rightPanel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+</div>
+
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortparam }))
