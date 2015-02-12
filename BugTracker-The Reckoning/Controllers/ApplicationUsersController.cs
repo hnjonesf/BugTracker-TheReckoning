@@ -102,11 +102,12 @@ namespace BugTracker_The_Reckoning.Controllers
             }
             var tick = db.Tickets;
             var helper = new UserRolesHelper();
+            var helperP = new UserProjectsHelper();
             model.TicketOwner = id;
             model.DisplayName = theUser.DisplayName;
 
-            var UNP = db.Projects.SelectMany(p => p.Members.Where(u => u.Id != theUser.Id));
-            model.UserNotProjects = new MultiSelectList(UNP, "Id", "Name");
+            var UNP = helperP.ListUserNOTProjects(theUser.Id);
+            model.UserNotProjects = new MultiSelectList(UNP.OrderBy(p => p.Name), "Id", "Name");
 
             var UNT = db.Tickets.Where(t => t.AssignedUser.Id != theUser.Id).OrderBy(m => m.Title);
             model.UserNotTickets = new MultiSelectList(UNT, "Id", "Title");
@@ -146,29 +147,37 @@ namespace BugTracker_The_Reckoning.Controllers
                 {
                     foreach (var newTicket in model.newTickets)
                     {
+                        // assigning a ticket
                         if (newTicket != "" && newTicket != null)
                         {
                             int tickId = Convert.ToInt32(newTicket);
                             var tick = db.Tickets.Find(tickId);
+                            // add to user's tickets
                             user.Tickets.Add(tick);
+                            // add ticket's project to user's projects if not currently on the project
                             if (!user.Projects.Contains(tick.Project))
                             {
                                 user.Projects.Add(tick.Project);
                             }
+                            // assign the ticket
                             tick.AssignedUser = user;
                             tick.AssignedUserId = model.TicketOwner;
+                            //create the new ticket notification
                             var tn = new TicketNotification()
                             {
                                 TicketId = tick.Id,
                                 UserId = user.Id,
                                 Ticket = tick,
                             };
+                            // notify the new ticket owner
                             var helper = new UserRolesHelper();
                             helper.Notify(tn, "Add");
+                            // save the ticket
                             db.Entry(tick).State = EntityState.Modified;
                         }
                     }
                 }
+                // assigning a project
                 if (model.newProjects != null)
                 {
                     foreach (var newProject in model.newProjects)
@@ -177,7 +186,9 @@ namespace BugTracker_The_Reckoning.Controllers
                         {
                             int projId = Convert.ToInt32(newProject);
                             var proj = db.Projects.Find(projId);
+                            //add the project to the user's projects
                             user.Projects.Add(proj);
+                            // add the user to the project's users
                             proj.Members.Add(user);
                             db.Entry(proj).State = EntityState.Modified;
                         }
@@ -192,6 +203,7 @@ namespace BugTracker_The_Reckoning.Controllers
                             string roleId = newRole;
                             var role = db.Roles.Find(roleId);
                             var helper = new UserRolesHelper();
+                            //add user to role
                             helper.AddUserToRole(user.Id, db.Roles.Find(roleId).Name);
                         }
                     }
@@ -204,16 +216,21 @@ namespace BugTracker_The_Reckoning.Controllers
                         {
                             int tickId = Convert.ToInt32(remTicket);
                             var tick = db.Tickets.Find(tickId);
+                            // create new ticketNotification
                             var tn = new TicketNotification()
                             {
                                 TicketId = tick.Id,
                                 UserId = user.Id,
                             };
                             var helper = new UserRolesHelper();
+                            //notify the user who is removed
                             helper.Notify(tn, "Remove");
                             user.Tickets.Remove(tick);
-                            tick.AssignedUser = null;
-                            tick.AssignedUserId = null;
+                            // assign ticket to project's project manager
+                            tick.AssignedUser = tick.Project.Manager;
+                            tick.AssignedUserId = tick.Project.ManagerId;
+                            tick.Project.Manager.Tickets.Add(tick);
+                            //save changes
                             db.Entry(tick).State = EntityState.Modified;
 
                         }
@@ -227,10 +244,13 @@ namespace BugTracker_The_Reckoning.Controllers
                         {
                             int projId = Convert.ToInt32(remProject);
                             var proj = db.Projects.Find(projId);
+                            //find tickets on project
                             var theTicketsToRemove = new List<Ticket>();
                             foreach (var tick in user.Tickets)
                                 if (tick.ProjectId == projId)
                                     theTicketsToRemove.Add(tick);
+
+                            // reassign user's tickets to not include any on project
                             user.Tickets = user.Tickets.Except(theTicketsToRemove).ToList();
                             user.Projects.Remove(proj);
                             proj.Members.Remove(user);
@@ -259,7 +279,6 @@ namespace BugTracker_The_Reckoning.Controllers
                 return View(model);
             }
         }
-
         // GET: Users/Edit/5
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)

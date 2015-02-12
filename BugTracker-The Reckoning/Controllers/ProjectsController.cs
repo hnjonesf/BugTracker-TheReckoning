@@ -67,7 +67,7 @@ namespace BugTracker_The_Reckoning.Controllers
                 var user = db.Users.Find(User.Identity.GetUserId());
                 project.Members.Add(user);
                 project.Manager = user;
-
+                user.Projects.Add(project);
                 db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -107,35 +107,6 @@ namespace BugTracker_The_Reckoning.Controllers
                 return RedirectToAction("Index");
             }
             return View(project);
-        }
-
-        // GET: Projects/Delete/5
-        [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
-            if (project == null)
-            {
-                return HttpNotFound();
-            }
-            return View(project);
-        }
-
-        // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Project Manager")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Project project = db.Projects.Find(id);
-            project.Manager.Projects.Remove(project);
-            db.Projects.Remove(project);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

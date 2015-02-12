@@ -200,17 +200,35 @@ namespace BugTracker_The_Reckoning.Models
         /// </summary>
         /// <param name="userId">The Id of the specified user</param>
         /// <returns>List of Project objects to which the user is assigned.</returns>
-        //public async Task<IList<Project>> ListUserProjects(string userId)
-        //{
-        //    var projectList = new List<Project>();
-        //    foreach (var proj in db.Projects)
-        //    {
-        //        if (await this.IsOnProject(userId, proj.Id))
-        //        {
-        //            projectList.Add(proj);
-        //        }
-        //    }
-        //    return projectList;
-        //}
+        public IList<Project> ListUserProjects(string userId)
+        {
+            var projectList = new List<Project>();
+            foreach (var proj in db.Projects)
+            {
+                if (this.IsOnProject(userId, proj.Id))
+                {
+                    projectList.Add(proj);
+                }
+            }
+            return projectList;
+        }
+
+        /// <summary>
+        /// Returns a list of projects that the user is not a part of
+        /// </summary>
+        /// <param name="userId">The Id of the specified user</param>
+        /// <returns>List of Project objects to which the user is not assigned.</returns>
+        public IList<Project> ListUserNOTProjects(string userId)
+        {
+            var projectList = new List<Project>();
+            foreach (var proj in db.Projects)
+            {
+                if (!this.IsOnProject(userId, proj.Id))
+                {
+                    projectList.Add(proj);
+                }
+            }
+            return projectList;
+        }
     }
 }

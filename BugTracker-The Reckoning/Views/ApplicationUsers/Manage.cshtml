@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 }
-                @if (Model.UserNotProjects != null)
+                @if (Model.UserNotProjects.Count() != 0)
                 {
                     <div class="form-group">
                         @Html.LabelFor(model => model.UserNotProjects, "Projects", htmlAttributes: new { @class = "control-label col-md-2" })
