@@ -6,60 +6,13 @@
     ViewBag.Title = "Tickets List";
 }
 <div class="row">
-    <div class="col-xs-9">
+    <div class="col-xs-8">
         <h2>Tickets List</h2>
     </div>
-    <div class="col-xs-3">
-        @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
-        {
-            <div class="row" style="margin-top:20px">
-                @Html.TextBox("searchStr")<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-                <button type="button" class="btn btn-primary" onclick="AdvancedSearch()">Advanced Search</button>
-            </div>
-            <div class="advancedSearch" style="font-size:12px">
-                <h3>Include:</h3>
-                <div class="row">
-                    @Html.CheckBox("titleSearch", (bool)ViewBag.titleSearch)
-                    @Html.Label("Title")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("nameSearch", (bool)ViewBag.nameSearch)
-                    @Html.Label("Owner Name")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("emailSearch", (bool)ViewBag.emailSearch)
-                    @Html.Label("Owner Email")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("projectSearch", (bool)ViewBag.projectSearch)
-                    @Html.Label("Projects")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("attachmentsSearch", (bool)ViewBag.attachmentsSearch)
-                    @Html.Label("Attachments")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("prioritySearch", (bool)ViewBag.prioritySearch)
-                    @Html.Label("Priority")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("typeSearch", (bool)ViewBag.typeSearch)
-                    @Html.Label("Type")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("statusSearch", (bool)ViewBag.statusSearch)
-                    @Html.Label("Status")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("assignSearch", (bool)ViewBag.assignSearch)
-                    @Html.Label("Developer")
-                </div>
-            </div>
-        }
-    </div>
+
 </div>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-10">
         <p>
             @Html.ActionLink("Create New", "Create")
         </p>
@@ -260,7 +213,58 @@
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr, ViewBag.titleSearch, ViewBag.nameSearch, ViewBag.emailSearch, ViewBag.projectSearch, ViewBag.attachmentsSearch, ViewBag.prioritySearch, ViewBag.statusSearch, ViewBag.typeSearch, ViewBag.assignSearch }))
     </div>
+    <div class="col-xs-2">
+        @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
+        {
+            <div class="row" style="margin-top:20px">
+                @Html.TextBox("searchStr")<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+                <button type="button" class="btn btn-primary" onclick="AdvancedSearch()">Advanced Search</button>
+            </div>
+            <div class="advancedSearch" id="adv" style="font-size:12px">
+                <h3>Include:</h3>
+                <div class="row">
+                    @Html.CheckBox("titleSearch", (bool)ViewBag.titleSearch)
+                    @Html.Label("Title")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("nameSearch", (bool)ViewBag.nameSearch)
+                    @Html.Label("Owner Name")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("emailSearch", (bool)ViewBag.emailSearch)
+                    @Html.Label("Owner Email")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("projectSearch", (bool)ViewBag.projectSearch)
+                    @Html.Label("Projects")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("attachmentsSearch", (bool)ViewBag.attachmentsSearch)
+                    @Html.Label("Attachments")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("prioritySearch", (bool)ViewBag.prioritySearch)
+                    @Html.Label("Priority")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("typeSearch", (bool)ViewBag.typeSearch)
+                    @Html.Label("Type")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("statusSearch", (bool)ViewBag.statusSearch)
+                    @Html.Label("Status")
+                </div>
+                <div class="row">
+                    @Html.CheckBox("assignSearch", (bool)ViewBag.assignSearch)
+                    @Html.Label("Developer")
+                </div>
+            </div>
+        }
+        <div class="row" id="filters">
 
+        </div>
+
+    </div>
 
 </div>
 <script src="~/Scripts/TicketsIndex.js"></script>

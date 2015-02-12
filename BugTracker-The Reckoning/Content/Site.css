@@ -8,11 +8,7 @@ a{
 h1, h2, h3, h4, h5, h6, h7{
     color:#317eac;
 }
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
+
 .tableTitle{
     padding-left:16px;
     padding-right:15px;
@@ -59,4 +55,7 @@ textarea {
 .panel-title{
     font-size:18px;
     color:#317eac;
+}
+.container{
+
 }
