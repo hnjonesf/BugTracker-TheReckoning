@@ -7,17 +7,18 @@
     ViewBag.Title = "Ticket Priorities List";
 }
 
-<h1>Ticket Priorities List</h1>
+<h2>Ticket Priorities List</h2>
 
 <p>
-    <h2>@Html.ActionLink("Create New Priority", "Create")</h2>
+        @Html.ActionLink("Create New Priority", "Create")
 </p>
 <div class="row">
     @if (Model != null)
     {
         <div class="col-sm-4">
-            @Html.ActionLink("Sort By Name", "Index", new { sortOrder = ViewBag.NameSortParm })
-            <table class="table-striped">
+            <table class="table table-striped">
+                @Html.ActionLink("Sort By Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+
                 @foreach (var item in Model)
                 {
                     <tr>

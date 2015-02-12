@@ -4,10 +4,10 @@
     ViewBag.Title = "Details of a Ticket";
 }
 
-<h2>Ticket Details:  @Html.DisplayFor(modelItem => Model.Title)</h2>
-
 <div class="row table-bordered">
     <div class="col-md-12 class=" table-bordered"">
+        <h2>Ticket Details:  @Html.DisplayFor(modelItem => Model.Title)</h2>
+
         <table class="table table-striped">
             <tr>
                 <th>
@@ -64,20 +64,20 @@
             </tr>
         </table>
         <div class="row">
-            <div class="textarea">
+            <div class="textarea table table-striped">
                 @Html.DisplayFor(modelItem => Model.Description)
             </div>
-        </div>
+        </div>@Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List of Tickets", "Index")
+
+
     </div>
+  
 </div>
+
 <br />
 <div class="row">
-    <p>
-        @Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List of Tickets", "Index") |
-        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
-        @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
-    </p>
+
 </div>
 <div class="row">
     <div class="col-md-8 class table-bordered">
@@ -122,6 +122,7 @@
                 </tr>
             }
             </table>
+        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null)
 
         </div>
 
@@ -154,7 +155,10 @@
                         </td>
                     </tr>
                 }
+
             </table>
+            @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
+
         </div>
     </div>
 
