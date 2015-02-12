@@ -151,5 +151,25 @@ namespace BugTracker_The_Reckoning.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //used to display chart of number of tickets by type
+        // GET: TicketType Calculation of # of Types
+        //[Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+        //[ValidateAntiForgeryToken]
+        public ActionResult CountTicketTypes()
+        {
+
+            //loop thorough all the tickets, making of list and count of the tickettype(s)
+
+            var count = new Dictionary<string, int>();
+            db.Tickets.Include("TicketTypes").ToList().ForEach(t=> 
+            {
+                 count[t.TicketTypes.Name] = count.Keys.Contains(t.TicketTypes.Name) ? count[t.TicketTypes.Name]++ : 1;
+            });
+
+            ViewBag.count = count;
+
+            return RedirectToAction("Pie", "_PieChart", "Shared");
+        }
     }
 }

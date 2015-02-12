@@ -198,6 +198,7 @@
     <Compile Include="Models\DashboardModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\TicketTypeChart.cs" />
     <Compile Include="Models\TicketViewModel.cs" />
     <Compile Include="Models\UserHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -405,6 +406,9 @@
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\Tour.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\_PieChart.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
