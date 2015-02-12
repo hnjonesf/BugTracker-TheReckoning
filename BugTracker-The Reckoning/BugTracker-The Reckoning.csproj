@@ -236,8 +236,6 @@
     <Content Include="Scripts\jquery-2.1.3.min.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Content\jquery-impromptu.css" />
-    <Content Include="Scripts\jquery-impromptu.js" />
     <Content Include="Content\jquery-impromptu.min.css" />
     <Content Include="Scripts\jquery-impromptu.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
