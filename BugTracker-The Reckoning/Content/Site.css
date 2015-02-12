@@ -1,9 +1,13 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    font-size:14px;
 }
-
+a{
+    color:#317eac;
+}
+h1, h2, h3, h4, h5, h6, h7{
+    color:#317eac;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -46,8 +50,6 @@ textarea {
 .textarea-email{
     width: 800px;
 	height: 180px;
-	border: 3px solid #cccccc;
-	padding: 5px;
     }
 .btn-primary{
     background-color: #555555;
@@ -56,4 +58,5 @@ textarea {
 }
 .panel-title{
     font-size:18px;
+    color:#317eac;
 }
