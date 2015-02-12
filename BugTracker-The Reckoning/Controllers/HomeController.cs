@@ -11,6 +11,7 @@ using System.Net;
 
 namespace BugTracker_The_Reckoning.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -25,6 +26,7 @@ namespace BugTracker_The_Reckoning.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
         {
 

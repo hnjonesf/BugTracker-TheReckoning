@@ -46,6 +46,7 @@ namespace BugTracker_The_Reckoning.Models
     {
         public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+
         [Display(Name ="First Name")]
         [StringLength(50, ErrorMessage = "First Name cannot be longer than 30 characters.")]
         public string FirstName { get; set; }

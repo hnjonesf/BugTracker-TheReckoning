@@ -92,15 +92,6 @@ namespace BugTracker_The_Reckoning.Controllers
             // send a select list of roles the user is NOT on
 
             // send a list of projects, tickets, roles the user is on
-            var tick = db.Tickets;
-            var helper = new UserRolesHelper();
-            var UNT = tick.Except(db.Tickets.Where(t => t.AssignedUser.Id == theUser.Id));
-            model.UserNotProjects = new MultiSelectList(db.Projects, "Id", "Name");
-            model.UserNotTickets = new MultiSelectList(UNT.OrderBy(m=> m.Title), "Id", "Title");
-            model.TicketOwner = id;
-            model.UserProjects = new MultiSelectList(theUser.Projects, "Id", "Name");
-            model.UserTickets = new MultiSelectList(theUser.Tickets, "Id", "Title");
-            model.UserRoles = new MultiSelectList(helper.ListUserRoles(theUser.Id));
             var roles = new List<IdentityRole>();
             foreach (var rol in db.Roles)
             {
@@ -109,7 +100,31 @@ namespace BugTracker_The_Reckoning.Controllers
                     roles.Add(rol);
                 }
             }
+            var tick = db.Tickets;
+            var helper = new UserRolesHelper();
+            model.TicketOwner = id;
+            model.DisplayName = theUser.DisplayName;
+
+            var UNP = db.Projects.SelectMany(p => p.Members.Where(u => u.Id != theUser.Id));
+            model.UserNotProjects = new MultiSelectList(UNP, "Id", "Name");
+
+            var UNT = db.Tickets.Where(t => t.AssignedUser.Id != theUser.Id).OrderBy(m => m.Title);
+            model.UserNotTickets = new MultiSelectList(UNT, "Id", "Title");
+
             model.UserNotRoles = new MultiSelectList(roles, "Id", "Name");
+
+            var UP = theUser.Projects.OrderBy(p => p.Name);
+            model.UserProjects = new MultiSelectList(UP, "Id", "Name");
+
+            //model.UserProjects = null;
+
+            var UT = theUser.Tickets.OrderBy(t => t.Title);
+            model.UserTickets = new MultiSelectList(UT, "Id", "Title");
+            //model.UserTickets = null;
+
+            model.UserRoles = new MultiSelectList(helper.ListUserRoles(theUser.Id));
+            //model.UserRoles = null;
+
             if (model == null)
             {
                 return HttpNotFound();
@@ -148,7 +163,8 @@ namespace BugTracker_The_Reckoning.Controllers
                                 UserId = user.Id,
                                 Ticket = tick,
                             };
-                            Notify(tn, "Add");
+                            var helper = new UserRolesHelper();
+                            helper.Notify(tn, "Add");
                             db.Entry(tick).State = EntityState.Modified;
                         }
                     }
@@ -188,16 +204,18 @@ namespace BugTracker_The_Reckoning.Controllers
                         {
                             int tickId = Convert.ToInt32(remTicket);
                             var tick = db.Tickets.Find(tickId);
-                            user.Tickets.Remove(tick);
-                            tick.AssignedUser = null;
-                            tick.AssignedUserId = null;
-                            db.Entry(tick).State = EntityState.Modified;
                             var tn = new TicketNotification()
                             {
                                 TicketId = tick.Id,
                                 UserId = user.Id,
                             };
-                            Notify(tn, "Remove");
+                            var helper = new UserRolesHelper();
+                            helper.Notify(tn, "Remove");
+                            user.Tickets.Remove(tick);
+                            tick.AssignedUser = null;
+                            tick.AssignedUserId = null;
+                            db.Entry(tick).State = EntityState.Modified;
+
                         }
                     }
                 }
@@ -242,51 +260,6 @@ namespace BugTracker_The_Reckoning.Controllers
             }
         }
 
-        private void Notify(TicketNotification tn, string action)
-        {
-            ///// INSERT SENDGRID FOR NOTIFICATIONS
-
-            string emailSubject = "";
-            string emailMessage = "";
-
-            if (action.Equals("Remove"))
-            {
-                /// removed from ticket
-                emailMessage = "You were removed from " + tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
-                emailSubject = "Removed from: " + tn.Ticket.Title;
-            }
-            else if(action.Equals("Add"))
-            {
-                /// added to ticket
-                emailMessage = "You were removed from " + tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
-                emailSubject = "Added to: " + tn.Ticket.Title;
-            }
-
-
-
-            if (ModelState.IsValid)
-            {
-                //SendGrid Login from Web.config
-                var MyAddress = ConfigurationManager.AppSettings["ContactEmail"];
-                var MyUsername = ConfigurationManager.AppSettings["Username"];
-                var MyPassword = ConfigurationManager.AppSettings["Password"];
-
-                //"To" information 
-                var toName = db.Users.Find(tn.UserId).DisplayName;
-                var toEmail = db.Users.Find(tn.UserId).Email;
-
-                //"From" information
-                SendGridMessage mail = new SendGridMessage();
-                mail.AddTo(toEmail);
-                mail.Subject=emailSubject;
-                mail.From = new MailAddress("hughjones@libreworx.com");
-                mail.Text = emailMessage;
-                var credentials = new NetworkCredential(MyUsername, MyPassword);
-                var transportWeb = new Web(credentials);
-                transportWeb.Deliver(mail);
-            }
-        }
-
         // GET: Users/Edit/5
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
@@ -307,11 +280,16 @@ namespace BugTracker_The_Reckoning.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DisplayName,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult Edit(ApplicationUser applicationUser)
         {
+
+            db.Users.Attach(applicationUser);
+
+            db.Entry(applicationUser).Property(u => u.DisplayName).IsModified = true;
+
             if (ModelState.IsValid)
             {
-                db.Entry(applicationUser).State = EntityState.Modified;
+                //db.Entry(applicationUser).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

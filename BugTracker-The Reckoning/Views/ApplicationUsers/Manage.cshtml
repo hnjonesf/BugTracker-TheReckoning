@@ -8,56 +8,83 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.TicketOwner)
     <div class="form-horizontal">
-        <h4>User</h4>
+        <h4>@Model.DisplayName</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-xs-6">
+                <h2>Assignment</h2>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @if (Model.UserNotTickets != null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserNotTickets, "Tickets", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.newTickets, Model.UserNotTickets, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.newTickets, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                @if (Model.UserNotProjects != null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserNotProjects, "Projects", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.newProjects, Model.UserNotProjects, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.newProjects, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                @if (Model.UserNotRoles != null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserNotRoles, "Roles", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.newRoles, Model.UserNotRoles, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.newRoles, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserNotTickets, "UserNotTickets", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.newTickets, Model.UserNotTickets, "Assign a Ticket", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.newTickets, "", new { @class = "text-danger" })
+
+            <div class="col-xs-6">
+                <h2>Unassignment</h2>
+                @if (Model.UserTickets != null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserTickets, "Tickets", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.remTickets, Model.UserTickets, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.remTickets, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.UserProjects != null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserProjects, "Projects", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.remProjects, Model.UserProjects, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.remProjects, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                @if (Model.UserRoles != null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserRoles, "Roles", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.remRoles, Model.UserRoles, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.remRoles, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
             </div>
+
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserNotProjects, "UserNotProjects", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.newProjects, Model.UserNotProjects, "Assign a Project", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.newProjects, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserNotRoles, "UserNotRoles", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.newRoles, Model.UserNotRoles, "Assign a Role", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.newRoles, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserTickets, "UserTickets", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.remTickets, Model.UserTickets, "Unassign a Ticket", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.remTickets, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserProjects, "UserProjects", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.remProjects, Model.UserProjects, "Unassign a Project", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.remProjects, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserRoles, "UserRoles", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.remRoles, Model.UserRoles, "Unassign a Role", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.remRoles, "", new { @class = "text-danger" })
-            </div>
-        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default btn-primary btn-large" />

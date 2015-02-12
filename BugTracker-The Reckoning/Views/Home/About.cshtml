@@ -2,68 +2,125 @@
     ViewBag.Title = "About BugTracker";
 }
 
+<div class="container">
+    <div class="row clearfix">
+        <div class="row">
+            <div>
+                <h2>
+                    BugTracker, is a collaborative effort for Coder Foundry by:
+                </h2>
+                <br /><br />
+                     <div class="col-md-6">
+                        <figure>
+                            <img src='~/Content/img/Philip-Weiser-web.small.jpg' alt='Phil Weiser' />
+                            <figcaption>Phil Weiser</figcaption>
+                            <a href="http://pweiser.azurewebsites.net">Phil Weiser's web site.</a>
+                        </figure>
+                    </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <h2>
-            BugTracker, an online application for tracking and fixing issues in projects, is a work of:
-            <br /><br />
-            <a href="http://pweiser.azurewebsites.net">Phil Weiser</a>
-            and
-            <a href="http://www.LibreWorx.com">Hugh Jones.</a>
-        </h2>
-
-
-
-
+                <div class="col-md-6">
+                    <figure>
+                        <img src='~/Content/img/Hugh N Jones 2015.web.small.jpg' alt='Hugh Jones' />
+                        <figcaption>Hugh Jones</figcaption>
+                        <a href="http://www.LibreWorx.com">Hugh Jones' web site.</a>
+                    </figure>
+                </div>
+            </div>
+            <div class="container">
+                <div class="text-info">
+                    <br /><br />
+                    BugTracker requires users to be registered, with a confirmation to the registering email.
+                    <br /><br />
+                    After registeration, the Administrator can assign each user into one of four roles: <br />
+                    <ol>
+                        <li>Administrator:  This role holds all the power over users, projects, tickets, and related attachments.</li>
+                        <li>Project Manager:  The Project Manager can assign Submitters and Developers to projects.  They have full access to the site, like Administrators, except they may not maniuplate users.</li>
+                        <li>Developer:  Designed to be the coder that fixes the bugs, this role may be assigned to projects, which have tickets under them.  They may only view and edit tickets assigned to them. They may complete a ticket.</li>
+                        <li>Submitter:  A Submitter, like a Developer, may only work on projects and tickets to which they are assigned.   They generate new tickets.</li>
+                    </ol>
+                    <div class="row"><br /><br />Use the follow tabs to log yourself into this system and test each of these roles.  </div>
+                </div>
+                <br />
+                <br />
+            </div>
+        </div>
     </div>
+    <!-- / .row -->
+    <!-- Main Features -->
+
+    <div class="row">
+        <div class="col-md-3">
+            <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Administrator" })" method="post">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-default btn-primary btn-large" type="submit">Demo BugTracker Now!</button>
+                <br /><br />As the Administrator, you have full access to the site.
+            </form>
+        </div>
+        <div class="col-md-3">
+            <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "ProjectManager" })" method="post">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-default btn-primary btn-large" type="submit">As Project Manager</button>
+                <br /><br />Project Manager: will have the same access, except managing users.
+            </form>
+        </div>
+        <div class="col-md-3">
+            <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Developer" })" method="post">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-default btn-primary btn-large" type="submit">As Developer</button>
+                <br /><br />Developer: they have access to Projects assigned to them, and may modify related tickets.
+            </form>
+        </div>
+        <div class="col-md-3">
+            <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Submitter" })" method="post">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-default btn-primary btn-large" type="submit">As Submitter</button>
+                <br /><br />Submitter:  has access to create tickets for Projects to which they are assigned.
+            </form>
+        </div>
+    </div>
+    <div class="text-primary">BugTracker, once purchased, is installed on your local intranet.  From there you set the Administrator and other roles in a secure environment.</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+            <h2 class="headline first-child text-color">
+                <span class="border-color">Technologies in Project</span>
+            </h2>
+        </div>
+    </div> <!-- / .row -->
+    <div class="row features">
+        <div class="col-sm-6">
+            <h3 class="primary-font first-child">Microsoft .Net</h3>
+            <p class="text-muted">
+                There are many language platforms out there, so why focus on .Net? Because Microsoft and .Net is the platform that drives the business technology of the top corporations in the U.S. and is the predominant technology used to drive enterprise-scale business tech.  We have job placement relationships with hundreds of corporations that hire .Net developers. So, if you are looking to secure that premiere coding job, then look to learn .Net.
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <img src="~/Content/img/Microsoft_Net_Coding_Course.jpg" style="width:30%; height:30%; padding:10px" class="img-responsive" alt="Microsoft .NET Course">
+        </div>
+    </div> <!-- / .row -->
+    <div class="divider"></div>
+    <div class="row features ">
+        <div class="col-sm-6">
+            <div class="border-bottom"><img src="~/Content/img/JavaScript.png" style="width:30%; height:30%; padding:10px" class="img-responsive" alt="Angular Js Coding Course"></div>
+        </div>
+        <div class="col-sm-6">
+            <h3 class="primary-font">JavaScript.</h3>
+            <p class="text-muted">
+                JavaScript is a dynamic computer programming language. It is most commonly used as part of web browsers, whose implementations allow client-side scripts to interact with the user, control the browser, communicate asynchronously, and alter the document content that is displayed.
+            </p>
+        </div>
+    </div> <!-- / .row -->
+    <div class="divider"></div>
+    <div class="row features last">
+        <div class="col-sm-6">
+            <h3 class="primary-font first-child">HTML 5</h3>
+            <p class="text-muted">
+                You're excited about HTML5; we are too. Maybe you’ve just been enjoying the HTML5-powered web — we’re going to teach you how to build it! As adoption and inspiration spreads, the web community will find creative ways to apply HTML5 and related technologies, spark trends, and capture best practices.
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <img src="~/Content/img/HTML5__Coding_Course.png" style="width:30%; height:30%; padding:10px" class="img-responsive" alt="HTML 5 Coding Course">
+        </div>
+    </div> <!-- / .row -->
+    <!--Overview-->
 </div>
-<!-- / .row -->
-<!-- Main Features -->
-
-
-
-<div class="row">
-    <div class="col-sm-12">
-        <br />
-        <h2 class="headline first-child text-color">
-            <span class="border-color">Main Features</span>
-        </h2>
-    </div>
-</div> <!-- / .row -->
-<div class="row features">
-    <div class="col-sm-6">
-        <h3 class="primary-font first-child">Microsoft .Net</h3>
-        <p class="text-muted">
-            There are many language platforms out there, so why focus on .Net? Because Microsoft and .Net is the platform that drives the business technology of the top corporations in the U.S. and is the predominant technology used to drive enterprise-scale business tech.  We have job placement relationships with hundreds of corporations that hire .Net developers. So, if you are looking to secure that premiere coding job, then look to learn .Net.
-        </p>
-    </div>
-    <div class="col-sm-6">
-        <img src="~/Content/img/Microsoft_Net_Coding_Course.jpg" style="width:30%; height:30%; padding:10px" class="img-responsive" alt="Microsoft .NET Course">
-    </div>
-</div> <!-- / .row -->
-<div class="divider"></div>
-<div class="row features ">
-    <div class="col-sm-6">
-        <div class="border-bottom"><img src="~/Content/img/JavaScript.png" style="width:30%; height:30%; padding:10px" class="img-responsive" alt="Angular Js Coding Course"></div>
-    </div>
-    <div class="col-sm-6">
-        <h3 class="primary-font">JavaScript.</h3>
-        <p class="text-muted">
-            JavaScript is a dynamic computer programming language. It is most commonly used as part of web browsers, whose implementations allow client-side scripts to interact with the user, control the browser, communicate asynchronously, and alter the document content that is displayed.
-        </p>
-    </div>
-</div> <!-- / .row -->
-<div class="divider"></div>
-<div class="row features last">
-    <div class="col-sm-6">
-        <h3 class="primary-font first-child">HTML 5</h3>
-        <p class="text-muted">
-            You're excited about HTML5; we are too. Maybe you’ve just been enjoying the HTML5-powered web — we’re going to teach you how to build it! As adoption and inspiration spreads, the web community will find creative ways to apply HTML5 and related technologies, spark trends, and capture best practices.
-        </p>
-    </div>
-    <div class="col-sm-6">
-        <img src="~/Content/img/HTML5__Coding_Course.png" style="width:30%; height:30%; padding:10px" class="img-responsive" alt="HTML 5 Coding Course">
-    </div>
-</div> <!-- / .row -->
-<!--Overview-->

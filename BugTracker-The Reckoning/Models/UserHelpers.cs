@@ -8,19 +8,80 @@ using System.Linq;
 using System;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
+using SendGrid;
+using System.Net.Mail;
+using System.Net;
 
 namespace BugTracker_The_Reckoning.Models
 {
     public class UserRolesHelper
     {
-        private UserManager<ApplicationUser> manager = 
+        private UserManager<ApplicationUser> manager =
             new UserManager<ApplicationUser>(
             new UserStore<ApplicationUser>(
                 new ApplicationDbContext()));
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public bool IsUserInRole(string userId, string roleName)
         {
             return manager.IsInRole(userId, roleName);
+        }
+        public void Notify(TicketNotification tn, string action)
+        {
+            ///// INSERT SENDGRID FOR NOTIFICATIONS
+
+            string emailSubject = "";
+            string emailMessage = "";
+
+            if (action.Equals("Remove"))
+            {
+                /// removed from ticket
+                emailMessage = "You were removed from ";
+                try
+                {
+                    emailMessage+=  tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
+                }
+                catch { }
+                emailSubject = "Removed from: ";
+                try
+                {
+                    emailSubject += tn.Ticket.Title;
+                }
+                catch { }
+            }
+            else if (action.Equals("Add"))
+            {
+                /// added to ticket
+                emailMessage = "You were removed from " + tn.Ticket.Title + ": " + tn.Ticket.Description + ".";
+                emailSubject = "Added to: " + tn.Ticket.Title;
+            }
+            else if (action.Equals("Manage Ticket"))
+            {
+                /// new ticket created and added to manager's project
+                emailMessage = "Project " + tn.Ticket.Project.Name + " has a new ticket, Priority: "+ tn.Ticket.TicketPriority+"\n"+
+                    "Ticket: "+tn.Ticket.Title + ".";
+                emailSubject = tn.Ticket.Project.Name + " has a new ticket, Priority: " + tn.Ticket.TicketPriority;
+            }
+
+            //SendGrid Login from Web.config
+            var MyAddress = ConfigurationManager.AppSettings["ContactEmail"];
+            var MyUsername = ConfigurationManager.AppSettings["Username"];
+            var MyPassword = ConfigurationManager.AppSettings["Password"];
+
+            //"To" information 
+            var toName = db.Users.Find(tn.UserId).DisplayName;
+            var toEmail = db.Users.Find(tn.UserId).Email;
+
+            //"From" information
+            SendGridMessage mail = new SendGridMessage();
+            mail.AddTo(toEmail);
+            mail.Subject = emailSubject;
+            mail.From = new MailAddress("hughjones@libreworx.com");
+            mail.Text = emailMessage;
+            var credentials = new NetworkCredential(MyUsername, MyPassword);
+            var transportWeb = new Web(credentials);
+            transportWeb.Deliver(mail);
         }
 
         public IList<string> ListUserRoles(string userId)
@@ -33,7 +94,7 @@ namespace BugTracker_The_Reckoning.Models
             var result = manager.AddToRole(userId, roleName);
             return result.Succeeded;
         }
-       
+
         public bool RemoveUserFromRole(string userId, string roleName)
         {
             return manager.RemoveFromRole(userId, roleName).Succeeded;

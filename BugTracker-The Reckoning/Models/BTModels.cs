@@ -143,12 +143,14 @@ namespace BugTracker_The_Reckoning.Models
         public int Id { get; set; }
         [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
         public string Name { get; set; }
+        public string ManagerId { get; set; }
         public Project()
         {
             this.Tickets = new HashSet<Ticket>();
             this.Members = new HashSet<ApplicationUser>();
         }
-        
+
+        public virtual ApplicationUser Manager { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<ApplicationUser> Members { get; set; }
     }

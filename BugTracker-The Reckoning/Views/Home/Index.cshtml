@@ -6,36 +6,16 @@
 <div class="jumbotron">
     <img src="~/Content/img/bugtracker-icon.png" class="col-md-2" />
     <h1>BugTracker</h1>
-    <p class="lead">Bug Tracking for Professional Teams</p>
+    <p class="lead">BugTracking is online software for professional teams.</p>
 </div>
-<h2>Demo BugTracker</h2>
-<div class="row">
-    <div class="col-md-3">
-            <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Administrator" })" method="post">
-                @Html.AntiForgeryToken()
-                <button class="btn btn-default btn-primary btn-large" type="submit">As Administrator</button>
-                <br /><br />As the Administrator, you have full access to the site.
-            </form>
-    </div>
-    <div class="col-md-3">
-        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "ProjectManager" })" method="post">
-            @Html.AntiForgeryToken()
-            <button class="btn btn-default btn-primary btn-large" type="submit">As Project Manager</button>
-            <br /><br />Project Manager: will have the same access, except managing users.
-        </form>
-    </div>
-    <div class="col-md-3">
-        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Developer" })" method="post">
-            @Html.AntiForgeryToken()
-            <button class="btn btn-default btn-primary btn-large" type="submit">As Developer</button>
-            <br /><br />Developer: they have access to Projects assigned to them, and may modify related tickets.
-        </form>
-    </div>
-    <div class="col-md-3">
-        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Submitter" })" method="post">
-            @Html.AntiForgeryToken()
-            <button class="btn btn-default btn-primary btn-large" type="submit">As Submitter</button>
-            <br /><br />Submitter:  has access to create tickets for Projects to which they are assigned.
-        </form>
-    </div>
+<section class="col-md-6 text-info">
+    Existing users login now.  <br /><br />If you are new to our site, we are glad you are here.
+    We want to give you a tour of our BugTracker, and then provide you with the freedom to explore.
+    And remember, we are always available through the Contact page to purchase, and for questions.
+    <br /><br />
+</section>
+<div class="row"></div>
+<div class="col-md-6">
+    <button type="button" class="btn btn-default btn-primary btn-large">Click to Begin our Site Tour</button>
 </div>
+<div class="row"></div>

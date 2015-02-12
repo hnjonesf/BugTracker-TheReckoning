@@ -9,6 +9,8 @@ namespace BugTracker_The_Reckoning.Models
 {
     public class AssignPageModel
     {
+        public string DisplayName { get; set; }
+
         public MultiSelectList UserNotTickets { get; set; }
         public string TicketOwner { get; set; }
         public string[] newTickets { get; set; }
