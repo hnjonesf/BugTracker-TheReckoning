@@ -3,24 +3,12 @@
 }
 
 <h2>Tour</h2>
-<h2>Demo BugTracker</h2>
-First, click to login as the Administrator to the site below.
-<div class="row">
-    <div class="col-md-3">
-        <form action="@Url.Action("AdminLogin", "Account", new { autoLogin = "Administrator" })" method="post">
-            @Html.AntiForgeryToken()
-            <button class="btn btn-default btn-primary btn-large" type="submit">First, Login as Administrator.</button>
-            <br /><br />
-        </form>
-    </div>
-</div>
+<script src="~/Scripts/jquery-impromptu.min.js"></script>
 <div class="row">
     <div class="container">
         <div class="row clearfix">
-            <form action="@Url.Action("Index")">
-                <button class="btn btn-default btn-primary btn-large" type="submit">Then, Demo BugTracker</button>
-                <br /><br />
-            </form>
+            @*javascript begin here for Tour*@
         </div>
     </div>
 </div>
+<script src="~/Scripts/Tour.js"></script>

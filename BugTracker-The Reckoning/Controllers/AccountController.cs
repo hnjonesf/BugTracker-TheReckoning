@@ -87,7 +87,7 @@ namespace BugTracker_The_Reckoning.Controllers
                     break;
             }
                 
-            return RedirectToAction("Index", "Home", null);
+            return RedirectToAction("Index", "Tour", null);
 
         }
 
