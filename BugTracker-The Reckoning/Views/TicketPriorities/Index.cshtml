@@ -7,63 +7,30 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h1>Ticket Priorities</h1>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <h2>@Html.ActionLink("Create New Priority", "Create")</h2>
 </p>
-<div class="panel-group" id="ticketPriority">
+<div class="row">
     @if (Model != null)
     {
-        <table class="table table-striped">
-            <tr>
-                <th>
-                    @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.NameSortParm })
-                </th>
-            </tr>
-        </table>
-        foreach (var item in Model)
-        {
-            string theHref = "#panel-element-priority" + item.Id;
-            string theId = "panel-element-priority" + item.Id;
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#ticketPriority" href=@theHref>@item.Name</a>
-                </div>
-                <div id=@theId class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-10 column">
-                                <table>
-                                    <tr>
-                                        @Html.ActionLink("Details", "Details", new { id = item.Id })
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-md-2 column">
-                                <div class="btn-group btn-group-vertical">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <span title="Edit Priority"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-pencil" })</em></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span title="View History"><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-backward"></em></button></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span title="Delete Priority"><em>@Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-trash" })</em></span>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="rightPanel">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        }
+        <div class="col-sm-4" style="border:ridge">
+            @Html.ActionLink("Sort By Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            <table class="table-striped">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <h3>@Html.ActionLink(@item.Name, "Edit", new { id = item.Id })</h3>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     }
 </div>
- Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder }))
+<div class="row">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder }))
+</div>

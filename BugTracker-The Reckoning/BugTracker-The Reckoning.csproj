@@ -461,7 +461,6 @@
     <Content Include="Views\TicketTypes\Edit.cshtml" />
     <Content Include="Views\TicketTypes\Index.cshtml" />
     <Content Include="Views\TicketPriorities\Create.cshtml" />
-    <Content Include="Views\TicketPriorities\Details.cshtml" />
     <Content Include="Views\TicketPriorities\Edit.cshtml" />
     <Content Include="Views\TicketPriorities\Index.cshtml" />
     <Content Include="Views\TicketStatus\Create.cshtml" />
@@ -474,7 +473,6 @@
     <Content Include="Views\TicketAttachments\Details.cshtml" />
     <Content Include="Views\TicketAttachments\Edit.cshtml" />
     <Content Include="Views\TicketAttachments\Index.cshtml" />
-    <Content Include="Views\TicketHistories\Create.cshtml" />
     <Content Include="Views\TicketHistories\Details.cshtml" />
     <Content Include="Views\TicketHistories\Index.cshtml" />
     <Content Include="Views\TicketComments\Create.cshtml" />
