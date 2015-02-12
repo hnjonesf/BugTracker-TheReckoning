@@ -31,7 +31,7 @@
                     {
                         <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
 
-                        <li class="dropdown">
+                        <li class="dropdown" id="Users">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets<strong class="caret"></strong></a>
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("Tickets", "Index", "Tickets")</li>
@@ -44,7 +44,7 @@
                             </ul>
                         </li>
                         if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
-                        {
+                        {                           
                             <li>@Html.ActionLink("Users", "Index", "ApplicationUsers")</li>
                         }
                     }
