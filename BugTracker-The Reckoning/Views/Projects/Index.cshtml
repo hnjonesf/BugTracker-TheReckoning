@@ -66,12 +66,13 @@
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class="btn-group btn-group-vertical">
+                                <div class="btn btn-default btn-group btn-group-vertical">
                                     <div class="row">
-                                        @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager")) {
-                                        <div class="col-md-4">
-                                            <span title="Edit Project"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-pencil" })</em></span>
-                                        </div>
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                                        {
+                                            <div class="col-md-4">
+                                                <span title="Edit Project"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-pencil" })</em></span>
+                                            </div>
                                         }
                                     </div>
                                 </div>
