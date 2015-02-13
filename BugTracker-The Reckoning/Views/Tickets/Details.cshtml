@@ -72,7 +72,7 @@
 
 
     </div>
-  
+
 </div>
 
 <br />
@@ -80,8 +80,8 @@
 
 </div>
 <div class="row">
-    <div class="col-md-8 class table-bordered">
-        <h4>Ticket Attachments</h4>
+    <div class="col-md-12 class table-bordered">
+        <h3>Ticket Attachments</h3>
         <table class="table table-striped">
             <tr>
                 <th>
@@ -107,7 +107,7 @@
                         @Html.DisplayFor(modelItem => item.FilePath)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description);   
+                        @Html.DisplayFor(modelItem => item.Description);
                     </td>
 
                     <td>
@@ -121,44 +121,104 @@
                     </td>
                 </tr>
             }
-            </table>
-        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null)
+        </table>
+        @Html.ActionLink("Add an Attachment", "Create", "TicketAttachments", new { TicketId = Model.Id }, null) |
+        @Html.ActionLink("Back to List of Tickets", "Index")
 
-        </div>
-
-
-        <div class="col-md-4 table-bordered">
-            <h4>Ticket Comments</h4>
-            <table class="table table-striped">
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Comment
-                    </th>
-                    <th>
-                        Created
-                    </th>
-                </tr>
-                @foreach (var item in Model.TicketComments)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.DisplayName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comment)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Created)
-                        </td>
-                    </tr>
-                }
-
-            </table>
-            @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null)
-
-        </div>
     </div>
+
+    <br />
+    <div class="row">
+
+    </div>
+    <div class="col-md-12 table-bordered">
+        <h3>Ticket Comments</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Comment
+                </th>
+                <th>
+                    Created
+                </th>
+            </tr>
+            @foreach (var item in Model.TicketComments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                </tr>
+            }
+
+        </table>
+        @Html.ActionLink("Add a Comment", "Create", "TicketComments", new { TicketId = Model.Id }, null) |
+        @Html.ActionLink("Back to List of Tickets", "Index")
+
+    </div>
+    <br />
+    <div class="row">
+
+    </div>
+    <div class="col-md-12 table-bordered">
+        <h3>Ticket Histories</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Ticket Title
+                </th>
+                <th>
+                    User
+                </th>
+                <th>
+                    Property
+                </th>
+                <th>
+                    Old Value
+                </th>
+                <th>
+                    New Value
+                </th>
+                <th>
+                    Date Changed
+                </th>
+            </tr>
+            @foreach (var item in Model.TicketHistories)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.AssignedUser.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Property)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OldValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Changed)
+                    </td>
+                </tr>
+            }
+
+        </table>
+        @Html.ActionLink("Back to List of Tickets", "Index")
+    </div>
+
+</div>
 
