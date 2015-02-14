@@ -150,6 +150,7 @@
                                             @Html.ActionLink("Comments(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
                                         </h3>
                                     </div>
+<<<<<<< HEAD
                                     <div class="col-sm-4">
                                         <h3>
                                             @Html.ActionLink("History(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
@@ -162,6 +163,15 @@
                                         {
                                             <span title="Edit Ticket"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-pencil" })</em></span>
                                         }
+=======
+                                    <div class="col-md-2 column">
+                                        <div class="btn-group btn-group-vertical" style="padding-top:20px">
+                                            @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                                            {
+                                                <span title="Edit Ticket"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-pencil" })</em></span>
+                                            }
+                                        </div>
+>>>>>>> origin/master
                                     </div>
                                 </div>
                             </div>
