@@ -22,9 +22,12 @@ h1, h2, h3, h4, h5, h6, h7{
 }
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select,
-textarea {
+select
+ {
     max-width: 280px;
+}
+textarea{
+    max-width:450px;
 }
 .pagination-container {
   margin-bottom:25px;

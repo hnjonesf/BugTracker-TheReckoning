@@ -55,10 +55,10 @@
                 {
                     string theHref = "#panel-element-tickets" + item.Id;
                     string theId = "panel-element-tickets" + item.Id;
-                    <div class="panel panel-default">
-                        <div class="panel-heading col-sm-12">
-                            <div class="row">
-                                <a class="panel-title" data-toggle="collapse" data-parent="#tickets" href=@theHref>
+                    <div class="panel panel-default" style="background-color:#f5f5f5; border-color:#dddddd">
+                        <div class="row">
+                            <div class="panel-heading col-sm-12">
+                                <a class=" panel-title" data-toggle="collapse" data-parent="#tickets" href=@theHref>
                                     <div class="col-xs-1">
                                         <h6>@Html.DisplayFor(modelItem => item.OwnerUser.FirstName)</h6>
                                     </div>
@@ -92,151 +92,151 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
-                    <div id=@theId class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12" style="background-image:linear-gradient(#04519b, #044687 60%, #033769); margin-bottom:10px">
-                                    <h1 style="text-align:center; color:white;">@Html.DisplayFor(modelItem => item.Title)</h1>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="col-sm-2">
-                                        <p><b>Submitted By: </b></p>
-                                        <p><b>Project Name: </b></p>
-                                        <p><b>Assigned Developer:</b></p>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <p>@Html.DisplayFor(modelItem => item.OwnerUser.FirstName)</p>
-                                        <p>@Html.DisplayFor(modelItem => item.Project.Name)</p>
-                                        <p>@Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)</p>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <p><b>Status:</b></p>
-                                        <p><b>Priority:</b></p>
-                                        <p><b>Type:</b></p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <p>@Html.DisplayFor(modelItem => item.TicketStatuses.Name)</p>
-                                        <p>@Html.DisplayFor(modelItem => item.TicketPriority.Name)</p>
-                                        <p>@Html.DisplayFor(modelItem => item.TicketTypes.Name)</p>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <p>
-                                            <b>
-                                                Created:
-                                            </b>
-                                        </p>
-                                        <p><b>Updated:</b></p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <p>
-                                            @Html.DisplayFor(modelItem => item.Created)
-                                        </p>
-                                        <p>@Html.DisplayFor(modelItem => item.Updated) </p>
+                        <div id=@theId class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12" style="background-image:linear-gradient(#04519b, #044687 60%, #033769); margin-bottom:10px">
+                                        <h1 style="text-align:center; color:white;">@Html.DisplayFor(modelItem => item.Title)</h1>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10 column">
-                                    <div class="col-sm-4">
-                                        <h3>
-                                            @Html.ActionLink("Attachments(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
-                                        </h3>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <h3>
-                                            @Html.ActionLink("Comments(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
-                                        </h3>
-                                    </div>
-<<<<<<< HEAD
-                                    <div class="col-sm-4">
-                                        <h3>
-                                            @Html.ActionLink("History(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
-                                        </h3>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="col-sm-2">
+                                            <p><b>Submitted By: </b></p>
+                                            <p><b>Project Name: </b></p>
+                                            <p><b>Assigned Developer:</b></p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p>@Html.DisplayFor(modelItem => item.OwnerUser.FirstName)</p>
+                                            <p>@Html.DisplayFor(modelItem => item.Project.Name)</p>
+                                            <p>@Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)</p>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <p><b>Status:</b></p>
+                                            <p><b>Priority:</b></p>
+                                            <p><b>Type:</b></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@Html.DisplayFor(modelItem => item.TicketStatuses.Name)</p>
+                                            <p>@Html.DisplayFor(modelItem => item.TicketPriority.Name)</p>
+                                            <p>@Html.DisplayFor(modelItem => item.TicketTypes.Name)</p>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <p>
+                                                <b>
+                                                    Created:
+                                                </b>
+                                            </p>
+                                            <p><b>Updated:</b></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>
+                                                @Html.DisplayFor(modelItem => item.Created)
+                                            </p>
+                                            <p>@Html.DisplayFor(modelItem => item.Updated) </p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 column">
-                                    <div class="btn-group btn-group-vertical" style="padding-top:20px">
-                                        @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
-                                        {
-                                            <span title="Edit Ticket"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-pencil" })</em></span>
-                                        }
-=======
+                                <div class="row">
+                                    <div class="col-md-10 column">
+                                        <div class="col-sm-4">
+                                            <h3>
+                                                @Html.ActionLink("Attachments(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
+                                            </h3>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h3>
+                                                @Html.ActionLink("Comments(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
+                                            </h3>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h3>
+                                                @Html.ActionLink("History(" + item.TicketAttachments.Count() + ")", "Details/" + item.Id)
+                                            </h3>
+                                        </div>
+                                    </div>
                                     <div class="col-md-2 column">
                                         <div class="btn-group btn-group-vertical" style="padding-top:20px">
                                             @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
                                             {
-                                                <span title="Edit Ticket"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-pencil" })</em></span>
+                                                <span title="Edit Ticket"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default glyphicon glyphicon-pencil" })</em></span>
                                             }
+                                            <div class="col-md-2 column">
+                                                <div class="btn-group btn-group-vertical" style="padding-top:20px">
+                                                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                                                    {
+                                                        <span title="Edit Ticket"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-pencil" })</em></span>
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
->>>>>>> origin/master
                                     </div>
                                 </div>
                             </div>
+                            }
                         </div>
                     </div>
                 }
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr, ViewBag.titleSearch, ViewBag.nameSearch, ViewBag.emailSearch, ViewBag.projectSearch, ViewBag.attachmentsSearch, ViewBag.prioritySearch, ViewBag.statusSearch, ViewBag.typeSearch, ViewBag.assignSearch }))
 
-            </div>
-        }
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.sortOrder, searchStr = ViewBag.searchStr, ViewBag.titleSearch, ViewBag.nameSearch, ViewBag.emailSearch, ViewBag.projectSearch, ViewBag.attachmentsSearch, ViewBag.prioritySearch, ViewBag.statusSearch, ViewBag.typeSearch, ViewBag.assignSearch }))
-    </div>
-    <div class="col-xs-2">
-        @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
-        {
-            <div class="row" style="margin-top:20px">
-                @Html.TextBox("searchStr")<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-                <button type="button" class="btn btn-primary" onclick="AdvancedSearch()">Advanced Search</button>
-            </div>
-            <div class="advancedSearch" id="adv" style="font-size:12px">
-                <h3>Include:</h3>
-                <div class="row">
-                    @Html.CheckBox("titleSearch", (bool)ViewBag.titleSearch)
-                    @Html.Label("Title")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("nameSearch", (bool)ViewBag.nameSearch)
-                    @Html.Label("Owner Name")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("emailSearch", (bool)ViewBag.emailSearch)
-                    @Html.Label("Owner Email")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("projectSearch", (bool)ViewBag.projectSearch)
-                    @Html.Label("Projects")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("attachmentsSearch", (bool)ViewBag.attachmentsSearch)
-                    @Html.Label("Attachments")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("prioritySearch", (bool)ViewBag.prioritySearch)
-                    @Html.Label("Priority")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("typeSearch", (bool)ViewBag.typeSearch)
-                    @Html.Label("Type")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("statusSearch", (bool)ViewBag.statusSearch)
-                    @Html.Label("Status")
-                </div>
-                <div class="row">
-                    @Html.CheckBox("assignSearch", (bool)ViewBag.assignSearch)
-                    @Html.Label("Developer")
-                </div>
-            </div>
-        }
-        <div class="row" id="filters">
-
-        </div>
-
-    </div>
-
-</div>
+                <div class="col-xs-2">
+                    @using (Html.BeginForm("Index", "Tickets", FormMethod.Post))
+                {
+                    <div class="row" style="margin-top:20px">
+                        @Html.TextBox("searchStr")<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+                        <button type="button" class="btn btn-primary" onclick="AdvancedSearch()">Advanced Search</button>
+                    </div>
+                    <div class="advancedSearch" id="adv" style="font-size:12px">
+                        <h3>Include:</h3>
+                        <div class="row">
+                            @Html.CheckBox("titleSearch", (bool)ViewBag.titleSearch)
+                            @Html.Label("Title")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("nameSearch", (bool)ViewBag.nameSearch)
+                            @Html.Label("Owner Name")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("emailSearch", (bool)ViewBag.emailSearch)
+                            @Html.Label("Owner Email")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("projectSearch", (bool)ViewBag.projectSearch)
+                            @Html.Label("Projects")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("attachmentsSearch", (bool)ViewBag.attachmentsSearch)
+                            @Html.Label("Attachments")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("prioritySearch", (bool)ViewBag.prioritySearch)
+                            @Html.Label("Priority")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("typeSearch", (bool)ViewBag.typeSearch)
+                            @Html.Label("Type")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("statusSearch", (bool)ViewBag.statusSearch)
+                            @Html.Label("Status")
+                        </div>
+                        <div class="row">
+                            @Html.CheckBox("assignSearch", (bool)ViewBag.assignSearch)
+                            @Html.Label("Developer")
+                        </div>
+                    </div>
                 }
+                    <div class="row" id="filters">
+
+                    </div>
+
+                </div>
+
+
+                }
+            </div>
+        }
+    </div>
+</div>
 <script src="~/Scripts/TicketsIndex.js"></script>
