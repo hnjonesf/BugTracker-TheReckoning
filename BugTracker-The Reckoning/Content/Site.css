@@ -59,6 +59,13 @@ textarea{
     font-size:18px;
     color:#317eac;
 }
-.container{
-
+@media (min-width: 1500px) {
+  .container {
+    width: 1450px;
+  }
+}
+@media (min-width: 1800px) {
+  .container {
+    width: 1740px;
+  }
 }
