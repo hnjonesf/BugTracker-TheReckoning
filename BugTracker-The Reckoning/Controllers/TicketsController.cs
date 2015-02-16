@@ -189,7 +189,13 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
             }
-
+            // Stuff viewbag with filter options
+            var typeList = new List<string>();
+            var statusList = new List<string>();
+            var priorityList = new List<string>();
+            var projList = new List<string>();
+            var ownerList = new List<string>();
+            var assignedList = new List<string>();
 
             foreach (var tick in tickets)
             {

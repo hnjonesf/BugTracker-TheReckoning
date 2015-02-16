@@ -196,7 +196,6 @@
     <Compile Include="Models\BTModels.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\DashboardModels.cs" />
-    <Compile Include="Models\FilterModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TicketTypeChart.cs" />
@@ -500,7 +499,6 @@
     <Content Include="Views\Account\EmailConfirmationSent.cshtml" />
     <Content Include="Views\Tour\Index.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
-    <Content Include="Views\Shared\_Filter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
