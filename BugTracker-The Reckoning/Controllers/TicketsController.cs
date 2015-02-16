@@ -25,7 +25,11 @@ namespace BugTracker_The_Reckoning.Controllers
 
         // GET: Tickets
         [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
-        public ActionResult Index(string sortOrder, int? page, string searchStr, bool? titleSearch, bool? nameSearch, bool? emailSearch, bool? projectSearch, bool? attachmentsSearch, bool? prioritySearch, bool? statusSearch, bool? typeSearch, bool? assignSearch)
+        public ActionResult Index(string sortOrder, int? page, string searchStr,
+            bool? titleSearch, bool? nameSearch, bool? emailSearch,
+            bool? projectSearch, bool? attachmentsSearch, bool? prioritySearch,
+            bool? statusSearch, bool? typeSearch, bool? assignSearch,
+            FilterModel filter)
         {
             if (titleSearch == null) { titleSearch = true; }
             if (nameSearch == null) { nameSearch = true; }
@@ -190,46 +194,79 @@ namespace BugTracker_The_Reckoning.Controllers
                     break;
             }
 
-
-            foreach (var tick in tickets)
+            if (filter.assignedList == null || filter.assignedList.Count() == 0)
             {
-                if (!typeList.Contains(tick.TicketTypes.Name))
-                {
-                    typeList.Add(tick.TicketTypes.Name);
-                }
-                if (!statusList.Contains(tick.TicketStatuses.Name))
-                {
-                    statusList.Add(tick.TicketStatuses.Name);
-                }
-                if (!priorityList.Contains(tick.TicketPriority.Name))
-                {
-                    priorityList.Add(tick.TicketPriority.Name);
-                }
-                if (!projList.Contains(tick.Project.Name))
-                {
-                    projList.Add(tick.Project.Name);
-                }
-                if (!ownerList.Contains(tick.OwnerUser.DisplayName))
-                {
-                    ownerList.Add(tick.OwnerUser.DisplayName);
-                }
-                if (!assignedList.Contains(tick.AssignedUser.DisplayName))
-                {
-                    assignedList.Add(tick.AssignedUser.DisplayName);
-                }
-            }
-            ViewBag.fType = new MultiSelectList(typeList);
-            ViewBag.sType = new MultiSelectList(statusList);
-            ViewBag.pType = new MultiSelectList(priorityList);
-            ViewBag.projType = new MultiSelectList(projList);
-            ViewBag.oType = new MultiSelectList(ownerList);
-            ViewBag.aType = new MultiSelectList(assignedList);
+                var filterModel = new FilterModel();
+                var filterList1 = new List<string>();
+                var filterList2 = new List<string>();
+                var filterList3 = new List<string>();
+                var filterList4 = new List<string>();
+                var filterList5 = new List<string>();
+                var filterList6 = new List<string>();
 
+                foreach (var tick in tickets)
+                {
+                    if (!filterList1.Contains(tick.TicketTypes.Name))
+                    {
+                        filterList1.Add(tick.TicketTypes.Name);
+                    }
+                    if (!filterList2.Contains(tick.TicketStatuses.Name))
+                    {
+                        filterList2.Add(tick.TicketStatuses.Name);
+                    }
+                    if (!filterList3.Contains(tick.TicketPriority.Name))
+                    {
+                        filterList3.Add(tick.TicketPriority.Name);
+                    }
+                    if (!filterList4.Contains(tick.Project.Name))
+                    {
+                        filterList4.Add(tick.Project.Name);
+                    }
+                    if (!filterList5.Contains(tick.OwnerUser.DisplayName))
+                    {
+                        filterList5.Add(tick.OwnerUser.DisplayName);
+                    }
+                    if (!filterList6.Contains(tick.AssignedUser.DisplayName))
+                    {
+                        filterList6.Add(tick.AssignedUser.DisplayName);
+                    }
+                }
+                filterModel.typeList = new MultiSelectList(filterList1);
+                filterModel.statusList = new MultiSelectList(filterList2);
+                filterModel.priorityList = new MultiSelectList(filterList3);
+                filterModel.projList = new MultiSelectList(filterList4);
+                filterModel.ownerList = new MultiSelectList(filterList5);
+                filterModel.assignedList = new MultiSelectList(filterList6);
+
+                ViewBag.filterModel = filterModel;
+            }
+            else
+            {
+                ViewBag.filterModel = filter;
+                //remove elements from tickets that are filtered out
+
+            }
 
             ViewBag.sortOrder = sortOrder;
             var pagedList = tickets.ToList();
             var pageNumber2 = page ?? 1;
             return View(pagedList.ToPagedList(pageNumber2, 10));
+        }
+
+        // POST: Tickets/Filter
+        [Authorize(Roles = "Administrator, Project Manager, Developer, Submitter")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Filter([Bind(Include = "typeList,statusList,priorityList,projList,ownerList,assignedList")] FilterModel filter)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction(,"Index", filter);
+            }
+            else
+            {
+                return View(filter);
+            }
         }
 
         // GET: Tickets/Details/5
