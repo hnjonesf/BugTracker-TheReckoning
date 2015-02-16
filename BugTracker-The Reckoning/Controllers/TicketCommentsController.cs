@@ -52,7 +52,7 @@ namespace BugTracker_The_Reckoning.Controllers
         public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
-            {   ticketComment.Creator=db.Users.Find(User.Identity.GetUserId());
+            {   ticketComment.UserId=User.Identity.GetUserId();
                 ticketComment.Created = DateTimeOffset.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();

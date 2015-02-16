@@ -64,7 +64,7 @@
             </tr>
         </table>
         <div class="row">
-            <div class="textarea table table-striped col-xs-12">
+            <div class="textarea table table-striped">
                 @Html.DisplayFor(modelItem => Model.Description)
             </div>
         </div>@Html.ActionLink("Edit This Ticket", "Edit", new { id = Model.Id }) |
@@ -107,8 +107,9 @@
                         @Html.DisplayFor(modelItem => item.FilePath)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)  
+                        @Html.DisplayFor(modelItem => item.Description);   
                     </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.Created)
                     </td>
@@ -144,7 +145,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Creator.DisplayName)
+                            @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.DisplayName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Comment)
