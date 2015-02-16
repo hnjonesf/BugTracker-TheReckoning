@@ -189,48 +189,6 @@ namespace BugTracker_The_Reckoning.Controllers
                     tickets = tickets.OrderByDescending(t => t.Created).ToList();
                     break;
             }
-            // Stuff viewbag with filter options
-            var typeList = new List<string>();
-            var statusList = new List<string>();
-            var priorityList = new List<string>();
-            var projList = new List<string>();
-            var ownerList = new List<string>();
-            var assignedList = new List<string>();
-
-            foreach (var tick in tickets)
-            {
-                if (!typeList.Contains(tick.TicketTypes.Name))
-                {
-                    typeList.Add(tick.TicketTypes.Name);
-                }
-                if (!statusList.Contains(tick.TicketStatuses.Name))
-                {
-                    statusList.Add(tick.TicketStatuses.Name);
-                }
-                if (!priorityList.Contains(tick.TicketPriority.Name))
-                {
-                    priorityList.Add(tick.TicketPriority.Name);
-                }
-                if (!projList.Contains(tick.Project.Name))
-                {
-                    projList.Add(tick.Project.Name);
-                }
-                if (!ownerList.Contains(tick.OwnerUser.DisplayName))
-                {
-                    ownerList.Add(tick.OwnerUser.DisplayName);
-                }
-                if (!assignedList.Contains(tick.AssignedUser.DisplayName))
-                {
-                    assignedList.Add(tick.AssignedUser.DisplayName);
-                }
-            }
-            ViewBag.fType = new MultiSelectList(typeList);
-            ViewBag.sType = new MultiSelectList(statusList);
-            ViewBag.pType = new MultiSelectList(priorityList);
-            ViewBag.projType = new MultiSelectList(projList);
-            ViewBag.oType = new MultiSelectList(ownerList);
-            ViewBag.aType = new MultiSelectList(assignedList);
-
 
             ViewBag.sortOrder = sortOrder;
             var pagedList = tickets.ToList();
